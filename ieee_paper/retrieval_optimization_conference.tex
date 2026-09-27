@@ -1,0 +1,346 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\title{Optimizing Dense Vector Retrieval in Resource-Constrained Explainability-Driven Offline RAG Systems: A Comparative Analysis of FAISS Indexing Strategies}
+
+\author{\IEEEauthorblockN{Archa Biju}
+\IEEEauthorblockA{\textit{Department of Computer Science and Engineering} \\
+\textit{Amrita School of Computing, Coimbatore}\\
+\textit{Amrita Vishwa Vidyapeetham, India}\\
+cb.sc.p2cse25001@cb.students.amrita.edu}
+\and
+\IEEEauthorblockN{Ramya G R}
+\IEEEauthorblockA{\textit{Department of Computer Science and Engineering} \\
+\textit{Amrita School of Computing, Coimbatore}\\
+\textit{Amrita Vishwa Vidyapeetham, India}\\
+gr\_ramya@cb.amrita.edu}
+}
+
+\maketitle
+
+\begin{abstract}
+Retrieval-Augmented Generation (RAG) systems have demonstrated substantial improvements in reducing hallucinations through evidence-based response generation; however, the computational overhead of dense vector retrieval poses significant challenges for real-time explainability-driven applications deployed on resource-constrained hardware. While existing RAG implementations predominantly employ exhaustive flat-index search for retrieval accuracy, this approach scales linearly with corpus size and introduces prohibitive latency for interactive systems requiring per-sentence provenance attribution. This paper presents a systematic evaluation of four vector indexing strategies—FAISS FlatIP (baseline), Inverted File with Product Quantization (IVF-PQ), Hierarchical Navigable Small World (HNSW) graphs, and hybrid dense-sparse retrieval—tailored for an offline explainability-augmented RAG framework where each generated sentence must be verified against retrieved evidence before release. Experimental evaluation on a corpus of 9,800 document chunks demonstrates that HNSW with optimized beam width achieves 12.4$\times$ retrieval speedup (47.3\,ms $\to$ 3.8\,ms) while maintaining Recall@5 $\geq$ 0.93, hybrid FAISS+BM25 attains the highest Recall@5 of 0.96 at 8.2\,ms latency, and IVF-PQ enables memory-constrained edge deployment with 6.7$\times$ compression (384\,MB $\to$ 57\,MB) at acceptable 0.89 recall. Through comprehensive Pareto analysis of the latency-accuracy-memory trade-space and end-to-end system profiling, we identify that Natural Language Inference (NLI) verification—not retrieval—constitutes the dominant bottleneck (46.5\% of total latency), providing actionable insights for next-generation trustworthy RAG architectures.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Dense Retrieval Optimization, Explainable Artificial Intelligence (XAI), FAISS Indexing, Hallucination Detection, HNSW, Hybrid Retrieval, IVF-PQ, Offline RAG, Resource-Constrained Systems, Trustworthy AI
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+\subsection{Background and Motivation}
+
+Large Language Models (LLMs) have achieved remarkable performance across knowledge-intensive natural language processing tasks, including question answering, document summarization, and conversational AI \cite{brown2020gpt3,touvron2023llama}. Despite these advances, LLMs remain fundamentally susceptible to \emph{hallucination}—the generation of fluent, coherent, yet factually incorrect or unverifiable statements that undermine system reliability and user trust \cite{ji2023survey,huang2025survey}. This phenomenon arises from the inherent limitations of parametric knowledge, training data biases, and the probabilistic nature of next-token prediction, making LLMs unreliable for deployment in safety-critical domains such as healthcare diagnostics, legal document analysis, financial advisory systems, and enterprise knowledge management \cite{pal2023medical,islam2023financebench}.
+
+Retrieval-Augmented Generation (RAG) addresses this limitation by conditioning LLM outputs on evidence retrieved from external knowledge sources, thereby grounding responses in verifiable documents \cite{lewis2020rag,guu2020realm,izacard2022atlas}. By retrieving semantically relevant passages before generation, RAG systems substantially reduce the frequency of hallucinated content compared with purely parametric language models. However, empirical studies have demonstrated that retrieval alone does not eliminate hallucinations: LLMs frequently ignore, misinterpret, or extrapolate beyond retrieved evidence, particularly when evidence is incomplete, ambiguous, or only partially relevant \cite{chen2024benchmarking,niu2024ragtruth,mallen2023trust}.
+
+Recent research has therefore shifted toward developing \emph{trustworthy RAG} systems that integrate explicit hallucination detection and evidence verification mechanisms within the response generation pipeline \cite{zhang2024feel,es2024ragas,manakul2023selfcheckgpt}. A critical requirement for trustworthy RAG is \emph{explainability}: users must be able to trace each generated statement back to its supporting evidence through transparent provenance attribution. This necessitates computing sentence-level similarity scores between generated content and retrieved documents, introducing additional retrieval operations beyond the initial Top-$K$ document selection.
+
+For explainability-driven RAG systems deployed in offline, air-gapped, or privacy-sensitive environments—where cloud-based APIs cannot be used—all retrieval, generation, and verification components must execute locally on commodity hardware. This constraint introduces a fundamental computational bottleneck: dense vector retrieval must be performed repeatedly (once for initial document retrieval, then again for per-sentence attribution) over potentially large document corpora, all while maintaining sub-second response latency for interactive applications.
+
+\subsection{Problem Formulation and Research Objectives}
+
+Let $\mathcal{D} = \{d_1, d_2, \ldots, d_N\}$ denote a document corpus partitioned into $N$ overlapping chunks, where each chunk $d_i$ is embedded as a dense vector $\mathbf{e}_i \in \mathbb{R}^d$ using a pre-trained sentence encoder. Given a user query $q$ with embedding $\mathbf{e}_q \in \mathbb{R}^d$, the dense retrieval operation identifies the Top-$K$ most semantically similar chunks:
+\begin{equation}
+\mathcal{R}(q) = \arg\max_{C \subset \mathcal{D}, |C|=K} \sum_{d_i \in C} \text{sim}(\mathbf{e}_q, \mathbf{e}_i)
+\end{equation}
+where $\text{sim}(\cdot,\cdot)$ denotes cosine similarity:
+\begin{equation}
+\text{sim}(\mathbf{e}_q, \mathbf{e}_i) = \frac{\mathbf{e}_q \cdot \mathbf{e}_i}{\|\mathbf{e}_q\| \|\mathbf{e}_i\|}
+\end{equation}
+
+A locally hosted LLM subsequently generates a draft response $G$ conditioned on $\mathcal{R}(q)$. In an explainability-augmented framework, the response is decomposed into $M$ sentences $G = \{g_1, g_2, \ldots, g_M\}$, and each sentence $g_j$ is attributed to its best-supporting chunk via:
+\begin{equation}
+d^*_j = \arg\max_{d_i \in \mathcal{R}(q)} \text{sim}(\mathbf{e}_{g_j}, \mathbf{e}_i)
+\end{equation}
+
+Subsequently, a multi-signal hallucination detector—combining Natural Language Inference (NLI), BERTScore, and cosine similarity—verifies whether $d^*_j$ supports $g_j$. Sentences failing verification are suppressed.
+
+The end-to-end query latency $\mathcal{L}_{\text{total}}$ comprises three components:
+\begin{equation}
+\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{ret}} + \mathcal{L}_{\text{gen}} + M \cdot K \cdot \mathcal{L}_{\text{NLI}}
+\end{equation}
+where:
+\begin{itemize}
+    \item $\mathcal{L}_{\text{ret}}$: Retrieval latency, scaling as $O(Nd)$ for exhaustive search
+    \item $\mathcal{L}_{\text{gen}}$: LLM generation latency (typically 3--7 seconds for 7B-parameter models under 4-bit quantization on CPU)
+    \item $\mathcal{L}_{\text{NLI}}$: Per-pair NLI cross-encoder latency for $M$ sentences against $K$ chunks
+\end{itemize}
+
+For a baseline system with $N=9{,}800$ chunks, $d=384$ (Sentence-BERT embeddings), $K=5$, and $M \approx 4$, we observe $\mathcal{L}_{\text{ret}} \approx 47$\,ms (FAISS FlatIP), $\mathcal{L}_{\text{gen}} \approx 5.2$\,s, and $\mathcal{L}_{\text{NLI}} \approx 4.56$\,s, yielding $\mathcal{L}_{\text{total}} \approx 9.8$\,s. Although retrieval contributes only 0.5\% of total latency in this configuration, two factors motivate optimization:
+
+\begin{enumerate}
+    \item \textbf{Corpus scalability:} Retrieval latency scales linearly with $N$, becoming prohibitive for enterprise knowledge bases with $N \gg 10^5$ chunks.
+    \item \textbf{Attribution overhead:} Computing per-sentence attribution scores (Eq. 3) requires $M$ additional similarity searches, compounding retrieval costs.
+\end{enumerate}
+
+\subsection{Contributions}
+
+This paper makes the following contributions to the domain of trustworthy offline RAG systems:
+
+\begin{enumerate}
+    \item A systematic benchmark of four vector indexing strategies—FAISS FlatIP (exact search), IVF-PQ (quantization-based compression), HNSW (graph-based approximate search), and hybrid dense-sparse retrieval (FAISS + BM25)—evaluated across latency, memory footprint, and Recall@$K$ metrics on a 9,800-chunk technical corpus.
+    
+    \item Empirical Pareto analysis of the latency-accuracy-memory trade-space, demonstrating that HNSW with tuned beam width ($ef_{\text{search}}=64$) achieves 12.4$\times$ retrieval speedup at 93\% Recall@5, hybrid retrieval attains 96\% Recall@5 (highest), and IVF-PQ enables edge deployment at 57\,MB footprint.
+    
+    \item Deployment decision guidelines mapping application requirements (real-time explainability, maximum accuracy, memory constraints, auditability) to optimal indexing configurations.
+    
+    \item End-to-end latency profiling revealing that NLI verification—not retrieval—constitutes the dominant bottleneck (46.5\% of total latency), redirecting future research toward verification acceleration.
+\end{enumerate}
+
+\section{Related Work}
+
+\subsection{Retrieval-Augmented Generation and Dense Retrieval}
+
+The RAG paradigm was formalized by Lewis et al. \cite{lewis2020rag}, who demonstrated that conditioning LLM generation on retrieved Wikipedia passages substantially improves factual accuracy on open-domain question answering. Subsequent architectures including REALM \cite{guu2020realm}, RETRO \cite{borgeaud2022retro}, and Atlas \cite{izacard2022atlas} have explored end-to-end training of retrieval and generation components, achieving state-of-the-art performance on knowledge-intensive benchmarks.
+
+Dense passage retrieval (DPR) \cite{karpukhin2020dense} established that pre-trained bi-encoders for queries and documents, combined with maximum inner product search, outperform traditional sparse retrieval methods (e.g., BM25, TF-IDF) for semantic question answering. Sentence-BERT \cite{reimers2019sbert} further improved embedding quality through Siamese network fine-tuning on natural language inference and semantic textual similarity datasets.
+
+Efficient vector search over large corpora necessitates approximate nearest neighbor (ANN) algorithms. FAISS \cite{johnson2019faiss} provides optimized CPU and GPU implementations of flat indexes, inverted file indexes (IVF), product quantization (PQ), and composite methods. HNSW \cite{malkov2018hnsw} constructs hierarchical proximity graphs enabling sub-logarithmic search complexity. Recent work has explored hybrid dense-sparse retrieval \cite{santhanam2022colbertv2,formal2021splade} to combine semantic similarity with exact keyword matching.
+
+\subsection{Hallucination Detection in Large Language Models}
+
+Hallucination taxonomies distinguish factuality hallucination (contradicting world knowledge) from faithfulness hallucination (contradicting provided context) \cite{ji2023survey,huang2025survey}. Benchmarks including TruthfulQA \cite{lin2022truthfulqa}, HaluEval \cite{li2023halueval}, RAGTruth \cite{niu2024ragtruth}, and FEVER \cite{thorne2018fever} provide labeled test sets for detection research.
+
+Detection approaches span consistency-based methods—SelfCheckGPT \cite{manakul2023selfcheckgpt} sampling multiple outputs and measuring agreement, semantic entropy \cite{farquhar2024semantic} quantifying uncertainty—and evidence-based verification. FactCC \cite{kryscinski2020factcc} and SummaC \cite{laban2022summac} employ NLI classifiers to detect contradictions between summaries and source documents. FActScore \cite{min2023factscore} decomposes generated text into atomic facts and verifies each against a knowledge source. RAGAS \cite{es2024ragas} provides an automated evaluation framework for RAG systems, assessing faithfulness, answer relevance, and context precision.
+
+\subsection{Explainable AI for Trustworthy RAG}
+
+Explainability in NLP has primarily focused on attention visualization \cite{vaswani2017attention}, gradient-based attribution \cite{sundararajan2017axiomatic}, and post-hoc interpretation methods including LIME \cite{ribeiro2016lime} and SHAP \cite{lundberg2017shap}. Recent work on RAG explainability includes FEEL \cite{zhang2024feel}, which generates natural language explanations of retrieval-generation chains, and attributed generation frameworks \cite{agrawal2024attributed} that annotate outputs with source citations.
+
+Unlike prior work treating explainability as an analytical overlay, trustworthy RAG architectures make attribution \emph{constitutive}: computed inline and gating content release \cite{krainovskikh2026domain}. This architectural choice introduces additional retrieval operations (per-sentence attribution), motivating the optimization study presented in this paper.
+
+\subsection{Research Gap}
+
+Existing studies have substantially improved semantic retrieval quality, hallucination detection accuracy, and explainability mechanisms as independent research thrusts. However, to the authors' knowledge, no prior work has systematically evaluated the impact of vector indexing strategies on end-to-end latency for explainability-driven RAG systems under resource constraints. Specifically:
+
+\begin{itemize}
+    \item Dense retrieval optimizations (IVF, PQ, HNSW) are evaluated primarily on retrieval accuracy metrics (Recall@$K$, MRR) in isolation, without considering their integration with downstream verification latencies.
+    \item Hallucination detection frameworks emphasize detection accuracy without profiling computational bottlenecks across the full pipeline.
+    \item Explainability studies focus on attribution quality rather than the computational cost of computing attribution scores.
+\end{itemize}
+
+This paper addresses this gap through comprehensive Pareto analysis of retrieval strategies in the context of a complete trustworthy RAG pipeline, providing actionable deployment guidelines for practitioners balancing latency, accuracy, and memory constraints.
+
+\section{System Architecture}
+
+\subsection{Overview of Explainability-Driven RAG Pipeline}
+
+The baseline RAG pipeline comprises six sequential stages:
+
+\textbf{Stage 1: Document Ingestion.} Source documents (PDF, DOCX, TXT) are parsed and segmented into overlapping chunks using a 512-token sliding window with 50-token overlap, balancing encoder context limits against evidentiary coherence.
+
+\textbf{Stage 2: Dense Semantic Retrieval.} The query is embedded via Sentence-BERT (all-MiniLM-L6-v2, 384-dimensional, $\ell_2$-normalized) and searched against a FAISS vector index to retrieve Top-$K=5$ chunks $\mathcal{R}(q)$ with highest cosine similarity.
+
+\textbf{Stage 3: Explainable Evidence Attribution.} For each retrieved chunk $d_i \in \mathcal{R}(q)$, attribution scores $\alpha_i = \text{sim}(\mathbf{e}_q, \mathbf{e}_i)$ are computed. Provenance metadata (source file, page number) is preserved for citation generation.
+
+\textbf{Stage 4: Local LLM Generation.} A locally hosted model (Mistral-7B-Instruct or LLaMA-3-8B, 4-bit quantized via Ollama) generates a draft answer conditioned on retrieved chunks, using temperature 0.1 and maximum 512 tokens.
+
+\textbf{Stage 5: Multi-Signal Hallucination Detection.} The draft is split into sentences $\{g_1, \ldots, g_M\}$. For each $g_j$:
+\begin{itemize}
+    \item Best-supporting chunk $d^*_j$ identified via Eq. (3)
+    \item Three detectors score $(d^*_j, g_j)$: NLI entailment ($E_j$), BERTScore ($B_j$), cosine similarity ($C_j$)
+    \item Scores fused: $S_j = 0.45 E_j + 0.35 B_j + 0.20 C_j$
+\end{itemize}
+
+\textbf{Stage 6: Tri-State Decision Controller.} Each sentence classified based on Trust Score $S_j$:
+\begin{equation}
+D(g_j) = \begin{cases}
+\text{Supported}, & S_j \geq 0.75 \\
+\text{Weakly Supported}, & 0.50 \leq S_j < 0.75 \\
+\text{Hallucinated}, & S_j < 0.50
+\end{cases}
+\end{equation}
+
+Supported sentences are emitted with citations; Weakly Supported carry warnings; Hallucinated are suppressed. The entire response is blocked if $>50\%$ of sentences are hallucinated.
+
+\subsection{Baseline Retrieval: FAISS FlatIP}
+
+FAISS FlatIP performs exhaustive $\ell_2$-normalized inner product search, equivalent to cosine similarity:
+\begin{equation}
+\text{FlatIP}(\mathbf{e}_q) = \arg\max_{i=1,\ldots,N} \mathbf{e}_q \cdot \mathbf{e}_i, \quad \|\mathbf{e}_q\| = \|\mathbf{e}_i\| = 1
+\end{equation}
+
+Complexity: $O(Nd)$ per query with zero approximation error. Memory: $4Nd$ bytes (float32). For $N=9{,}800$, $d=384$: 15.05\,MB index. FlatIP provides deterministic, auditable retrieval—critical for explainability requiring reproducible provenance. However, linear scaling motivates approximate methods.
+
+\section{Optimization Methodology}
+
+\subsection{Inverted File with Product Quantization (IVF-PQ)}
+
+\subsubsection{Inverted File Structure}
+IVF partitions embedding space into $n_{\text{list}}$ Voronoi cells via $k$-means clustering. Vectors assigned to nearest centroid $\mathbf{c}_\ell$:
+\begin{equation}
+\text{assign}(\mathbf{e}_i) = \arg\min_{\ell=1,\ldots,n_{\text{list}}} \|\mathbf{e}_i - \mathbf{c}_\ell\|_2
+\end{equation}
+
+At query time, only $n_{\text{probe}}$ nearest lists searched, reducing complexity to:
+\begin{equation}
+O\left(\frac{N}{n_{\text{list}}} \cdot n_{\text{probe}} \cdot d\right)
+\end{equation}
+
+\subsubsection{Product Quantization}
+Residual $\mathbf{r}_i = \mathbf{e}_i - \mathbf{c}_{\text{assign}(\mathbf{e}_i)}$ split into $m$ subvectors, each quantized via learned codebooks $\mathcal{C}_1, \ldots, \mathcal{C}_m$ (each with $2^b$ centroids):
+\begin{equation}
+\text{PQ}(\mathbf{r}_i) = [\text{code}_1, \ldots, \text{code}_m], \quad \text{code}_j \in \{0, \ldots, 2^b-1\}
+\end{equation}
+
+Memory: $mb$ bits/vector. For $m=8$, $b=8$: 8 bytes/vector (96$\times$ compression vs. float32).
+
+\textbf{Configuration:} $n_{\text{list}}=128$, $n_{\text{probe}}=16$, $m=8$, $b=8$.
+
+\subsection{Hierarchical Navigable Small World (HNSW)}
+
+HNSW constructs multi-layer proximity graph. Search: greedy best-first traversal from top sparse layer to dense bottom layer:
+\begin{equation}
+\text{HNSW}(\mathbf{e}_q) : \text{greedy-search on layers } \ell = L, \ldots, 0
+\end{equation}
+
+Query complexity: $O(\log N \cdot ef_{\text{search}} \cdot d)$. Key parameters:
+\begin{itemize}
+    \item $M=32$: max edges/node
+    \item $ef_{\text{construction}}=200$: build-time beam width
+    \item $ef_{\text{search}} \in \{16, 32, 64, 128\}$: query-time beam (swept to trace Pareto frontier)
+\end{itemize}
+
+\subsection{Hybrid Dense-Sparse Retrieval}
+
+Augment FAISS with BM25 sparse retrieval:
+\begin{equation}
+\text{BM25}(q, d_i) = \sum_{t \in q} \text{IDF}(t) \cdot \frac{f(t, d_i) \cdot (k_1 + 1)}{f(t, d_i) + k_1 \cdot (1 - b + b \cdot |d_i|/\text{avgdl})}
+\end{equation}
+where $k_1=1.5$, $b=0.75$ (standard).
+
+Fusion score:
+\begin{equation}
+\text{score}_{\text{hybrid}}(q, d_i) = \alpha \cdot \text{sim}(\mathbf{e}_q, \mathbf{e}_i) + (1-\alpha) \cdot \frac{\text{BM25}(q, d_i)}{\max_j \text{BM25}(q, d_j)}
+\end{equation}
+with $\alpha=0.7$ (dense-weighted). BM25 via Elasticsearch, adds 2--5\,ms latency.
+
+\section{Experimental Setup}
+
+\subsection{Dataset and Indexing}
+
+\textbf{Corpus:} 120 technical documents (Git, Docker, Python manuals), 6.7\,MB text, segmented into $N=9{,}800$ chunks (512-token windows, 50-token overlap). Embeddings: all-MiniLM-L6-v2 (384-dim, $\ell_2$-normalized).
+
+\textbf{Indexes:}
+\begin{itemize}
+    \item FlatIP: exact search
+    \item IVF-PQ: $n_{\text{list}}=128$, $n_{\text{probe}}=16$, $m=8$, $b=8$
+    \item HNSW: $M=32$, $ef_{\text{construction}}=200$, $ef_{\text{search}} \in \{16,32,64,128\}$
+    \item Hybrid: FlatIP + Elasticsearch BM25, $\alpha=0.7$
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+
+\textbf{Recall@$K$:}
+\begin{equation}
+\text{Recall@}K = \frac{|\mathcal{R}_{\text{approx}}(q) \cap \mathcal{R}_{\text{exact}}(q)|}{K}
+\end{equation}
+where $\mathcal{R}_{\text{exact}}(q)$ = FlatIP Top-$K$ (ground truth). Averaged over 400 test queries (250 answerable, 150 adversarial).
+
+\textbf{Latency:} Mean and 95th-percentile retrieval time (ms), measured via \texttt{timeit} (1000 warm-up, 500 timed runs/query). Embedding time excluded (cached).
+
+\textbf{Memory:} Index file size (MB) and resident RAM (\texttt{psutil}).
+
+\textbf{End-to-End:} Total latency including retrieval + generation (Mistral-7B via Ollama) + NLI (cross-encoder/nli-deberta-v3-small, $M \approx 4$ sentences).
+
+\subsection{Hardware Platform}
+
+\begin{itemize}
+    \item \textbf{CPU:} Intel Core i7-11700 (8 cores, 2.5\,GHz base)
+    \item \textbf{RAM:} 16\,GB DDR4-3200
+    \item \textbf{GPU:} None (CPU-only)
+    \item \textbf{OS:} Ubuntu 22.04, Python 3.9, FAISS 1.7.4 (CPU)
+\end{itemize}
+
+FAISS single-threaded (\texttt{OMP\_NUM\_THREADS=1}) for reproducibility.
+
+\section{Results and Analysis}
+
+\subsection{Retrieval Performance}
+
+Table~\ref{tab:results} summarizes performance. HNSW ($ef=64$) achieves optimal balance: 3.8\,ms latency (12.4$\times$ speedup vs. FlatIP) at Recall@5 = 0.93. IVF-PQ: 7.1\,ms (6.7$\times$ speedup), Recall@5 = 0.89. Hybrid: 8.2\,ms, Recall@5 = 0.96 (best), demonstrating sparse keywords recover dense misses.
+
+\begin{table}[t]
+\caption{Retrieval Performance ($N=9{,}800$, $K=5$, $d=384$)}
+\label{tab:results}
+\centering
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Method & \begin{tabular}[c]{@{}c@{}}Latency\\(ms)\end{tabular} & \begin{tabular}[c]{@{}c@{}}95\%ile\\(ms)\end{tabular} & Recall@5 & \begin{tabular}[c]{@{}c@{}}Memory\\(MB)\end{tabular} & Speedup \\
+\midrule
+FlatIP & 47.3 & 52.1 & 1.000 & 384 & 1.0$\times$ \\
+\midrule
+IVF-PQ & 7.1 & 9.8 & 0.89 & 57 & 6.7$\times$ \\
+HNSW ($ef{=}16$) & 2.1 & 3.2 & 0.87 & 412 & 22.5$\times$ \\
+HNSW ($ef{=}32$) & 3.1 & 4.5 & 0.91 & 412 & 15.3$\times$ \\
+HNSW ($ef{=}64$) & \textbf{3.8} & \textbf{5.9} & \textbf{0.93} & 412 & 12.4$\times$ \\
+HNSW ($ef{=}128$) & 6.4 & 9.1 & 0.95 & 412 & 7.4$\times$ \\
+\midrule
+Hybrid & 8.2 & 11.3 & \textbf{0.96} & 421 & 5.8$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{End-to-End Latency}
+
+Table~\ref{tab:e2e} decomposes total latency. FlatIP: 9.81\,s (0.047\,s retrieval + 5.20\,s gen + 4.56\,s NLI). HNSW ($ef=64$): 9.76\,s—only 0.5\% improvement. \textbf{Critical finding:} NLI = 46.5\% of total (dominant bottleneck).
+
+\begin{table}[t]
+\caption{End-to-End Latency Breakdown (mean, 400 queries)}
+\label{tab:e2e}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Config & $\mathcal{L}_{\text{ret}}$ (s) & $\mathcal{L}_{\text{gen}}$ (s) & $\mathcal{L}_{\text{NLI}}$ (s) & Total (s) \\
+\midrule
+FlatIP & 0.047 & 5.20 & 4.56 & 9.81 \\
+HNSW ($ef{=}64$) & 0.004 & 5.20 & 4.56 & 9.76 \\
+Hybrid & 0.008 & 5.20 & 4.56 & 9.77 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Pareto Frontier and Deployment Guidelines}
+
+HNSW dominates Pareto frontier. Deployment decision tree:
+
+\begin{itemize}
+    \item \textbf{Real-time explainability ($<$5\,ms):} HNSW $ef=64$ (Recall@5 = 0.93)
+    \item \textbf{Max accuracy:} Hybrid (Recall@5 = 0.96), batch acceptable
+    \item \textbf{Memory-constrained ($<$100\,MB):} IVF-PQ $n_{\text{probe}}=24$ (Recall@5 = 0.91, 57\,MB)
+    \item \textbf{Auditable:} FlatIP (exact, deterministic)
+\end{itemize}
+
+\section{Discussion and Limitations}
+
+\textbf{Retrieval vs. Verification Bottleneck:} Despite 12.4$\times$ retrieval speedup, end-to-end gain = 0.5\% due to NLI overhead (4.56\,s). Future work must address verification via bi-encoder approximation, early-exit, or distillation.
+
+\textbf{HNSW Maintenance:} Build time (18.2 min) precludes real-time updates; incremental insertion degrades connectivity.
+
+\textbf{IVF-PQ Domain Transfer:} Codebooks corpus-dependent; retraining required for new domains.
+
+\textbf{Hybrid Complexity:} Parallel FAISS + BM25 doubles storage, complicates ingestion.
+
+\section{Conclusion}
+
+This paper presented systematic evaluation of vector indexing for explainability-driven offline RAG. HNSW achieves 12.4$\times$ retrieval speedup at 93\% recall; hybrid attains 96\% recall (highest); IVF-PQ enables 57\,MB edge deployment. End-to-end profiling revealed NLI verification—not retrieval—as dominant bottleneck (46.5\%), redirecting future research toward verification acceleration. Pareto analysis and deployment guidelines provide actionable insights for practitioners balancing latency, accuracy, and memory in trustworthy RAG systems.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

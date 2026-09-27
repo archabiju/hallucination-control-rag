@@ -1,0 +1,65 @@
+# ==============================================================================
+# Explainability-Driven Hallucination Detection Framework — Configuration
+# ==============================================================================
+
+# ── Paths ─────────────────────────────────────────────────────────────────────
+paths:
+  corpus_dir: "data/corpus"           # Place domain PDFs/TXTs here
+  index_dir:  "data/index"            # FAISS index + metadata saved here
+
+# ── Ingestion / Chunking ──────────────────────────────────────────────────────
+ingestion:
+  chunk_size:    512     # Tokens per chunk
+  chunk_overlap:  50     # Overlapping tokens between adjacent chunks
+  supported_extensions: [".pdf", ".docx", ".txt", ".md"]
+
+# ── Retrieval ─────────────────────────────────────────────────────────────────
+retrieval:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  top_k: 5              # Top-K chunks retrieved per query
+  embedding_dim: 384    # Output dim of all-MiniLM-L6-v2
+
+# ── Generation (Local Ollama LLM) ────────────────────────────────────────────
+generation:
+  ollama_base_url: "http://localhost:11434"
+  model_name: "mistral"   # or "llama3", "phi3" — whatever you have pulled
+  temperature: 0.1
+  max_tokens: 512
+  system_prompt: >
+    You are a precise, factual assistant. Answer ONLY using the provided context.
+    If the context does not support the answer, say so explicitly.
+    Do NOT fabricate information.
+
+# ── NLI Entailment Detector ──────────────────────────────────────────────────
+nli:
+  model: "cross-encoder/nli-deberta-v3-small"
+  # Labels: ENTAILMENT=2, NEUTRAL=1, CONTRADICTION=0
+  entailment_label_idx: 2
+  contradiction_label_idx: 0
+
+# ── BERTScore ────────────────────────────────────────────────────────────────
+bertscore:
+  lang: "en"
+  model_type: "distilbert-base-uncased"   # Lightweight offline model
+
+# ── Hallucination Detection Thresholds ───────────────────────────────────────
+detection:
+  # Weights for aggregated support score
+  weight_nli:        0.45
+  weight_bertscore:  0.35
+  weight_cosine:     0.20
+
+  # Tri-state thresholds
+  high_support_threshold:    0.75   # Score >= this → Answer + citations
+  medium_support_threshold:  0.50   # Score >= this → Partial answer with flags
+  # Score < medium_support_threshold → Block + clarify
+
+# ── Decision Controller ──────────────────────────────────────────────────────
+controller:
+  citation_format: "[{source}, p.{page}]"   # e.g. [report.pdf, p.3]
+  max_block_ratio: 0.5   # If > 50% sentences hallucinated, block entire answer
+
+# ── Evaluation ───────────────────────────────────────────────────────────────
+evaluation:
+  test_set_path: "evaluation/test_set.json"
+  output_dir:    "evaluation/results"

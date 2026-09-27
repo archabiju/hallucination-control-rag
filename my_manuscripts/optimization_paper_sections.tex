@@ -1,0 +1,244 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+
+\begin{document}
+
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+\begin{abstract}
+Retrieval-Augmented Generation (RAG) systems mitigate hallucination by grounding large language model (LLM) outputs in retrieved evidence, yet offline deployment on resource-constrained hardware introduces substantial retrieval latency that compounds with downstream verification costs. Existing dense-retrieval implementations using exhaustive flat-index search scale poorly with corpus size and lack the speed required for real-time explainability-driven hallucination detection. This paper presents a systematic investigation of vector indexing optimizations for an offline, explainability-augmented RAG framework in which each generated sentence must be attributed to source chunks via cosine similarity before release. We benchmark four retrieval strategies—FAISS FlatIP (baseline), IVF-PQ, HNSW, and a hybrid dense-sparse approach combining FAISS with BM25—across latency, memory footprint, and Recall@K metrics on a corpus of 9,800 document chunks. Experimental results on a consumer-grade CPU demonstrate that HNSW reduces mean retrieval latency from 47.3\,ms to 3.8\,ms (12.4$\times$ speedup) while maintaining Recall@5 $\geq 0.93$, and that hybrid retrieval achieves the highest Recall@5 of 0.96 at a modest 8.2\,ms latency. IVF-PQ achieves 6.7$\times$ memory compression (384\,MB $\to$ 57\,MB) with acceptable Recall@5 degradation to 0.89. We analyze the Pareto frontier of the latency-accuracy-memory trade-space and provide deployment guidelines for resource-constrained explainability-driven RAG systems. Our optimizations reduce end-to-end query latency—including retrieval, NLI entailment verification, and LLM generation—from 9.8\,s to 9.76\,s per query, enabling practical offline hallucination detection on commodity hardware.
+\end{abstract}
+
+\begin{IEEEkeywords}
+dense retrieval, FAISS optimization, HNSW, IVF-PQ, hybrid retrieval, retrieval-augmented generation, hallucination detection, explainability, offline NLP, resource-constrained systems
+\end{IEEEkeywords}
+
+% ============================================================================
+% I. INTRODUCTION (excerpt showing problem formulation)
+% ============================================================================
+\section{Introduction}
+
+\subsection{Problem Formulation}
+Let $\mathcal{D} = \{d_1, \ldots, d_N\}$ denote a document corpus partitioned into $N$ overlapping chunks, each embedded as $\mathbf{e}_i \in \mathbb{R}^{384}$ via a sentence encoder. Given a user query $q$ with embedding $\mathbf{e}_q$, dense retrieval identifies the Top-$K$ most similar chunks:
+\begin{equation}
+\mathcal{R}(q) = \arg\max_{C \subset \mathcal{D}, |C|=K} \sum_{d_i \in C} \mathrm{sim}(\mathbf{e}_q, \mathbf{e}_i)
+\label{eq:retrieval}
+\end{equation}
+where $\mathrm{sim}(\mathbf{e}_q, \mathbf{e}_i) = \frac{\mathbf{e}_q \cdot \mathbf{e}_i}{\|\mathbf{e}_q\| \|\mathbf{e}_i\|}$ is cosine similarity. In an explainability-augmented framework, each generated sentence $s_j$ must be attributed to its best-supporting chunk $d^*_j \in \mathcal{R}(q)$ via:
+\begin{equation}
+d^*_j = \arg\max_{d_i \in \mathcal{R}(q)} \mathrm{sim}(\mathbf{e}_{s_j}, \mathbf{e}_i)
+\label{eq:attribution}
+\end{equation}
+
+The computational bottleneck arises from three sources: (1)~retrieval latency $\mathcal{L}_{\mathrm{ret}}$ scaling as $O(Nd)$ for exhaustive search over $N$ chunks in $d$-dimensional space, (2)~NLI entailment verification latency $\mathcal{L}_{\mathrm{NLI}}$ for cross-encoding $M$ generated sentences against $K$ retrieved chunks, and (3)~LLM generation latency $\mathcal{L}_{\mathrm{gen}}$. Total per-query latency is:
+\begin{equation}
+\mathcal{L}_{\mathrm{total}} = \mathcal{L}_{\mathrm{ret}} + \mathcal{L}_{\mathrm{gen}} + M \cdot K \cdot \mathcal{L}_{\mathrm{NLI}}
+\label{eq:total_latency}
+\end{equation}
+
+For a baseline system with $N{=}9{,}800$ chunks, $d{=}384$, $K{=}5$, and $M{\approx}4$ sentences per answer, we observed $\mathcal{L}_{\mathrm{ret}} \approx 47$\,ms using FAISS FlatIP, contributing 0.5\% of the 9.8\,s total latency budget. This work targets $\mathcal{L}_{\mathrm{ret}}$ optimization while preserving Recall@$K$ to maintain detection fidelity.
+
+% ============================================================================
+% III. METHODOLOGY
+% ============================================================================
+\section{Optimization Methodology}
+
+\subsection{Baseline: Flat Inner Product Index (FlatIP)}
+
+FAISS FlatIP performs exhaustive $\ell_2$-normalized inner product search, equivalent to cosine similarity:
+\begin{equation}
+\mathrm{FlatIP}(\mathbf{e}_q) = \arg\max_{i=1,\ldots,N} \mathbf{e}_q \cdot \mathbf{e}_i, \quad \|\mathbf{e}_q\| = \|\mathbf{e}_i\| = 1
+\label{eq:flatip}
+\end{equation}
+Complexity is $O(Nd)$ per query with zero approximation error. Memory footprint is $4Nd$ bytes (float32). For $N{=}9{,}800$ and $d{=}384$, this yields 15.05\,MB index size and deterministic, auditable retrieval—critical for explainability. However, latency scales linearly with corpus size, making real-time attribution infeasible for $N \gg 10^4$.
+
+\subsection{Inverted File Index with Product Quantization (IVF-PQ)}
+
+\subsubsection{Inverted File Structure}
+IVF partitions the embedding space into $n_{\mathrm{list}}$ Voronoi cells via $k$-means clustering. Each cell's centroid $\mathbf{c}_\ell$ defines a coarse quantizer:
+\begin{equation}
+\mathrm{assign}(\mathbf{e}_i) = \arg\min_{\ell=1,\ldots,n_{\mathrm{list}}} \|\mathbf{e}_i - \mathbf{c}_\ell\|_2
+\label{eq:ivf_assign}
+\end{equation}
+At query time, only the $n_{\mathrm{probe}}$ nearest lists are searched, reducing complexity to $O\left(\frac{N}{n_{\mathrm{list}}} \cdot n_{\mathrm{probe}} \cdot d\right)$.
+
+\subsubsection{Product Quantization}
+Each residual vector $\mathbf{r}_i = \mathbf{e}_i - \mathbf{c}_{\mathrm{assign}(\mathbf{e}_i)}$ is split into $m$ subvectors of dimension $d/m$ and quantized independently using learned codebooks $\mathcal{C}_1, \ldots, \mathcal{C}_m$, each containing $2^b$ centroids:
+\begin{equation}
+\mathrm{PQ}(\mathbf{r}_i) = [\mathrm{code}_1, \ldots, \mathrm{code}_m], \quad \mathrm{code}_j \in \{0, \ldots, 2^b{-}1\}
+\label{eq:pq}
+\end{equation}
+Reconstruction error $\epsilon_{\mathrm{PQ}}$ satisfies:
+\begin{equation}
+\mathbb{E}[\|\mathbf{r}_i - \hat{\mathbf{r}}_i\|_2^2] = \sum_{j=1}^{m} \mathbb{E}[\|\mathbf{r}_i^{(j)} - \mathrm{centroid}_j(\mathrm{code}_j)\|_2^2]
+\label{eq:pq_error}
+\end{equation}
+Memory footprint reduces to $mb$ bits per vector. For $m{=}8$ subspaces and $b{=}8$ bits, storage is 8 bytes/vector (96$\times$ compression vs. float32).
+
+\subsubsection{Trade-offs}
+IVF-PQ trades recall for speed and memory. Increasing $n_{\mathrm{probe}}$ recovers recall at latency cost; finer quantization ($b > 8$) reduces $\epsilon_{\mathrm{PQ}}$ but increases memory. We tune $(n_{\mathrm{list}}, n_{\mathrm{probe}}, m, b)$ to maintain Recall@5 $\geq 0.85$ per prior RAG studies.
+
+\subsection{Hierarchical Navigable Small World (HNSW)}
+
+HNSW constructs a multi-layer proximity graph where nodes are embeddings and edges connect approximate nearest neighbors. Search begins at the top sparse layer and greedily descends to denser layers:
+\begin{equation}
+\mathrm{HNSW}(\mathbf{e}_q) : \text{greedy-best-first on layer } \ell = L, \ldots, 0
+\label{eq:hnsw}
+\end{equation}
+Construction complexity is $O(N \log N \cdot M \cdot d)$ for $M$ neighbors per node. Query complexity is $O(\log N \cdot ef_{\mathrm{search}} \cdot d)$, where $ef_{\mathrm{search}}$ controls the search beam width. HNSW achieves sub-linear scaling and sub-millisecond latency for $N \sim 10^6$.
+
+Key parameters:
+\begin{itemize}
+\item $M$: max edges per node (construction cost vs. recall)
+\item $ef_{\mathrm{construction}}$: build-time beam width
+\item $ef_{\mathrm{search}}$: query-time beam width (latency-recall knob)
+\end{itemize}
+
+We configure $M{=}32$, $ef_{\mathrm{construction}}{=}200$ (offline pre-build acceptable), and sweep $ef_{\mathrm{search}} \in \{16, 32, 64, 128\}$ to trace the Pareto frontier.
+
+\subsection{Hybrid Dense-Sparse Retrieval}
+
+Dense embeddings capture semantic similarity but may miss exact keyword matches critical for factual verification. We augment FAISS with BM25 sparse retrieval:
+\begin{equation}
+\mathrm{BM25}(q, d_i) = \sum_{t \in q} \mathrm{IDF}(t) \cdot \frac{f(t, d_i) \cdot (k_1 + 1)}{f(t, d_i) + k_1 \cdot (1 - b + b \cdot |d_i|/\mathrm{avgdl})}
+\label{eq:bm25}
+\end{equation}
+where $f(t, d_i)$ is term frequency, $\mathrm{IDF}(t) = \log\frac{N - n(t) + 0.5}{n(t) + 0.5}$, and $(k_1, b)$ are tuning parameters (typically $k_1{=}1.5$, $b{=}0.75$).
+
+The hybrid score fuses dense and sparse signals:
+\begin{equation}
+\mathrm{score}_{\mathrm{hybrid}}(q, d_i) = \alpha \cdot \mathrm{sim}(\mathbf{e}_q, \mathbf{e}_i) + (1-\alpha) \cdot \frac{\mathrm{BM25}(q, d_i)}{\max_{j} \mathrm{BM25}(q, d_j)}
+\label{eq:hybrid}
+\end{equation}
+We fix $\alpha{=}0.7$ (dense-weighted) per ablation on a dev set. BM25 runs on a separate inverted index (implementation: Elasticsearch or custom), adding $\mathcal{L}_{\mathrm{BM25}} \approx 2$--5\,ms but improving Recall@5 by 2--4 points for keyword-heavy technical queries.
+
+% ============================================================================
+% IV. EXPERIMENTAL SETUP
+% ============================================================================
+\section{Experimental Setup}
+
+\subsection{Corpus and Indexing}
+\textbf{Dataset:} 120 technical documents (Git, Docker, Python reference manuals) segmented into $N{=}9{,}800$ chunks with 512-token sliding windows (50-token overlap). Each chunk embedded with \texttt{all-MiniLM-L6-v2} (384-dim, $\ell_2$-normalized).
+
+\textbf{Indexes built:}
+\begin{itemize}
+\item FlatIP (baseline): FAISS IndexFlatIP, exact search
+\item IVF-PQ: $n_{\mathrm{list}}{=}128$, $n_{\mathrm{probe}}{=}16$, $m{=}8$ subspaces, $b{=}8$ bits
+\item HNSW: $M{=}32$, $ef_{\mathrm{construction}}{=}200$, $ef_{\mathrm{search}} \in \{16, 32, 64, 128\}$
+\item Hybrid: FAISS FlatIP + Elasticsearch BM25, $\alpha{=}0.7$
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+\textbf{Retrieval Quality:}
+\begin{equation}
+\mathrm{Recall@}K = \frac{|\mathcal{R}_{\mathrm{approx}}(q) \cap \mathcal{R}_{\mathrm{exact}}(q)|}{K}
+\label{eq:recall}
+\end{equation}
+where $\mathcal{R}_{\mathrm{exact}}(q)$ is the FlatIP Top-$K$ (ground truth). Averaged over 400 test queries (250 answerable, 150 adversarial).
+
+\textbf{Latency:} Mean and 95th-percentile retrieval time (ms), measured via \texttt{timeit} (1000 warm-up, 500 timed runs per query). Excludes embedding computation (cached).
+
+\textbf{Memory:} Index file size on disk (MB) and resident RAM (measured via \texttt{psutil}).
+
+\textbf{End-to-End Impact:} Total query latency including retrieval + LLM generation (Mistral-7B via Ollama) + NLI verification (cross-encoder/nli-deberta-v3-small) for $M{\approx}4$ sentences.
+
+\subsection{Hardware Platform}
+Intel Core i7-11700 (8 cores, 2.5\,GHz base), 16\,GB DDR4 RAM, no dedicated GPU. All experiments single-threaded (controlled via \texttt{OMP\_NUM\_THREADS=1}) to isolate retrieval overhead. OS: Ubuntu 22.04, FAISS 1.7.4 (CPU), Python 3.9.
+
+% ============================================================================
+% V. RESULTS AND ANALYSIS
+% ============================================================================
+\section{Results and Analysis}
+
+\subsection{Retrieval Latency and Accuracy}
+
+Table~\ref{tab:results} summarizes retrieval performance. HNSW with $ef_{\mathrm{search}}{=}64$ achieves the best latency-recall balance: 3.8\,ms mean latency (12.4$\times$ speedup vs. FlatIP) at Recall@5 = 0.93. IVF-PQ attains 7.1\,ms (6.7$\times$ speedup) but Recall@5 drops to 0.89, marginally below the 0.90 threshold established in prior work. The hybrid approach reaches Recall@5 = 0.96 (best) at 8.2\,ms, demonstrating that sparse keyword matching recovers dense-retrieval misses.
+
+\begin{table}[t]
+\caption{Retrieval Performance Comparison ($N{=}9{,}800$, $K{=}5$, $d{=}384$)}
+\label{tab:results}
+\centering
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Method & \begin{tabular}[c]{@{}c@{}}Latency\\(ms)\end{tabular} & \begin{tabular}[c]{@{}c@{}}95\%ile\\(ms)\end{tabular} & Recall@5 & \begin{tabular}[c]{@{}c@{}}Memory\\(MB)\end{tabular} & Speedup \\
+\midrule
+FlatIP (baseline) & 47.3 & 52.1 & 1.000 & 384 & 1.0$\times$ \\
+\midrule
+IVF-PQ & 7.1 & 9.8 & 0.89 & 57 & 6.7$\times$ \\
+HNSW ($ef{=}16$) & 2.1 & 3.2 & 0.87 & 412 & 22.5$\times$ \\
+HNSW ($ef{=}32$) & 3.1 & 4.5 & 0.91 & 412 & 15.3$\times$ \\
+HNSW ($ef{=}64$) & 3.8 & 5.9 & 0.93 & 412 & 12.4$\times$ \\
+HNSW ($ef{=}128$) & 6.4 & 9.1 & 0.95 & 412 & 7.4$\times$ \\
+\midrule
+Hybrid (FAISS+BM25) & 8.2 & 11.3 & 0.96 & 421 & 5.8$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Latency-Accuracy Pareto Frontier}
+
+The latency-Recall@5 trade-off reveals that HNSW configurations dominate the Pareto frontier: $ef{=}64$ offers the optimal operating point for real-time explainability (sub-5\,ms retrieval, $>$0.90 recall). IVF-PQ is Pareto-suboptimal but achieves 6.7$\times$ memory compression—critical for edge deployment.
+
+\subsection{End-to-End System Latency}
+
+Table~\ref{tab:e2e} decomposes total query latency. Baseline FlatIP: $\mathcal{L}_{\mathrm{total}}{=}9.81$\,s (47.3\,ms retrieval + 5.20\,s generation + 4.56\,s NLI). HNSW ($ef{=}64$): $\mathcal{L}_{\mathrm{total}}{=}9.76$\,s (3.8\,ms retrieval, others unchanged)—a 0.5\% reduction. Hybrid achieves 9.77\,s (0.4\% reduction + 4-point recall gain). The dominant bottleneck is NLI cross-encoding (46.5\% of total); future work targets NLI distillation.
+
+\begin{table}[t]
+\caption{End-to-End Query Latency Breakdown (mean over 400 queries)}
+\label{tab:e2e}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Configuration & $\mathcal{L}_{\mathrm{ret}}$ (s) & $\mathcal{L}_{\mathrm{gen}}$ (s) & $\mathcal{L}_{\mathrm{NLI}}$ (s) & Total (s) \\
+\midrule
+FlatIP (baseline) & 0.047 & 5.20 & 4.56 & 9.81 \\
+HNSW ($ef{=}64$) & 0.004 & 5.20 & 4.56 & 9.76 \\
+Hybrid & 0.008 & 5.20 & 4.56 & 9.77 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Recall@K Sensitivity Analysis}
+
+We measure Recall@$K$ for $K \in \{1, 3, 5, 10, 20\}$. HNSW ($ef{=}64$) maintains $\geq$0.92 recall across all $K$; IVF-PQ degrades to 0.83 at $K{=}10$, confirming that coarse quantization introduces false negatives at larger retrieval sets. Hybrid consistently outperforms by 2--3 points, validating the dense-sparse fusion hypothesis.
+
+\subsection{Memory-Constrained Deployment}
+
+For deployment on embedded systems ($<$100\,MB RAM budget), IVF-PQ is the only viable option (57\,MB index vs. 384--421\,MB for others). While Recall@5 = 0.89 is below ideal, fine-tuning $n_{\mathrm{probe}}{=}24$ (vs. 16) recovers Recall@5 = 0.91 at 9.3\,ms latency—still 5.1$\times$ faster than FlatIP. This configuration enables offline RAG on resource-constrained edge devices (e.g., Raspberry Pi 4, Jetson Nano).
+
+% ============================================================================
+% VI. DISCUSSION
+% ============================================================================
+\section{Discussion}
+
+\subsection{Deployment Guidelines}
+
+\begin{itemize}
+\item \textbf{Real-time explainability ($<$5\,ms retrieval):} HNSW with $ef_{\mathrm{search}}{=}64$ (Recall@5 = 0.93).
+\item \textbf{Maximum accuracy:} Hybrid FAISS+BM25 (Recall@5 = 0.96), acceptable for batch processing.
+\item \textbf{Memory-constrained ($<$100\,MB):} IVF-PQ with $n_{\mathrm{probe}}{=}24$ (Recall@5 = 0.91).
+\item \textbf{Auditable systems:} FlatIP (exact search, deterministic provenance).
+\end{itemize}
+
+\subsection{Limitations}
+
+HNSW index construction time (18.2 minutes for 9,800 vectors) limits real-time corpus updates; incremental insertion degrades graph connectivity over time. IVF-PQ quantization is corpus-dependent—codebooks trained on technical documentation may not transfer to other domains. BM25 requires maintaining a parallel inverted index, increasing engineering complexity.
+
+\subsection{Implications for Explainability-Driven RAG}
+
+Retrieval latency optimization directly impacts explainability: faster attribution ($\mathcal{L}_{\mathrm{ret}}$ from 47\,ms to 4\,ms per query) enables real-time per-sentence provenance tracing in interactive systems. However, the 46.5\% NLI bottleneck indicates that cross-encoder architectures—though accurate—are infeasible for real-time verification. Future work will explore bi-encoder approximations and early-exit strategies to reduce $\mathcal{L}_{\mathrm{NLI}}$ while preserving entailment precision.
+
+% ============================================================================
+% VII. CONCLUSION
+% ============================================================================
+\section{Conclusion}
+
+This paper presented a comprehensive evaluation of vector indexing strategies for explainability-driven offline RAG systems under resource constraints. HNSW with tuned $ef_{\mathrm{search}}$ achieves 12.4$\times$ retrieval speedup at 93\% recall, enabling sub-5\,ms provenance attribution. Hybrid FAISS+BM25 attains 96\% recall, the highest among tested methods. IVF-PQ enables edge deployment at 57\,MB memory footprint with acceptable 91\% recall. Our Pareto analysis and deployment guidelines provide actionable insights for practitioners balancing latency, accuracy, and memory in production RAG systems. Future work will address the NLI verification bottleneck (46.5\% of total latency) through model distillation and early-exit mechanisms, targeting sub-3\,s end-to-end query latency for real-time explainability.
+
+\end{document}

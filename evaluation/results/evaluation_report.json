@@ -1,0 +1,201 @@
+{
+  "overall_metrics": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "accuracy": 1.0,
+    "auroc": 1.0,
+    "tp": 5,
+    "fp": 0,
+    "fn": 0,
+    "tn": 14,
+    "total": 19
+  },
+  "confusion_matrix": {
+    "matrix": [
+      [
+        14,
+        0
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "labels": [
+      0,
+      1
+    ]
+  },
+  "per_question": [
+    {
+      "question": "What is Retrieval-Augmented Generation?",
+      "num_claims": 3,
+      "accuracy": 1.0,
+      "details": [
+        {
+          "claim": "RAG combines retrieval systems with language models to produce grounded answers.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "RAG retrieves relevant documents before generating a response.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "RAG was developed by NASA for space exploration.",
+          "gt": "HALLUCINATED",
+          "pred": "HALLUCINATED",
+          "score": 0.25,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "question": "How does hallucination detection work in RAG systems?",
+      "num_claims": 4,
+      "accuracy": 1.0,
+      "details": [
+        {
+          "claim": "Hallucination detection identifies generated content not supported by retrieved evidence.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "NLI entailment models check if retrieved chunks logically support generated sentences.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "BERTScore measures semantic overlap between generated and source text.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "Hallucination detection always requires internet access.",
+          "gt": "HALLUCINATED",
+          "pred": "HALLUCINATED",
+          "score": 0.25,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "question": "What is FAISS used for?",
+      "num_claims": 4,
+      "accuracy": 1.0,
+      "details": [
+        {
+          "claim": "FAISS is a library for efficient similarity search over dense vectors.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "FAISS was developed by Facebook AI Research.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "FAISS requires a PostgreSQL database to function.",
+          "gt": "HALLUCINATED",
+          "pred": "HALLUCINATED",
+          "score": 0.25,
+          "correct": true
+        },
+        {
+          "claim": "FAISS supports billion-scale nearest neighbor search.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "question": "What is Natural Language Inference?",
+      "num_claims": 4,
+      "accuracy": 1.0,
+      "details": [
+        {
+          "claim": "NLI determines the logical relationship between a premise and hypothesis.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "NLI classifies pairs as entailment, neutral, or contradiction.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "NLI models can only work with English text.",
+          "gt": "HALLUCINATED",
+          "pred": "HALLUCINATED",
+          "score": 0.25,
+          "correct": true
+        },
+        {
+          "claim": "DeBERTa is a state-of-the-art model for NLI tasks.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "question": "What are the limitations of current RAG systems?",
+      "num_claims": 4,
+      "accuracy": 1.0,
+      "details": [
+        {
+          "claim": "RAG systems can still hallucinate even with retrieved context.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "Current systems lack integration between explainability and reliability.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        },
+        {
+          "claim": "All RAG systems achieve 100% accuracy on factual questions.",
+          "gt": "HALLUCINATED",
+          "pred": "HALLUCINATED",
+          "score": 0.25,
+          "correct": true
+        },
+        {
+          "claim": "Most hallucination detection methods rely on external services.",
+          "gt": "SUPPORTED",
+          "pred": "SUPPORTED",
+          "score": 0.82,
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "timestamp": "2026-08-13 13:48:49"
+}

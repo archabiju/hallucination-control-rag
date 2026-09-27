@@ -1,0 +1,35 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Raw dataset (too large for GitHub — 3+ GB)
+dataset_raw/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Byte-compiled / optimized
+*.egg-info/
+*.egg
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# MS Office temp files
+~$*
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+.env.local

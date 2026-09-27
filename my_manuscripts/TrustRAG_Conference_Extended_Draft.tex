@@ -1,0 +1,621 @@
+
+\documentclass[conference]{IEEEtran}
+
+\usepackage{amsmath,amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{TrustRAG-Opt: Efficient Vector Indexing for Explainable Offline Retrieval-Augmented Generation and Multi-Signal Hallucination Detection}
+
+\author{
+\IEEEauthorblockN{Archa Biju\IEEEauthorrefmark{1} and Ramya G R\IEEEauthorrefmark{2}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Department of Computer Science and Engineering,
+Amrita School of Computing, Amrita Vishwa Vidyapeetham, Coimbatore, India\\
+\IEEEauthorrefmark{2}Department of Computer Science and Engineering,
+Amrita School of Computing, Amrita Vishwa Vidyapeetham, Coimbatore, India\\
+Email: cb.sc.p2cse25001@cb.students.amrita.edu, gr_ramya@cb.amrita.edu}
+}
+
+\maketitle
+
+\begin{abstract}
+Large Language Models (LLMs) can generate fluent but factually unsupported content, motivating Retrieval-Augmented Generation (RAG) systems that ground responses in external evidence. However, retrieval alone does not guarantee factuality, and trustworthy RAG requires evidence attribution, hallucination verification, and interpretable response control. The previously developed TrustRAG framework addresses these requirements through dense semantic retrieval, explainable evidence attribution, Natural Language Inference (NLI), BERTScore, embedding-space cosine similarity, a unified Trust Score, and a tri-state decision controller in a fully offline pipeline. Experimental evaluation of the base framework achieved an F1-score of 0.898 and an AUC-ROC of 0.951 for hallucination detection, together with Recall@5 of 0.934 and a Provenance Score of 0.936. However, the dense retrieval stage uses vector similarity search whose latency and memory requirements can become significant as the knowledge base grows. This paper extends TrustRAG with a retrieval optimization module that systematically evaluates FAISS FlatIP, IVF-PQ, HNSW, and hybrid dense-sparse FAISS+BM25 retrieval. The extension studies latency, Recall@K, memory footprint, and the end-to-end effect of retrieval optimization on explainability-driven hallucination detection. On a corpus of 9,800 document chunks, HNSW with $ef_{\mathrm{search}}=64$ reduces mean retrieval latency from 47.3 ms to 3.8 ms while achieving Recall@5 of 0.93, whereas hybrid retrieval achieves the highest Recall@5 of 0.96 at 8.2 ms. IVF-PQ reduces the reported index footprint from 384 MB to 57 MB while retaining Recall@5 of 0.89 under the evaluated configuration. The results show that retrieval optimization can make evidence attribution substantially faster while preserving the evidence quality required by downstream hallucination detection.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Retrieval-Augmented Generation, hallucination detection, explainable AI, TrustRAG, FAISS, HNSW, IVF-PQ, BM25, dense retrieval, offline NLP, provenance, Trust Score
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Large Language Models (LLMs) have demonstrated strong capabilities in language understanding, reasoning, question answering, summarization, code generation, and knowledge-intensive applications. Transformer-based architectures and large-scale pre-training have enabled LLMs to produce coherent and contextually relevant responses across many domains. Nevertheless, LLMs optimize the likelihood of generating plausible tokens rather than directly optimizing factual truth. Consequently, a response may be fluent while containing unsupported, contradictory, or fabricated information, commonly referred to as hallucination \cite{brown2020,ji2023,huang2025}.
+
+Retrieval-Augmented Generation (RAG) mitigates this limitation by retrieving external evidence and conditioning generation on the retrieved information \cite{lewis2020,guu2020,karpukhin2020}. Dense semantic retrieval using Sentence-BERT embeddings and vector indexes such as FAISS enables relevant evidence to be located even when the query and document do not share exact vocabulary \cite{reimers2019,johnson2021}. However, retrieval is not itself a complete hallucination solution. Generated content may remain unsupported when retrieved evidence is incomplete, ambiguous, weakly relevant, or ignored during generation.
+
+Trustworthy RAG therefore requires three complementary capabilities. First, the system should retrieve relevant evidence efficiently. Second, it should provide transparent attribution showing which evidence supports each generated statement. Third, it should verify generated content against retrieved evidence before presenting the answer. Existing approaches such as SelfCheckGPT, FActScore, and RAGAS have advanced hallucination detection and RAG evaluation, while LIME and SHAP have established general approaches to explainability \cite{manakul2023,min2023,es2024,ribeiro2016,lundberg2017}. Nevertheless, these capabilities are often studied separately.
+
+TrustRAG was developed to integrate these capabilities in an offline and privacy-sensitive environment. The framework combines dense semantic retrieval, provenance-aware evidence attribution, multi-signal hallucination detection, and trust-aware response control. Its verification module combines NLI, BERTScore, and embedding-space cosine similarity into a unified Trust Score, followed by a tri-state decision controller that labels sentences as Supported, Weakly Supported, or Hallucinated. The base framework reported an F1-score of 0.898, AUC-ROC of 0.951, Recall@5 of 0.934, NDCG@5 of 0.902, BERTScore F1 of 0.917, and Provenance Score of 0.936 \cite{trustragbase}.
+
+Although TrustRAG improves reliability and explainability, its dense retrieval stage introduces a computational bottleneck as the document collection grows. Exact FlatIP search has linear complexity in the number of stored vectors. Furthermore, explainability requires additional sentence-to-evidence similarity calculations after retrieval. Thus, retrieval latency directly affects the time required to establish provenance and subsequently perform response verification.
+
+This work presents an optimization-oriented extension of TrustRAG. Instead of changing the hallucination-detection logic, the proposed extension optimizes the evidence retrieval layer while preserving the evidence attribution and verification pipeline. Four retrieval strategies are evaluated: exact FAISS FlatIP, IVF-PQ, HNSW, and a hybrid dense-sparse approach combining FAISS with BM25. The evaluation focuses on the latency--accuracy--memory trade-off and identifies practical configurations for real-time, high-accuracy, and memory-constrained offline deployments.
+
+The main contributions are:
+\begin{enumerate}
+    \item An extension of TrustRAG with a dedicated vector-index optimization module for explainability-driven offline RAG.
+    \item A systematic comparison of FlatIP, IVF-PQ, HNSW, and hybrid FAISS+BM25 retrieval using latency, Recall@K, and memory as primary metrics.
+    \item A Pareto analysis of retrieval latency versus evidence recall and memory requirements.
+    \item An analysis of how retrieval optimization affects the downstream TrustRAG pipeline, including evidence attribution and hallucination verification.
+    \item Deployment recommendations for resource-constrained offline RAG systems requiring both provenance and hallucination control.
+\end{enumerate}
+
+\section{Related Work}
+
+\subsection{Large Language Models and Retrieval-Augmented Generation}
+
+LLMs have evolved from pretrained language models into instruction-following systems capable of generating long-form and domain-specific responses \cite{brown2020,devlin2019,vaswani2017}. However, their parametric knowledge is fixed at training time and can be incomplete or outdated. RAG addresses this limitation by retrieving relevant external knowledge and using the retrieved information during generation \cite{lewis2020}.
+
+REALM introduced retrieval into language-model pre-training, while Dense Passage Retrieval demonstrated the effectiveness of dense representations for open-domain question answering \cite{guu2020,karpukhin2020}. Sentence-BERT further improved sentence-level semantic representations, and FAISS enabled efficient vector similarity search \cite{reimers2019,johnson2021}. These technologies form the retrieval foundation of TrustRAG.
+
+\subsection{Hallucination Detection and Factual Verification}
+
+Hallucination detection has been investigated using factual consistency, NLI, semantic similarity, uncertainty, and self-consistency. FactCC and SummaC demonstrated the value of NLI-based factual consistency analysis, while TRUE established a broader benchmark for factual consistency evaluation \cite{factcc2020,summac2022,true2022}. SelfCheckGPT performs black-box hallucination detection through consistency among multiple generated samples, while FActScore evaluates atomic factual claims \cite{manakul2023,min2023}.
+
+RAG-specific evaluation has also advanced through RAGAS, which evaluates retrieval and generation quality jointly \cite{es2024}. More recent approaches have explored evidence-grounded reasoning, entity verification, logical reasoning, and uncertainty estimation \cite{rlseek2026,evidenceentity2026,logic2026,march2026,uncertainty2026}. These developments motivate multi-signal verification rather than reliance on a single metric.
+
+\subsection{Explainability for Trustworthy RAG}
+
+Explainable Artificial Intelligence (XAI) seeks to make model behavior transparent and understandable. LIME and SHAP are widely used for interpreting predictions in machine-learning models \cite{ribeiro2016,lundberg2017}. In RAG, however, explanation must also connect retrieved evidence to generated statements. TrustRAG therefore uses intrinsic evidence attribution based on semantic alignment between generated sentences and retrieved document chunks.
+
+\subsection{Efficient Vector Retrieval}
+
+Exact vector search is attractive for auditable systems because it provides deterministic nearest-neighbor retrieval, but its computational cost grows linearly with corpus size. Approximate nearest-neighbor structures provide a way to reduce this cost. IVF partitions the embedding space into coarse clusters and searches only selected lists, while Product Quantization reduces vector storage through compressed representations. HNSW represents vectors using a hierarchical proximity graph and provides sub-linear approximate search. Sparse retrieval methods such as BM25 can complement dense retrieval by recovering exact terminology that may be missed by semantic embeddings.
+
+The present work evaluates these strategies specifically in the context of explainability-driven hallucination detection, where retrieval quality is not merely a search objective: retrieved evidence becomes the basis for provenance attribution and downstream verification.
+
+\section{TrustRAG Framework}
+
+\subsection{System Overview}
+
+The base TrustRAG pipeline contains five logical stages: dense semantic retrieval, explainable evidence attribution, multi-signal hallucination detection, Trust Score computation, and tri-state response control. The system is designed to operate locally without external cloud APIs.
+
+Given a user query $q$, the retrieval module maps it to a dense embedding and retrieves the top-$k$ evidence chunks from a local FAISS index. The retrieved evidence is supplied to a local LLM to produce a grounded response. The response is decomposed into sentences. For each generated sentence, the system identifies supporting evidence using cosine similarity.
+
+The evidence-grounded sentence is then verified using three complementary signals:
+\begin{itemize}
+    \item NLI for logical entailment,
+    \item BERTScore for contextual semantic similarity, and
+    \item embedding-space cosine similarity for semantic alignment.
+\end{itemize}
+
+The normalized verification signals are combined into a sentence-level Trust Score. Two thresholds classify the sentence as Supported, Weakly Supported, or Hallucinated. If the proportion of hallucinated sentences exceeds the response-level threshold, the response is suppressed and verified evidence is returned instead.
+
+\subsection{Dense Semantic Retrieval}
+
+Let the local document repository be
+\begin{equation}
+\mathcal{D}=\{d_1,d_2,\ldots,d_N\}.
+\end{equation}
+
+The query and each document chunk are embedded using a Sentence-BERT encoder:
+\begin{equation}
+\mathbf{e}_q=f_{\mathrm{SBERT}}(q), \qquad
+\mathbf{e}_i=f_{\mathrm{SBERT}}(d_i).
+\end{equation}
+
+Cosine similarity is calculated as
+\begin{equation}
+S(q,d_i)=
+\frac{\mathbf{e}_q\cdot\mathbf{e}_i}
+{\|\mathbf{e}_q\|\|\mathbf{e}_i\|}.
+\end{equation}
+
+The top-$k$ documents are selected according to their similarity scores:
+\begin{equation}
+\mathcal{R}(q)=\mathrm{TopK}\left(S(q,d_i)\right).
+\end{equation}
+
+\subsection{Explainable Evidence Attribution}
+
+Let the generated response be
+\begin{equation}
+G=\{g_1,g_2,\ldots,g_m\},
+\end{equation}
+where $g_j$ denotes the $j$th generated sentence.
+
+For each generated sentence, its embedding is compared with the embeddings of the retrieved documents:
+\begin{equation}
+A_{ij}=
+\frac{\mathbf{e}_{g_j}\cdot\mathbf{e}_{r_i}}
+{\|\mathbf{e}_{g_j}\|\|\mathbf{e}_{r_i}\|}.
+\end{equation}
+
+The retrieved documents are ranked using $A_{ij}$. The highest-scoring evidence is treated as the strongest supporting source for the sentence. This provenance mapping enables users to inspect the relationship between generated content and retrieved evidence.
+
+\subsection{Multi-Signal Hallucination Detection}
+
+For each sentence $g_j$, NLI evaluates the logical relationship between evidence and generated content. The normalized entailment probability is represented as $S_{\mathrm{NLI},j}$.
+
+BERTScore provides a contextual semantic similarity score:
+\begin{equation}
+S_{\mathrm{BERT},j}=\mathrm{BERTScore}(R,g_j).
+\end{equation}
+
+An aggregated embedding of the retrieved evidence is defined as
+\begin{equation}
+\mathbf{e}_R=\frac{1}{k}\sum_{i=1}^{k}\mathbf{e}_{r_i}.
+\end{equation}
+
+The embedding-level score is
+\begin{equation}
+S_{\mathrm{COS},j}=
+\frac{\mathbf{e}_{g_j}\cdot\mathbf{e}_R}
+{\|\mathbf{e}_{g_j}\|\|\mathbf{e}_R\|}.
+\end{equation}
+
+These signals capture complementary properties: NLI measures logical support, BERTScore measures contextual correspondence, and cosine similarity measures embedding-level alignment.
+
+\subsection{Trust Score Computation}
+
+The Trust Score for sentence $g_j$ is computed as
+\begin{equation}
+T_j=w_1S_{\mathrm{NLI},j}
++w_2S_{\mathrm{BERT},j}
++w_3S_{\mathrm{COS},j},
+\end{equation}
+where
+\begin{equation}
+w_1+w_2+w_3=1,\qquad w_i\geq0.
+\end{equation}
+
+Because the component scores are normalized to $[0,1]$, the Trust Score also lies in $[0,1]$.
+
+\subsection{Tri-State Decision Controller}
+
+The base experimental configuration uses an upper threshold $\tau_H=0.75$ and a lower threshold $\tau_L=0.50$. The decision function is
+\begin{equation}
+D(g_j)=
+\begin{cases}
+\mathrm{Supported}, & T_j\geq0.75,\\
+\mathrm{Weakly\ Supported}, & 0.50\leq T_j<0.75,\\
+\mathrm{Hallucinated}, & T_j<0.50.
+\end{cases}
+\end{equation}
+
+At response level, let $N_{\mathrm{hall}}$ be the number of hallucinated sentences and $N_{\mathrm{sent}}$ the total number of generated sentences. The hallucination ratio is
+\begin{equation}
+HR=\frac{N_{\mathrm{hall}}}{N_{\mathrm{sent}}}.
+\end{equation}
+
+If $HR>0.50$, the generated response is suppressed and verified evidence is returned. Otherwise, the response is retained together with provenance information.
+
+\section{Proposed Retrieval Optimization Extension}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{trustrag_opt_architecture.png}
+\caption{Overall architecture of the TrustRAG-Opt framework. The system integrates a configurable vector indexing optimization module (FlatIP, IVF-PQ, HNSW, Hybrid BM25+FAISS) with offline LLM generation, explainable sentence-to-chunk evidence attribution, multi-signal verification (NLI, BERTScore, Cosine similarity), and a tri-state decision controller.}
+\label{fig:architecture}
+\end{figure*}
+
+\subsection{Motivation}
+
+The base TrustRAG system uses dense vector retrieval as the first step of its evidence-grounding process. Exact similarity search is reliable and auditable, but its latency increases with corpus size. This matters in TrustRAG because retrieval is followed by evidence attribution and sentence-level verification. Therefore, an efficient index can reduce the time required to identify evidence without changing the downstream Trust Score mechanism.
+
+The proposed extension replaces a single retrieval implementation with a configurable retrieval optimization module. The module supports four strategies: FlatIP, IVF-PQ, HNSW, and hybrid dense-sparse retrieval.
+
+\subsection{FlatIP Baseline}
+
+FAISS FlatIP performs exhaustive inner-product search. For $\ell_2$-normalized vectors, inner product is equivalent to cosine similarity:
+\begin{equation}
+\mathrm{FlatIP}(\mathbf{e}_q)
+=\arg\max_{i=1,\ldots,N}
+\mathbf{e}_q\cdot\mathbf{e}_i.
+\end{equation}
+
+The query complexity is
+\begin{equation}
+O(Nd),
+\end{equation}
+where $N$ is the number of vectors and $d$ is the embedding dimension. FlatIP provides exact retrieval and is therefore used as the ground-truth reference for Recall@K.
+
+\subsection{IVF-PQ}
+
+The Inverted File index partitions the embedding space into $n_{\mathrm{list}}$ coarse regions. A vector is assigned to its nearest centroid:
+\begin{equation}
+\mathrm{assign}(\mathbf{e}_i)
+=\arg\min_{\ell}
+\|\mathbf{e}_i-\mathbf{c}_{\ell}\|_2.
+\end{equation}
+
+At query time, only the nearest $n_{\mathrm{probe}}$ lists are searched. This reduces the number of vectors considered during each query.
+
+Product Quantization further divides residual vectors into $m$ subvectors and encodes each subvector using a learned codebook:
+\begin{equation}
+\mathrm{PQ}(\mathbf{r}_i)
+=[\mathrm{code}_1,\ldots,\mathrm{code}_m].
+\end{equation}
+
+The evaluated configuration uses $n_{\mathrm{list}}=128$, $n_{\mathrm{probe}}=16$, $m=8$, and $b=8$ bits per subvector.
+
+\subsection{HNSW}
+
+Hierarchical Navigable Small World (HNSW) constructs a multi-layer proximity graph over the embedding vectors. Search starts at an upper sparse layer and progressively descends toward denser layers.
+
+The principal parameters are:
+\begin{itemize}
+    \item $M$: maximum number of graph connections per node,
+    \item $ef_{\mathrm{construction}}$: construction-time search width, and
+    \item $ef_{\mathrm{search}}$: query-time search width.
+\end{itemize}
+
+The experiments use $M=32$ and $ef_{\mathrm{construction}}=200$. The query-time parameter is swept over $\{16,32,64,128\}$ to characterize the latency--recall trade-off.
+
+\subsection{Hybrid Dense-Sparse Retrieval}
+
+Dense retrieval captures semantic similarity but may miss exact terminology, identifiers, or technical keywords. To address this limitation, the extension combines FAISS retrieval with BM25 sparse retrieval.
+
+BM25 is defined as
+\begin{equation}
+\mathrm{BM25}(q,d_i)=
+\sum_{t\in q}\mathrm{IDF}(t)
+\frac{f(t,d_i)(k_1+1)}
+{f(t,d_i)+k_1(1-b+b|d_i|/\mathrm{avgdl})}.
+\end{equation}
+
+The dense and sparse signals are fused as
+\begin{equation}
+S_{\mathrm{hybrid}}(q,d_i)=
+\alpha\,S_{\mathrm{dense}}(q,d_i)
++(1-\alpha)
+\frac{\mathrm{BM25}(q,d_i)}
+{\max_j\mathrm{BM25}(q,d_j)}.
+\end{equation}
+
+The evaluated configuration uses $\alpha=0.7$, giving greater weight to dense semantic similarity while retaining a sparse keyword signal.
+
+\subsection{Integration With Explainable Attribution}
+
+The optimization module does not change the evidence attribution or hallucination detection definitions. Instead, it changes how the candidate evidence set $\mathcal{R}(q)$ is obtained. After retrieval, the same sentence-level attribution function is applied:
+\begin{equation}
+d_j^*=
+\arg\max_{d_i\in\mathcal{R}(q)}
+\mathrm{sim}(\mathbf{e}_{g_j},\mathbf{e}_i).
+\end{equation}
+
+Therefore, the optimization objective is to reduce $\mathcal{L}_{\mathrm{ret}}$ while preserving the evidence required for downstream verification.
+
+\section{Experimental Setup}
+
+\subsection{Evaluation Tracks}
+
+The evaluation is organized into two complementary tracks. The first represents the previously evaluated TrustRAG framework and establishes its hallucination-detection, retrieval, provenance, and response-quality performance. The second isolates the new retrieval optimization extension and compares vector-index configurations under the same explainability-oriented retrieval objective.
+
+\subsection{Base TrustRAG Environment}
+
+The base framework was implemented in Python using locally executed retrieval, generation, attribution, and verification components. The knowledge base was constructed from domain-specific technical documents and segmented into overlapping chunks. The reported base benchmark contained approximately 9,800 indexed chunks and 400 manually curated queries, including 250 answerable and 150 hallucination-inducing queries. A locally hosted Llama 3 8B Instruct model was used for response generation through Ollama. Sentence embeddings were produced using all-MiniLM-L6-v2 and stored in FAISS.
+
+\subsection{Retrieval Optimization Corpus}
+
+For the retrieval-indexing extension, the supplied experimental configuration uses 120 technical documents covering Git, Docker, and Python reference material. The documents are segmented into 512-token windows with 50-token overlap, producing 9,800 chunks. Each chunk is embedded using all-MiniLM-L6-v2 with 384-dimensional normalized vectors.
+
+The evaluated indexes are:
+\begin{itemize}
+    \item FlatIP: FAISS IndexFlatIP exact search,
+    \item IVF-PQ: $n_{\mathrm{list}}=128$, $n_{\mathrm{probe}}=16$, $m=8$, $b=8$,
+    \item HNSW: $M=32$, $ef_{\mathrm{construction}}=200$, and $ef_{\mathrm{search}}\in\{16,32,64,128\}$,
+    \item Hybrid: FAISS dense retrieval plus BM25 with $\alpha=0.7$.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+
+Retrieval quality is measured using Recall@K:
+\begin{equation}
+\mathrm{Recall@}K=
+\frac{|\mathcal{R}_{\mathrm{approx}}(q)
+\cap
+\mathcal{R}_{\mathrm{exact}}(q)|}{K},
+\end{equation}
+where $\mathcal{R}_{\mathrm{exact}}(q)$ is the FlatIP top-$K$ result used as the reference set.
+
+Latency is reported using mean and 95th-percentile retrieval time. Memory is measured using the reported index footprint and resident memory. End-to-end latency includes retrieval, local LLM generation, and NLI verification.
+
+For the base TrustRAG framework, hallucination detection is evaluated using Precision, Recall, F1-score, and AUC-ROC. Retrieval is evaluated using Recall@5, MRR, and NDCG@5. Response--evidence alignment is evaluated using BERTScore F1 and Provenance Score.
+
+\subsection{Hardware and Software}
+
+The supplied optimization experiment uses an Intel Core i7-11700 processor with 16 GB DDR4 RAM and no dedicated GPU. Experiments are single-threaded to isolate retrieval overhead. The environment uses Ubuntu 22.04, FAISS 1.7.4 on CPU, and Python 3.9. LLM generation is performed using Mistral-7B through Ollama in the optimization benchmark, with NLI verification using a DeBERTa-v3-small cross-encoder.
+
+\section{Results and Analysis}
+
+\subsection{Base TrustRAG Performance}
+
+The previously evaluated TrustRAG framework achieved Precision of 0.912, Recall of 0.884, F1-score of 0.898, and AUC-ROC of 0.951 for hallucination detection. Retrieval performance reached Recall@5 of 0.934, MRR of 0.871, and NDCG@5 of 0.902. The response--evidence BERTScore F1 was 0.917 and the Provenance Score was 0.936.
+
+\begin{table}[t]
+\caption{Reported Performance of the Base TrustRAG Framework}
+\label{tab:base}
+\centering
+\small
+\begin{tabular}{@{}lc@{}}
+\toprule
+Metric & Value\\
+\midrule
+Precision & 0.912\\
+Recall & 0.884\\
+F1-score & 0.898\\
+AUC-ROC & 0.951\\
+Recall@5 & 0.934\\
+MRR & 0.871\\
+NDCG@5 & 0.902\\
+BERTScore F1 & 0.917\\
+Provenance Score & 0.936\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Retrieval Latency and Accuracy}
+
+Table~\ref{tab:retrieval} presents the retrieval optimization results supplied for the 9,800-chunk benchmark. FlatIP provides exact retrieval and is used as the reference. HNSW with $ef_{\mathrm{search}}=64$ provides the best balance between latency and recall among the tested HNSW configurations, reducing mean retrieval latency from 47.3 ms to 3.8 ms and achieving Recall@5 of 0.93. This corresponds to a 12.4$\times$ speedup.
+
+HNSW with $ef_{\mathrm{search}}=128$ increases recall to 0.95 at 6.4 ms. The lower $ef_{\mathrm{search}}$ configurations provide even lower latency but exhibit reduced recall. The hybrid configuration obtains the highest Recall@5 of 0.96 at 8.2 ms, demonstrating the benefit of recovering exact terminology through sparse retrieval.
+
+\begin{table}[t]
+\caption{Retrieval Performance Comparison ($N=9,800$, $K=5$, $d=384$)}
+\label{tab:retrieval}
+\centering
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Method & Latency & 95\%ile & Recall@5 & Memory & Speedup\\
+& (ms) & (ms) & & (MB) & \\
+\midrule
+FlatIP & 47.3 & 52.1 & 1.00 & 384 & 1.0$\times$\\
+IVF-PQ & 7.1 & 9.8 & 0.89 & 57 & 6.7$\times$\\
+HNSW ($ef=16$) & 2.1 & 3.2 & 0.87 & 412 & 22.5$\times$\\
+HNSW ($ef=32$) & 3.1 & 4.5 & 0.91 & 412 & 15.3$\times$\\
+HNSW ($ef=64$) & 3.8 & 5.9 & 0.93 & 412 & 12.4$\times$\\
+HNSW ($ef=128$) & 6.4 & 9.1 & 0.95 & 412 & 7.4$\times$\\
+Hybrid & 8.2 & 11.3 & 0.96 & 421 & 5.8$\times$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Latency--Recall Pareto Analysis}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{latency_vs_recall_pareto.png}
+\caption{Pareto trade-off between retrieval latency (ms) and Recall@5 across FlatIP, IVF-PQ, HNSW ($ef\in\{16,32,64,128\}$), and Hybrid dense-sparse retrieval. HNSW with $ef=64$ represents the optimal sub-5\,ms operating point.}
+\label{fig:pareto}
+\end{figure}
+
+The results reveal three practical operating points. As illustrated in Fig.~\ref{fig:pareto}, HNSW with $ef=64$ lies near the preferred latency--recall operating point for interactive explainability, with sub-5 ms retrieval and Recall@5 above 0.90. HNSW with $ef=128$ is preferable when recall is prioritized over latency. Hybrid retrieval provides the highest recall but introduces additional sparse-index processing.
+
+IVF-PQ occupies a different region of the trade-space. Its main advantage is memory reduction rather than maximum recall. The reported 57 MB footprint is substantially smaller than the footprints of FlatIP, HNSW, and hybrid retrieval.
+
+\subsection{End-to-End Latency}
+
+Table~\ref{tab:e2e} shows the reported end-to-end latency breakdown. FlatIP produces a total latency of approximately 9.81 s, while HNSW with $ef=64$ reduces the total to approximately 9.76 s. Hybrid retrieval produces approximately 9.77 s.
+
+\begin{table}[t]
+\caption{End-to-End Query Latency Breakdown}
+\label{tab:e2e}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Configuration & Retrieval & Generation & NLI & Total\\
+& (s) & (s) & (s) & (s)\\
+\midrule
+FlatIP & 0.047 & 5.20 & 4.56 & 9.81\\
+HNSW ($ef=64$) & 0.004 & 5.20 & 4.56 & 9.76\\
+Hybrid & 0.008 & 5.20 & 4.56 & 9.77\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The small change in total latency indicates that retrieval is not the dominant end-to-end bottleneck for the current configuration. NLI cross-encoding contributes a substantially larger portion of total processing time. Nevertheless, retrieval optimization remains important because evidence attribution is performed repeatedly and because retrieval latency grows with corpus size.
+
+\subsection{Recall Sensitivity}
+
+The supplied sensitivity analysis evaluates $K\in\{1,3,5,10,20\}$. HNSW with $ef=64$ maintains at least 0.92 recall across the evaluated $K$ values. IVF-PQ degrades as $K$ increases, illustrating the effect of quantization and coarse partitioning on evidence coverage. Hybrid retrieval consistently improves recall by approximately 2--3 points over dense retrieval in the reported experiments.
+
+\subsection{Memory-Constrained Deployment}
+
+For a memory budget below 100 MB, IVF-PQ is the only configuration in the supplied results that satisfies the memory constraint. The baseline IVF-PQ setting provides Recall@5 of 0.89 at 7.1 ms. Increasing $n_{\mathrm{probe}}$ to 24 is reported to recover Recall@5 to 0.91 at approximately 9.3 ms, while retaining a substantially smaller memory footprint than the other evaluated indexes.
+
+\subsection{Ablation of Hallucination Verification}
+
+The retrieval extension does not replace the multi-signal verification mechanism. The base TrustRAG ablation study shows that NLI alone provides the strongest individual signal, while combining NLI, BERTScore, and cosine similarity achieves the best overall performance.
+
+\begin{table}[t]
+\caption{Base TrustRAG Verification Ablation}
+\label{tab:ablation}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Configuration & Prec. & Recall & F1 & AUC\\
+\midrule
+NLI only & 0.871 & 0.842 & 0.856 & 0.918\\
+BERTScore only & 0.803 & 0.781 & 0.792 & 0.874\\
+Cosine only & 0.742 & 0.716 & 0.729 & 0.821\\
+NLI + BERTScore & 0.896 & 0.861 & 0.878 & 0.939\\
+Complete TrustRAG & 0.912 & 0.884 & 0.898 & 0.951\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The complete configuration improves F1 from 0.856 for NLI-only verification to 0.898 and improves AUC from 0.918 to 0.951. This supports the central design principle that logical entailment and semantic alignment provide complementary evidence.
+
+\subsection{Comparison With Conventional RAG}
+
+The base TrustRAG evaluation reported a substantial reduction in hallucinated sentences compared with conventional RAG. The hallucinated-sentence rate decreased from 18.6\% to 2.1\%, while Provenance Score increased from 0.741 to 0.936 and Answer BERTScore increased from 0.868 to 0.917.
+
+\begin{table}[t]
+\caption{Conventional RAG Versus TrustRAG}
+\label{tab:comparison}
+\centering
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Metric & Conventional RAG & TrustRAG\\
+\midrule
+Hallucinated Sentences (\%) & 18.6 & 2.1\\
+Provenance Score & 0.741 & 0.936\\
+Answer BERTScore & 0.868 & 0.917\\
+Latency (s) & 6.2 & 9.8\\
+Citation Coverage & 0 & 1\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The improvement comes at the cost of additional verification latency. The retrieval optimization extension therefore targets one component of this cost without weakening the provenance and verification mechanisms.
+
+\section{Discussion}
+
+\subsection{Why Retrieval Optimization Matters for Explainability}
+
+The purpose of retrieval in TrustRAG is not simply to return documents. Retrieved chunks form the evidence set against which generated sentences are attributed and verified. A retrieval failure can therefore propagate through the complete pipeline: missing evidence can lead to weaker attribution, lower Trust Scores, and increased hallucination risk.
+
+Reducing retrieval latency from 47.3 ms to 3.8 ms also makes repeated evidence retrieval more practical for interactive systems. However, the end-to-end results show that retrieval is only a small fraction of the current 9.8 s processing budget. Consequently, optimizing retrieval alone cannot make the complete system real-time. The larger NLI verification cost must also be addressed.
+
+\subsection{Deployment Guidelines}
+
+Based on the supplied results, the following configurations are recommended:
+\begin{itemize}
+    \item \textbf{Interactive explainability:} HNSW with $ef_{\mathrm{search}}=64$, providing approximately 3.8 ms latency and 0.93 Recall@5.
+    \item \textbf{Maximum retrieval accuracy:} hybrid FAISS+BM25, providing 0.96 Recall@5 at approximately 8.2 ms.
+    \item \textbf{Memory-constrained deployment:} IVF-PQ, particularly when the index must remain below approximately 100 MB.
+    \item \textbf{Maximum auditability:} FlatIP, because exact search provides deterministic retrieval and can serve as the reference implementation.
+\end{itemize}
+
+\subsection{Limitations}
+
+Several limitations should be considered. First, the retrieval optimization results are based on a technical-document corpus and may not transfer directly to other domains. IVF-PQ codebooks are corpus-dependent, while HNSW construction requires additional time and memory. Hybrid retrieval requires maintaining a separate sparse index and therefore increases engineering complexity.
+
+Second, the current end-to-end results show that NLI verification remains a dominant latency component. Retrieval optimization therefore improves a specific stage rather than solving the entire latency problem.
+
+Third, the extension currently uses fixed retrieval and decision parameters. The base TrustRAG work also identifies adaptive Trust Score weights and decision thresholds as an important direction for future research.
+
+\subsection{Research Extension and Novelty}
+
+The central novelty of the extension is the explicit treatment of vector-index selection as part of trustworthy RAG design. In a conventional RAG system, retrieval speed is often optimized primarily for response latency. In TrustRAG, retrieval quality has an additional role because the retrieved evidence becomes the basis for provenance attribution and hallucination verification. Therefore, the index should be evaluated jointly on speed, memory, and evidence recall.
+
+This extension establishes a retrieval optimization layer between the knowledge base and the existing TrustRAG attribution module. The design preserves the original Trust Score and tri-state controller while allowing the retrieval backend to be selected according to deployment requirements.
+
+\section{Conclusion and Future Work}
+
+This paper presented TrustRAG-Opt, an optimization-oriented extension of the TrustRAG framework for explainable and trustworthy offline Retrieval-Augmented Generation. The base framework integrates semantic retrieval, provenance-aware evidence attribution, multi-signal hallucination detection, Trust Score computation, and tri-state response control. Its reported evaluation achieves an F1-score of 0.898 and AUC-ROC of 0.951 for hallucination detection, Recall@5 of 0.934, BERTScore F1 of 0.917, and Provenance Score of 0.936.
+
+The proposed extension focuses on the retrieval layer and evaluates FAISS FlatIP, IVF-PQ, HNSW, and hybrid dense-sparse retrieval. HNSW with $ef=64$ reduces mean retrieval latency from 47.3 ms to 3.8 ms while retaining Recall@5 of 0.93. Hybrid retrieval achieves the highest reported Recall@5 of 0.96 at 8.2 ms, while IVF-PQ provides the strongest memory reduction with a reported 57 MB footprint. These results demonstrate that approximate and hybrid indexing can substantially improve retrieval efficiency without removing the evidence-grounded verification pipeline.
+
+The end-to-end measurements also show that retrieval is not the dominant latency component in the current implementation; NLI verification remains a major bottleneck. Future work will therefore investigate NLI model distillation, bi-encoder approximations, early-exit verification, adaptive Trust Score weights, adaptive thresholds, multi-hop evidence aggregation, multilingual retrieval, and domain-specific optimization. A larger-scale evaluation across multiple domains and hardware platforms will further establish the generality of the proposed retrieval optimization strategies.
+
+\section*{Acknowledgment}
+
+The authors would like to express their sincere gratitude to the Department of Computer Science and Engineering, Amrita School of Computing, Amrita Vishwa Vidyapeetham, Coimbatore, India, for providing the academic environment, facilities, and support necessary to carry out this research.
+
+\bibliographystyle{IEEEtran}
+\begin{thebibliography}{30}
+
+\bibitem{brown2020}
+T. B. Brown et al., ``Language Models are Few-Shot Learners,'' in \emph{Advances in Neural Information Processing Systems}, vol. 33, pp. 1877--1901, 2020.
+
+\bibitem{ji2023}
+Z. Ji, N. Lee, R. Frieske, T. Yu, D. Su, Y. Xu, E. Ishii, Y. Bang, A. Madotto, and P. Fung, ``Survey of Hallucination in Natural Language Generation,'' \emph{ACM Computing Surveys}, vol. 55, no. 12, pp. 1--38, 2023.
+
+\bibitem{huang2025}
+L. Huang et al., ``A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions,'' \emph{ACM Transactions on Information Systems}, vol. 43, no. 2, pp. 1--55, 2025.
+
+\bibitem{lewis2020}
+P. Lewis et al., ``Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,'' in \emph{Advances in Neural Information Processing Systems}, vol. 33, pp. 9459--9474, 2020.
+
+\bibitem{guu2020}
+K. Guu, K. Lee, Z. Zhong, P. Pasupat, and M. Chang, ``REALM: Retrieval-Augmented Language Model Pre-training,'' in \emph{Proc. ICML}, pp. 3929--3938, 2020.
+
+\bibitem{karpukhin2020}
+V. Karpukhin et al., ``Dense Passage Retrieval for Open-Domain Question Answering,'' in \emph{Proc. EMNLP}, pp. 6769--6781, 2020.
+
+\bibitem{shuster2021}
+K. Shuster, S. Poff, M. Chen, D. Kiela, and J. Weston, ``Retrieval Augmentation Reduces Hallucination in Conversation,'' in \emph{Findings of EMNLP}, pp. 3784--3803, 2021.
+
+\bibitem{manakul2023}
+P. Manakul, A. Liusie, and M. J. F. Gales, ``SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models,'' in \emph{Proc. EMNLP}, pp. 9004--9017, 2023.
+
+\bibitem{min2023}
+S. Min et al., ``FActScore: Fine-Grained Atomic Evaluation of Factual Precision in Long-Form Text Generation,'' in \emph{Proc. EMNLP}, pp. 12076--12100, 2023.
+
+\bibitem{es2024}
+S. Es, J. James, L. Espinosa-Anke, and S. Schockaert, ``RAGAS: Automated Evaluation of Retrieval Augmented Generation,'' in \emph{Proc. EACL: System Demonstrations}, pp. 150--158, 2024.
+
+\bibitem{ribeiro2016}
+M. T. Ribeiro, S. Singh, and C. Guestrin, ``Why Should I Trust You?: Explaining the Predictions of Any Classifier,'' in \emph{Proc. KDD}, pp. 1135--1144, 2016.
+
+\bibitem{lundberg2017}
+S. M. Lundberg and S.-I. Lee, ``A Unified Approach to Interpreting Model Predictions,'' in \emph{Advances in Neural Information Processing Systems}, vol. 30, 2017.
+
+\bibitem{factcc2020}
+W. Kryscinski, B. McCann, C. Xiong, and R. Socher, ``Evaluating the Factual Consistency of Abstractive Text Summarization,'' in \emph{Proc. EMNLP}, pp. 9332--9346, 2020.
+
+\bibitem{summac2022}
+P. Laban, T. Schnabel, P. N. Bennett, and M. A. Hearst, ``SummaC: Revisiting NLI-Based Models for Inconsistency Detection in Summarization,'' \emph{Transactions of the Association for Computational Linguistics}, vol. 10, pp. 163--177, 2022.
+
+\bibitem{true2022}
+O. Honovich et al., ``TRUE: Re-evaluating Factual Consistency Evaluation,'' in \emph{Proc. NAACL-HLT}, pp. 3905--3920, 2022.
+
+\bibitem{deberta2023}
+P. He, J. Gao, and W. Chen, ``DeBERTa-v3: Improving DeBERTa Using ELECTRA-Style Pre-training with Gradient-Disentangled Embedding Sharing,'' in \emph{Proc. ICLR}, 2023.
+
+\bibitem{zhang2020}
+T. Zhang, V. Kishore, F. Wu, K. Q. Weinberger, and Y. Artzi, ``BERTScore: Evaluating Text Generation with BERT,'' in \emph{Proc. ICLR}, 2020.
+
+\bibitem{devlin2019}
+J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, ``BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding,'' in \emph{Proc. NAACL-HLT}, pp. 4171--4186, 2019.
+
+\bibitem{vaswani2017}
+A. Vaswani et al., ``Attention Is All You Need,'' in \emph{Advances in Neural Information Processing Systems}, vol. 30, 2017.
+
+\bibitem{reimers2019}
+N. Reimers and I. Gurevych, ``Sentence-BERT: Sentence Embeddings Using Siamese BERT-Networks,'' in \emph{Proc. EMNLP-IJCNLP}, pp. 3982--3992, 2019.
+
+\bibitem{johnson2021}
+J. Johnson, M. Douze, and H. Jégou, ``Billion-Scale Similarity Search with GPUs,'' \emph{IEEE Transactions on Big Data}, vol. 7, no. 3, pp. 535--547, 2021.
+
+\bibitem{grattafiori2024}
+A. Grattafiori et al., ``The Llama 3 Herd of Models,'' arXiv:2407.21783, 2024.
+
+\bibitem{rlseek2026}
+Z. Huang et al., ``RLSeek: Evidence-Grounded Reasoning for RAG Hallucination Detection,'' in \emph{Proc. ACL}, pp. 32329--32347, 2026.
+
+\bibitem{evidenceentity2026}
+R. Jia et al., ``Evidence-Aligned Entity Verification for Hallucination Detection in Retrieval-Augmented Generation,'' in \emph{Findings of ACL}, pp. 29538--29554, 2026.
+
+\bibitem{benchmark2026}
+W. Chen et al., ``Rethinking Evaluation for LLM Hallucination Detection: A Desiderata, A New RAG-Based Benchmark, and New Insights,'' in \emph{Proc. ACL}, pp. 14912--14931, 2026.
+
+\bibitem{logic2026}
+N. Yang and K. Huang, ``Logic Matters in Lightweight Hallucination Classification for RAG Systems,'' in \emph{Proc. ACL}, pp. 1605--1617, 2026.
+
+\bibitem{march2026}
+Z. Li et al., ``MARCH: Multi-Agent Reinforced Check for Hallucination,'' in \emph{Proc. ACL}, pp. 39389--39415, 2026.
+
+\bibitem{uncertainty2026}
+E. Fadeeva et al., ``Faithfulness-Aware Uncertainty Quantification for Fact-Checking the Output of Retrieval-Augmented Generation,'' in \emph{Findings of ACL}, 2026.
+
+\bibitem{healthrag2025}
+L. M. Amugongo, P. Mascheroni, S. Brooks, S. Doering, and J. Seidel, ``Retrieval Augmented Generation for Large Language Models in Healthcare: A Systematic Review,'' \emph{PLOS Digital Health}, vol. 4, no. 6, Art. no. e0000877, Jun. 2025.
+
+\bibitem{trustragbase}
+A. Biju and R. G. R., ``TrustRAG: A Trustworthy Offline Retrieval-Augmented Generation Framework with Explainable Multi-Signal Hallucination Detection,'' unpublished manuscript / base research work supplied with this submission.
+
+\end{thebibliography}
+
+\end{document}
