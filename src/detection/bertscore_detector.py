@@ -177,9 +177,12 @@ class BERTScoreDetector:
         self,
         sentences: List[str],
         chunks: List[Dict[str, Any]],
+        evidence=None,
+        top_n: int = 4,
     ) -> List[Dict[str, Any]]:
         """
-        Score all generated sentences against the retrieved chunks.
+        Score all generated sentences against the retrieved chunks (or, when
+        `evidence` is given, against each sentence's top_n evidence windows).
 
         Args:
             sentences: List of generated sentences.
@@ -194,7 +197,8 @@ class BERTScoreDetector:
         for i, sentence in enumerate(sentences):
             if not sentence.strip():
                 continue
-            result = self.score_sentence(sentence, references)
+            refs = evidence.top(sentence, top_n) if (evidence is not None and evidence.windows) else references
+            result = self.score_sentence(sentence, refs)
             result["sentence"] = sentence
             result["sentence_idx"] = i
             results.append(result)

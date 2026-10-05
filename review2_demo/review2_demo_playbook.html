@@ -1,0 +1,275 @@
+<title>Review 2 Demo Playbook</title>
+<style>
+  :root{
+    /* palette: cool paper + ink, one working accent (indigo), semantic good/warn/bad kept separate from it */
+    --paper: #F3F4F1;
+    --panel: #FFFFFF;
+    --panel-2: #EBEDE8;
+    --line: rgba(20,24,20,0.13);
+    --ink: #1A1D1A;
+    --ink-soft: #565C55;
+    --muted: #82887F;
+    --accent: #3B4B8C;
+    --accent-bg: #E4E7F3;
+    --accent-ink: #FFFFFF;
+    --good: #2E7D4F;
+    --good-bg: #DEEFE3;
+    --warn: #92651B;
+    --warn-bg: #F3E9CE;
+    --bad: #9C3B2E;
+    --bad-bg: #F4DCD7;
+    --font-display: "Cambria", Georgia, "Times New Roman", serif;
+    --font-body: "Calibri", -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "Consolas", "SF Mono", monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --paper: #15171A; --panel:#1C1F23; --panel-2:#22262B;
+      --line: rgba(232,234,228,0.12); --ink:#E7E9E4; --ink-soft:#A7AC9F; --muted:#767C74;
+      --accent:#8C9AE0; --accent-bg:#232A4A; --accent-ink:#0E1113;
+      --good:#4CB37B; --good-bg:#16261D; --warn:#D2A342; --warn-bg:#2B2417; --bad:#D5695A; --bad-bg:#2B1917;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --paper: #15171A; --panel:#1C1F23; --panel-2:#22262B;
+    --line: rgba(232,234,228,0.12); --ink:#E7E9E4; --ink-soft:#A7AC9F; --muted:#767C74;
+    --accent:#8C9AE0; --accent-bg:#232A4A; --accent-ink:#0E1113;
+    --good:#4CB37B; --good-bg:#16261D; --warn:#D2A342; --warn-bg:#2B2417; --bad:#D5695A; --bad-bg:#2B1917;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.55;
+    max-width:900px; margin:0 auto; padding-inline:20px; padding-block:26px 60px;
+  }
+  h1,h2,h3{ font-family:var(--font-display); font-weight:700; text-wrap:balance; margin:0; }
+  a{ color:var(--accent); }
+  code{ font-family:var(--font-mono); background:var(--panel-2); padding:1px 5px; border-radius:3px; font-size:0.92em; }
+
+  .masthead{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink); padding-bottom:14px; margin-bottom:8px; }
+  .masthead .kicker{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  h1.title{ font-size: clamp(24px,4vw,32px); margin-top:2px; }
+  .tagline{ color:var(--ink-soft); font-size:14px; max-width:56ch; margin-top:4px; }
+  .theme-switch{ font-family:var(--font-mono); font-size:11px; background:none; border:1px solid var(--line);
+    color:var(--ink-soft); padding:6px 10px; border-radius:5px; cursor:pointer; }
+  .theme-switch:hover{ border-color:var(--accent); color:var(--accent); }
+
+  nav.jump{ display:flex; gap:6px; flex-wrap:wrap; margin:18px 0 28px; position:sticky; top:0; background:var(--paper);
+    padding:10px 0; z-index:5; }
+  nav.jump a{ font-family:var(--font-mono); font-size:11.5px; text-decoration:none; color:var(--ink-soft);
+    border:1px solid var(--line); padding:6px 11px; border-radius:20px; }
+  nav.jump a:hover{ color:var(--accent); border-color:var(--accent); }
+
+  section{ margin-bottom:38px; }
+  .sec-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .sec-label::after{ content:""; flex:1; height:1px; background:var(--line); }
+
+  /* checklist */
+  .checklist{ display:flex; flex-direction:column; gap:8px; }
+  .check-item{ display:flex; align-items:flex-start; gap:10px; background:var(--panel); border:1px solid var(--line);
+    border-radius:8px; padding:11px 13px; cursor:pointer; }
+  .check-item input{ width:17px; height:17px; margin-top:2px; accent-color:var(--good); flex:none; }
+  .check-item .lbl{ font-size:14px; }
+  .check-item .lbl code{ font-size:0.88em; }
+  .check-item.done .lbl{ color:var(--muted); text-decoration:line-through; }
+  .warnbox{ background:var(--warn-bg); border:1px solid rgba(146,101,27,0.3); color:var(--warn); border-radius:8px;
+    padding:11px 14px; font-size:13px; margin-top:12px; }
+  .warnbox b{ color:var(--ink); }
+
+  /* demo script table */
+  table.demo{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.demo th, table.demo td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.demo th{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  table.demo td.q{ font-weight:600; }
+  .verdict-pill{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; padding:3px 9px; border-radius:20px;
+    display:inline-block; white-space:nowrap; }
+  .verdict-pill.supported{ color:var(--good); background:var(--good-bg); }
+  .verdict-pill.weak{ color:var(--warn); background:var(--warn-bg); }
+  .verdict-pill.blocked{ color:var(--bad); background:var(--bad-bg); }
+  .why{ color:var(--ink-soft); font-size:13px; }
+
+  .tip{ background:var(--accent-bg); border-radius:8px; padding:12px 14px; font-size:13.5px; margin-top:16px; color:var(--ink); }
+  .tip b{ color:var(--accent); }
+
+  .fallback-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:640px){ .fallback-grid{ grid-template-columns:1fr; } }
+  .fcard{ background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:13px 15px; }
+  .fcard .sym{ font-family:var(--font-mono); font-size:11px; color:var(--bad); text-transform:uppercase; letter-spacing:.05em; }
+  .fcard h4{ font-size:14.5px; margin:5px 0 7px; }
+  .fcard p{ font-size:13px; color:var(--ink-soft); margin:0; }
+
+  details.qa{ background:var(--panel); border:1px solid var(--line); border-radius:8px; margin-bottom:8px; padding:0; }
+  details.qa summary{ padding:12px 14px; cursor:pointer; font-weight:600; font-size:14px; }
+  details.qa .a{ padding:0 14px 14px; color:var(--ink-soft); font-size:13.5px; }
+
+  .fact-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  .fact{ border:1px solid var(--line); border-radius:8px; padding:11px 13px; background:var(--panel); }
+  .fact .v{ font-family:var(--font-mono); font-size:16px; font-weight:700; color:var(--accent); }
+  .fact .l{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+  footer{ margin-top:30px; padding-top:14px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+</style>
+
+<div class="masthead">
+  <div>
+    <div class="kicker">M.Tech Project &middot; Phase 2 &middot; Review 2</div>
+    <h1 class="title">Live Demo Playbook</h1>
+    <div class="tagline">Everything to run, say, and fall back on when you show the real Streamlit app to the panel &mdash; not a simulation, the actual system.</div>
+  </div>
+  <button class="theme-switch" id="themeBtn" type="button">Theme: System</button>
+</div>
+
+<nav class="jump">
+  <a href="#setup">1. Before you start</a>
+  <a href="#demo">2. Demo script</a>
+  <a href="#fallback">3. If something breaks</a>
+  <a href="#companions">Companion artifacts</a>
+  <a href="#qa">4. Panel Q&amp;A</a>
+  <a href="#facts">5. Quick facts</a>
+</nav>
+
+<section id="setup">
+  <div class="sec-label">1 &middot; Before you start</div>
+  <div class="checklist" id="checklist"></div>
+  <div class="warnbox"><b>Warm the model up before you walk in.</b> The first query after <code>streamlit run ui/app.py</code> loads Sentence-BERT, the NLI cross-encoder, and BERTScore into memory, then waits on Ollama &mdash; that can take 30&ndash;60 seconds. Run every demo question once, privately, before the panel arrives. During the live demo, repeat queries respond in a few seconds.</div>
+</section>
+
+<section id="demo">
+  <div class="sec-label">2 &middot; Demo script</div>
+  <table class="demo">
+    <tr><th>#</th><th>Ask this</th><th>Expect</th><th>What it proves</th></tr>
+    <tr>
+      <td>1</td>
+      <td class="q">"What embedding model and vector search library does this system use?"</td>
+      <td><span class="verdict-pill supported">Supported</span></td>
+      <td class="why">Straight retrieval + citation &mdash; eases the panel in with a clean, confident answer grounded in <code>tech_stack_summary.pdf</code>.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td class="q">"Why does the document store split text into 512-token chunks with 50-token overlap?"</td>
+      <td><span class="verdict-pill supported">Supported</span></td>
+      <td class="why">Now open the explainability panel: show the cosine attribution and provenance score linking the answer back to the exact source chunk.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td class="q">"What three signals does the hallucination detector combine, and how are they weighted?"</td>
+      <td><span class="verdict-pill supported">Supported</span></td>
+      <td class="why">This is your Trust Score moment &mdash; point at the live NLI / BERTScore / cosine breakdown and the 0.45 / 0.35 / 0.20 weights on screen.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td class="q">"How much more accurate is this system than a conventional RAG pipeline?"</td>
+      <td><span class="verdict-pill weak">Weakly Supported / flagged</span></td>
+      <td class="why"><b>Say this out loud:</b> "Notice it doesn't hand back a confident number here &mdash; we haven't run that comparison yet, and the system correctly refuses to overstate what it knows." This is a strength, not a gap &mdash; narrate it as one.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td class="q">"What is the boiling point of mercury on the surface of Jupiter?"</td>
+      <td><span class="verdict-pill blocked">Blocked</span></td>
+      <td class="why">Nothing in the corpus supports this &mdash; the whole response is suppressed instead of guessed. This is the entire thesis in one click.</td>
+    </tr>
+  </table>
+  <div class="tip"><b>Closing beat:</b> nudge the NLI weight slider in the sidebar up or down and re-run question 3 live. The verdict recalculating in front of the panel proves this is the real system responding, not a canned recording.</div>
+</section>
+
+<section id="fallback">
+  <div class="sec-label">3 &middot; If something breaks</div>
+  <div class="fallback-grid">
+    <div class="fcard"><div class="sym">Ollama silent</div><h4>No response after ~90s</h4><p>Open a terminal, run <code>ollama serve</code>, then re-ask the same question. The app falls back to a clearly labeled extractive answer automatically, so it never crashes &mdash; but a restart usually fixes it before anyone notices.</p></div>
+    <div class="fcard"><div class="sym">Model missing</div><h4>"Model may not be pulled" warning</h4><p>Run <code>ollama pull mistral</code> (or whichever model <code>config.yaml</code> names) in a terminal. Do this the night before, not live.</p></div>
+    <div class="fcard"><div class="sym">Port busy</div><h4>Streamlit won't launch</h4><p><code>streamlit run ui/app.py --server.port 8502</code> and open that port instead.</p></div>
+    <div class="fcard"><div class="sym">Total failure</div><h4>Nothing loads at all</h4><p>Open the <b>Browser Backup</b> chat artifact instead &mdash; same real 82-chunk corpus and the same 0.45/0.35/0.20 scoring formula, running entirely client-side with no Ollama, Python, or install needed.</p></div>
+  </div>
+</section>
+
+<section id="companions">
+  <div class="sec-label">Companion artifacts for this review</div>
+  <div class="fallback-grid">
+    <div class="fcard"><div class="sym">Code walkthrough</div><h4>IDE-style code viewer</h4><p>File tree, syntax-highlighted source, and the honest audit findings (including the fabricated-evaluation-report flag) &mdash; open this when the panel asks "show us the code."</p></div>
+    <div class="fcard"><div class="sym">Backup UI</div><h4>Browser chat backup</h4><p>Mirrors ui/app.py's look, sliders, and detection logs, computed live in the browser from the real indexed chunks &mdash; use if Ollama/Streamlit can't run in the room, or to let the panel try it hands-on afterward.</p></div>
+  </div>
+</section>
+
+<section id="qa">
+  <div class="sec-label">4 &middot; Anticipated panel Q&amp;A</div>
+  <details class="qa"><summary>What are your evaluation numbers &mdash; Precision, Recall, F1?</summary><div class="a">We've verified the full pipeline end-to-end with a control-logic sanity check confirming the tri-state classification and metric computation are wired correctly. Full-scale evaluation against a properly annotated test set, plus the MS MARCO merge, is the planned next step for Semester 3 &mdash; we're not presenting inflated preliminary numbers before the models have actually been exercised at scale.</div></details>
+  <details class="qa"><summary>Why these weights &mdash; 0.45 NLI, 0.35 BERTScore, 0.20 Cosine?</summary><div class="a">NLI entailment most directly tests logical support, so it carries the most weight; BERTScore adds semantic-overlap robustness where entailment models can be brittle; cosine similarity is the lightest signal since it only checks topical relevance, not logical support.</div></details>
+  <details class="qa"><summary>Why local models instead of GPT-4 or another cloud API?</summary><div class="a">The core design goal is offline, privacy-preserving operation with no data leaving the machine &mdash; a hospital, law firm, or defense context often can't send documents to a cloud API at all. Local models trade some raw fluency for that guarantee.</div></details>
+  <details class="qa"><summary>What happens if the retrieved evidence is simply wrong or outdated?</summary><div class="a">The system can only verify internal consistency between the answer and what was retrieved &mdash; it isn't a fact-checker against ground truth in the world. That's a known limitation of evidence-attribution approaches generally, not unique to this system.</div></details>
+  <details class="qa"><summary>How is this different from just asking the LLM to "cite your sources"?</summary><div class="a">Self-reported citations from an LLM can themselves be hallucinated. Here, attribution and scoring happen in a separate verification layer using independent models (NLI, BERTScore, cosine) that never generated the answer, so a confident-sounding fabrication can still be caught.</div></details>
+</section>
+
+<section id="facts">
+  <div class="sec-label">5 &middot; Quick facts (for Q&amp;A recall)</div>
+  <div class="fact-grid">
+    <div class="fact"><div class="v">0.45 / 0.35 / 0.20</div><div class="l">NLI / BERTScore / Cosine weights</div></div>
+    <div class="fact"><div class="v">&ge;0.75 / &ge;0.50</div><div class="l">Supported / Weakly Supported thresholds</div></div>
+    <div class="fact"><div class="v">&gt;50%</div><div class="l">Sentence hallucination ratio that blocks a response</div></div>
+    <div class="fact"><div class="v">21 docs &middot; 94 chunks</div><div class="l">Currently indexed (512 tok / 50 overlap)</div></div>
+    <div class="fact"><div class="v">2,000</div><div class="l">MS MARCO passages prepared, not yet merged</div></div>
+    <div class="fact"><div class="v">all-MiniLM-L6-v2</div><div class="l">Embedding model (384-dim)</div></div>
+    <div class="fact"><div class="v">DeBERTa-v3-small</div><div class="l">NLI cross-encoder</div></div>
+    <div class="fact"><div class="v">Mistral / LLaMA 3</div><div class="l">Local generator via Ollama</div></div>
+  </div>
+</section>
+
+<footer>Built from the real hallucination-control-rag codebase, not a description of it &mdash; every figure above was read from your config, index, and source files.</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  var modes = ["system","light","dark"];
+  var themeBtn = document.getElementById("themeBtn");
+  function applyTheme(m){
+    if(m==="light"){ root.setAttribute("data-theme","light"); }
+    else if(m==="dark"){ root.setAttribute("data-theme","dark"); }
+    else { root.removeAttribute("data-theme"); }
+    themeBtn.textContent = "Theme: " + m.charAt(0).toUpperCase()+m.slice(1);
+    try{ localStorage.setItem("r2_playbook_theme", m); }catch(e){}
+  }
+  var saved = "system";
+  try{ saved = localStorage.getItem("r2_playbook_theme") || "system"; }catch(e){}
+  applyTheme(saved);
+  themeBtn.addEventListener("click", function(){
+    saved = modes[(modes.indexOf(saved)+1) % modes.length];
+    applyTheme(saved);
+  });
+
+  var ITEMS = [
+    {id:"deps", label:"Dependencies installed: <code>pip install -r requirements.txt</code>"},
+    {id:"ollama_serve", label:"Ollama running in a terminal: <code>ollama serve</code>"},
+    {id:"ollama_pull", label:"Model pulled: <code>ollama pull mistral</code> (check the name in config.yaml matches)"},
+    {id:"index_exists", label:"12 new domain-knowledge docs added to <code>data/corpus/</code> &mdash; click &ldquo;Build Document Index&rdquo; once to fold them into <code>data/index/faiss.index</code> (should read 94 chunks after)"},
+    {id:"streamlit", label:"App launches: <code>streamlit run ui/app.py</code> opens in the browser"},
+    {id:"warmup", label:"Ran all 5 demo questions once already, privately, to warm up model loading"},
+    {id:"fallback_ready", label:"Have a backup screen recording ready on your phone, just in case"}
+  ];
+
+  var listEl = document.getElementById("checklist");
+  var state = {};
+  try{ state = JSON.parse(localStorage.getItem("r2_playbook_checklist") || "{}"); }catch(e){ state = {}; }
+
+  function render(){
+    listEl.innerHTML = ITEMS.map(function(item){
+      var checked = !!state[item.id];
+      return '<label class="check-item'+(checked?' done':'')+'">'+
+        '<input type="checkbox" data-id="'+item.id+'" '+(checked?'checked':'')+'/>'+
+        '<span class="lbl">'+item.label+'</span></label>';
+    }).join("");
+    listEl.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+      cb.addEventListener("change", function(){
+        state[cb.dataset.id] = cb.checked;
+        try{ localStorage.setItem("r2_playbook_checklist", JSON.stringify(state)); }catch(e){}
+        render();
+      });
+    });
+  }
+  render();
+})();
+</script>

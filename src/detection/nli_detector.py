@@ -108,9 +108,15 @@ class NLIDetector:
         sentences: List[str],
         chunks: List[Dict[str, Any]],
         attributions: Optional[List[Dict[str, Any]]] = None,
+        evidence=None,
+        top_n: int = 4,
     ) -> List[Dict[str, Any]]:
         """
         Score multiple sentences against their best-matching chunks.
+
+        If `evidence` (an EvidenceWindows) is given, each sentence is instead verified
+        against its `top_n` most similar short evidence windows and the window with the
+        highest entailment probability is used (sentence-level NLI, SummaC-style).
 
         For each sentence, we score it against the chunk it was attributed
         to (from the XAI layer), or against ALL retrieved chunks and take
@@ -129,6 +135,17 @@ class NLIDetector:
 
         for i, sentence in enumerate(sentences):
             if not sentence.strip():
+                continue
+
+            if evidence is not None and evidence.windows:
+                best = None
+                for premise in evidence.top(sentence, top_n):
+                    r = self.score_pair(premise, sentence)
+                    if best is None or r["entail_prob"] > best["entail_prob"]:
+                        best = r
+                best["sentence"] = sentence
+                best["sentence_idx"] = i
+                results.append(best)
                 continue
 
             # Determine which chunk to use as premise

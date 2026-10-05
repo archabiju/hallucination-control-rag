@@ -1,0 +1,737 @@
+[
+  {
+    "question": "What is Retrieval-Augmented Generation?",
+    "relevant_sources": [
+      "retrieval_augmented_generation.md"
+    ],
+    "claims": [
+      {
+        "text": "RAG combines a retriever that searches an external knowledge source with a generator that produces text.",
+        "hallucinated": false
+      },
+      {
+        "text": "A RAG system looks up relevant passages at query time and gives them to the language model as context.",
+        "hallucinated": false
+      },
+      {
+        "text": "RAG completely eliminates hallucination in language models.",
+        "hallucinated": true
+      },
+      {
+        "text": "RAG requires retraining the language model every time the knowledge base is updated.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Why is RAG not a guarantee against hallucination?",
+    "relevant_sources": [
+      "retrieval_augmented_generation.md"
+    ],
+    "claims": [
+      {
+        "text": "A language model can ignore or misread the retrieved context and still produce unsupported claims.",
+        "hallucinated": false
+      },
+      {
+        "text": "Hallucination-detection layers check after generation whether each sentence is backed by the retrieved evidence.",
+        "hallucinated": false
+      },
+      {
+        "text": "A model that receives retrieved context can never generate a claim unsupported by any chunk.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Can RAG run offline?",
+    "relevant_sources": [
+      "retrieval_augmented_generation.md",
+      "local_llm_inference_ollama.md"
+    ],
+    "claims": [
+      {
+        "text": "RAG can run entirely offline when the embedding model, vector index and generator are all hosted locally.",
+        "hallucinated": false
+      },
+      {
+        "text": "Offline RAG typically uses smaller quantized open-weight models served through a runtime such as Ollama.",
+        "hallucinated": false
+      },
+      {
+        "text": "Offline RAG requires a cloud API for the generator model.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What does the typical RAG pipeline consist of?",
+    "relevant_sources": [
+      "retrieval_augmented_generation.md"
+    ],
+    "claims": [
+      {
+        "text": "Documents are chunked, embedded and stored in a vector index, then the query is embedded and similar chunks are retrieved.",
+        "hallucinated": false
+      },
+      {
+        "text": "The retrieved chunks are inserted into a prompt together with the question for the language model.",
+        "hallucinated": false
+      },
+      {
+        "text": "The typical RAG pipeline has seven stages, starting with manual annotation of every document.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is a sentence embedding?",
+    "relevant_sources": [
+      "sentence_embeddings.md"
+    ],
+    "claims": [
+      {
+        "text": "A sentence embedding is a fixed-length numeric vector that represents the meaning of a piece of text.",
+        "hallucinated": false
+      },
+      {
+        "text": "Texts with similar meaning end up close together in the embedding vector space.",
+        "hallucinated": false
+      },
+      {
+        "text": "Sentence embeddings only capture which words appear in a text, like bag-of-words.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is all-MiniLM-L6-v2?",
+    "relevant_sources": [
+      "sentence_embeddings.md"
+    ],
+    "claims": [
+      {
+        "text": "all-MiniLM-L6-v2 produces 384-dimensional vectors.",
+        "hallucinated": false
+      },
+      {
+        "text": "all-MiniLM-L6-v2 is about 80 megabytes and runs comfortably on a CPU.",
+        "hallucinated": false
+      },
+      {
+        "text": "all-MiniLM-L6-v2 produces 768-dimensional vectors and needs a GPU.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Why are embeddings normalized before indexing?",
+    "relevant_sources": [
+      "sentence_embeddings.md",
+      "faiss_vector_databases.md"
+    ],
+    "claims": [
+      {
+        "text": "When vectors are normalized to unit length, a dot product is equivalent to cosine similarity.",
+        "hallucinated": false
+      },
+      {
+        "text": "Normalizing lets a fast dot-product search stand in for cosine similarity at no extra query-time cost.",
+        "hallucinated": false
+      },
+      {
+        "text": "Normalized embeddings make the dot product equal to the Euclidean distance.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "How is semantic search better than keyword search?",
+    "relevant_sources": [
+      "sentence_embeddings.md"
+    ],
+    "claims": [
+      {
+        "text": "Semantic search can retrieve a relevant passage even when the query and passage share almost no exact words.",
+        "hallucinated": false
+      },
+      {
+        "text": "Keyword search is more accurate than semantic search when the query uses different vocabulary from the passage.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is FAISS?",
+    "relevant_sources": [
+      "faiss_vector_databases.md"
+    ],
+    "claims": [
+      {
+        "text": "FAISS is an open-source similarity-search library developed by Meta AI.",
+        "hallucinated": false
+      },
+      {
+        "text": "FAISS runs entirely in memory on one machine with no external server or network call.",
+        "hallucinated": false
+      },
+      {
+        "text": "FAISS requires a separate database server and credentials to operate.",
+        "hallucinated": true
+      },
+      {
+        "text": "FAISS was developed by Google Research.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What index types does FAISS provide?",
+    "relevant_sources": [
+      "faiss_vector_databases.md"
+    ],
+    "claims": [
+      {
+        "text": "IndexFlatIP and IndexFlatL2 perform exact brute-force search over every stored vector.",
+        "hallucinated": false
+      },
+      {
+        "text": "IVF and HNSW are approximate nearest-neighbor structures that trade a little accuracy for speed.",
+        "hallucinated": false
+      },
+      {
+        "text": "IndexFlatIP is an approximate index that skips most stored vectors.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Does a FAISS index update automatically when documents change?",
+    "relevant_sources": [
+      "faiss_vector_databases.md"
+    ],
+    "claims": [
+      {
+        "text": "An application must explicitly re-embed and re-add or rebuild the index when the document store changes.",
+        "hallucinated": false
+      },
+      {
+        "text": "FAISS automatically detects deleted documents and removes their vectors in the background.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is hallucination in large language models?",
+    "relevant_sources": [
+      "hallucination_in_llms.md"
+    ],
+    "claims": [
+      {
+        "text": "Hallucination is generated content that is fluent and confident-sounding but factually incorrect or unsupported.",
+        "hallucinated": false
+      },
+      {
+        "text": "Language models are trained to predict plausible next tokens, not to verify truth.",
+        "hallucinated": false
+      },
+      {
+        "text": "Hallucinations occur only when a model is malfunctioning and produces visibly broken text.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is the difference between intrinsic and extrinsic hallucination?",
+    "relevant_sources": [
+      "hallucination_in_llms.md"
+    ],
+    "claims": [
+      {
+        "text": "Intrinsic hallucinations directly contradict the source material the model was given.",
+        "hallucinated": false
+      },
+      {
+        "text": "Extrinsic hallucinations introduce information that cannot be verified from the source.",
+        "hallucinated": false
+      },
+      {
+        "text": "Intrinsic hallucinations are claims that are invented from the model's training data.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What causes hallucination?",
+    "relevant_sources": [
+      "hallucination_in_llms.md"
+    ],
+    "claims": [
+      {
+        "text": "Training data contains errors and outdated information that models can absorb as established fact.",
+        "hallucinated": false
+      },
+      {
+        "text": "Models can show sycophancy, generating an answer that matches what the question seems to expect.",
+        "hallucinated": false
+      },
+      {
+        "text": "Hallucination is caused exclusively by too small a context window.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "How can hallucination be mitigated?",
+    "relevant_sources": [
+      "hallucination_in_llms.md"
+    ],
+    "claims": [
+      {
+        "text": "Grounding the model in retrieved evidence and prompting it to say it does not know are pre-generation mitigations.",
+        "hallucinated": false
+      },
+      {
+        "text": "Post-generation mitigation verifies each claim with entailment classifiers or similarity scores.",
+        "hallucinated": false
+      },
+      {
+        "text": "Post-generation verification is considered a weaker safeguard than prompting alone.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is Natural Language Inference?",
+    "relevant_sources": [
+      "natural_language_inference.md"
+    ],
+    "claims": [
+      {
+        "text": "NLI determines the logical relationship between a premise and a hypothesis.",
+        "hallucinated": false
+      },
+      {
+        "text": "NLI classifies a hypothesis as entailment, contradiction or neutral given the premise.",
+        "hallucinated": false
+      },
+      {
+        "text": "NLI classifies pairs into five graded levels of similarity.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "How is NLI used for hallucination detection?",
+    "relevant_sources": [
+      "natural_language_inference.md"
+    ],
+    "claims": [
+      {
+        "text": "The generated sentence is treated as the hypothesis and the retrieved chunk as the premise.",
+        "hallucinated": false
+      },
+      {
+        "text": "A contradiction score means the generated sentence conflicts with the evidence.",
+        "hallucinated": false
+      },
+      {
+        "text": "A neutral score means the sentence is fully supported by the evidence.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is a cross-encoder NLI model?",
+    "relevant_sources": [
+      "natural_language_inference.md"
+    ],
+    "claims": [
+      {
+        "text": "A cross-encoder processes the premise and hypothesis together in a single forward pass.",
+        "hallucinated": false
+      },
+      {
+        "text": "Cross-encoders are more accurate than comparing separate sentence embeddings, but slower.",
+        "hallucinated": false
+      },
+      {
+        "text": "Cross-encoders reuse precomputed sentence vectors so they are faster than embedding comparison.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is BERTScore?",
+    "relevant_sources": [
+      "bertscore_similarity_metrics.md"
+    ],
+    "claims": [
+      {
+        "text": "BERTScore measures how similar two texts are in meaning rather than in exact wording.",
+        "hallucinated": false
+      },
+      {
+        "text": "BERTScore uses contextual token embeddings and cosine similarity between best-matching tokens.",
+        "hallucinated": false
+      },
+      {
+        "text": "BERTScore counts shared n-grams between candidate and reference text.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "How is BERTScore F1 computed?",
+    "relevant_sources": [
+      "bertscore_similarity_metrics.md"
+    ],
+    "claims": [
+      {
+        "text": "Precision matches each candidate token to its most similar reference token and recall does the reverse.",
+        "hallucinated": false
+      },
+      {
+        "text": "F1 is the harmonic mean of the two directional scores.",
+        "hallucinated": false
+      },
+      {
+        "text": "F1 is the arithmetic mean of precision and recall computed from n-gram counts.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Does BERTScore need training data or internet access?",
+    "relevant_sources": [
+      "bertscore_similarity_metrics.md"
+    ],
+    "claims": [
+      {
+        "text": "BERTScore needs only a pretrained language model and can run offline once that model is downloaded.",
+        "hallucinated": false
+      },
+      {
+        "text": "BERTScore must be fine-tuned on a labelled hallucination dataset before use.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is XAI in a retrieval system?",
+    "relevant_sources": [
+      "explainable_ai_xai.md"
+    ],
+    "claims": [
+      {
+        "text": "In retrieval systems XAI explains why a chunk was retrieved and why the answer took its shape.",
+        "hallucinated": false
+      },
+      {
+        "text": "Chunk attribution labels which source document and page a piece of retrieved text came from.",
+        "hallucinated": false
+      },
+      {
+        "text": "XAI in retrieval systems is only possible by training an additional black-box classifier.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is word-level saliency?",
+    "relevant_sources": [
+      "explainable_ai_xai.md"
+    ],
+    "claims": [
+      {
+        "text": "Word saliency removes a word and recomputes similarity to see how much the word contributes.",
+        "hallucinated": false
+      },
+      {
+        "text": "A sharp drop in similarity after removing a word means the word anchors the claim to the source.",
+        "hallucinated": false
+      },
+      {
+        "text": "A word whose removal sharply lowers similarity is likely filler or an unsupported addition.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is provenance scoring?",
+    "relevant_sources": [
+      "explainable_ai_xai.md"
+    ],
+    "claims": [
+      {
+        "text": "Provenance scoring measures what fraction of the generated response is traceable to retrieved evidence.",
+        "hallucinated": false
+      },
+      {
+        "text": "Provenance scoring measures how fast the retriever returns results.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is the three-state decision scheme?",
+    "relevant_sources": [
+      "tri_state_decision_control.md"
+    ],
+    "claims": [
+      {
+        "text": "A score at or above the high threshold is classified as Supported and shown with its citation.",
+        "hallucinated": false
+      },
+      {
+        "text": "A score between the medium and high thresholds is Weakly Supported and shown with a warning.",
+        "hallucinated": false
+      },
+      {
+        "text": "A score below the medium threshold is classified as Weakly Supported.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "When is an entire response blocked?",
+    "relevant_sources": [
+      "tri_state_decision_control.md"
+    ],
+    "claims": [
+      {
+        "text": "A response is blocked when more than a set fraction of its sentences, commonly fifty percent, are Hallucinated.",
+        "hallucinated": false
+      },
+      {
+        "text": "When a response is blocked the system surfaces the raw retrieved evidence instead.",
+        "hallucinated": false
+      },
+      {
+        "text": "A response is blocked as soon as any single sentence is classified as Hallucinated.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Are the decision thresholds fixed?",
+    "relevant_sources": [
+      "tri_state_decision_control.md"
+    ],
+    "claims": [
+      {
+        "text": "Both thresholds are tunable parameters depending on tolerance for false blocks versus false passes.",
+        "hallucinated": false
+      },
+      {
+        "text": "Raising the high threshold makes the system more conservative.",
+        "hallucinated": false
+      },
+      {
+        "text": "The thresholds are fixed constants that must not be changed.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is chunking and why does it matter?",
+    "relevant_sources": [
+      "chunking_strategies.md"
+    ],
+    "claims": [
+      {
+        "text": "Chunking splits documents into pieces because embedding models have a maximum input length.",
+        "hallucinated": false
+      },
+      {
+        "text": "Chunks that are too small lose context needed to interpret a sentence.",
+        "hallucinated": false
+      },
+      {
+        "text": "Chunk size has no measurable effect on retrieval quality.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is a common chunking configuration?",
+    "relevant_sources": [
+      "chunking_strategies.md"
+    ],
+    "claims": [
+      {
+        "text": "A common configuration is 512 tokens per chunk with a 50-token overlap.",
+        "hallucinated": false
+      },
+      {
+        "text": "Overlap ensures content near a cut point appears in full in at least one chunk.",
+        "hallucinated": false
+      },
+      {
+        "text": "The common configuration uses 128 tokens per chunk with no overlap.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What alternatives to fixed-size chunking exist?",
+    "relevant_sources": [
+      "chunking_strategies.md"
+    ],
+    "claims": [
+      {
+        "text": "Semantic chunking uses embedding similarity between adjacent sentences to find topic boundaries.",
+        "hallucinated": false
+      },
+      {
+        "text": "Recursive chunking splits by sections, then paragraphs, then sentences before falling back to fixed size.",
+        "hallucinated": false
+      },
+      {
+        "text": "Sentence-based chunking produces chunks of exactly equal size.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What do precision and recall measure for hallucination detection?",
+    "relevant_sources": [
+      "evaluation_metrics.md"
+    ],
+    "claims": [
+      {
+        "text": "Precision is the fraction of flagged claims that were actually hallucinated.",
+        "hallucinated": false
+      },
+      {
+        "text": "Recall is the fraction of actual hallucinations that the system caught.",
+        "hallucinated": false
+      },
+      {
+        "text": "Precision is the fraction of all hallucinated claims that the system caught.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What does AUROC measure?",
+    "relevant_sources": [
+      "evaluation_metrics.md"
+    ],
+    "claims": [
+      {
+        "text": "AUROC evaluates a system across every possible decision threshold at once.",
+        "hallucinated": false
+      },
+      {
+        "text": "An AUROC of 0.5 means the score is no better than a random guess.",
+        "hallucinated": false
+      },
+      {
+        "text": "An AUROC of 0.5 means the two classes are perfectly separable.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Which error is more costly in hallucination detection?",
+    "relevant_sources": [
+      "evaluation_metrics.md"
+    ],
+    "claims": [
+      {
+        "text": "A missed hallucination is generally more costly than an unnecessarily flagged correct claim.",
+        "hallucinated": false
+      },
+      {
+        "text": "Reporting only accuracy on an imbalanced test set can be misleading.",
+        "hallucinated": false
+      },
+      {
+        "text": "False positives are generally considered more costly than false negatives.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What is Ollama?",
+    "relevant_sources": [
+      "local_llm_inference_ollama.md"
+    ],
+    "claims": [
+      {
+        "text": "Ollama exposes a local HTTP API, by default at http://localhost:11434.",
+        "hallucinated": false
+      },
+      {
+        "text": "Ollama handles quantization so open-weight models use less memory.",
+        "hallucinated": false
+      },
+      {
+        "text": "Ollama sends prompts to a hosted cloud service for inference.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "What are the trade-offs of local inference?",
+    "relevant_sources": [
+      "local_llm_inference_ollama.md"
+    ],
+    "claims": [
+      {
+        "text": "No data leaves the machine, so local inference suits privacy-sensitive environments.",
+        "hallucinated": false
+      },
+      {
+        "text": "Local open-weight models are typically smaller and slower than the largest proprietary models.",
+        "hallucinated": false
+      },
+      {
+        "text": "Local inference incurs a per-token cost and an external rate limit.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "Why is prompt engineering not enough to prevent hallucination?",
+    "relevant_sources": [
+      "prompt_engineering.md",
+      "local_llm_inference_ollama.md"
+    ],
+    "claims": [
+      {
+        "text": "A language model has no mechanism that enforces a grounding instruction the way software enforces a rule.",
+        "hallucinated": false
+      },
+      {
+        "text": "Prompt engineering is a first line of defense while independent verification catches what the prompt failed to prevent.",
+        "hallucinated": false
+      },
+      {
+        "text": "A well-written grounding prompt guarantees the model never uses unretrieved facts.",
+        "hallucinated": true
+      }
+    ]
+  },
+  {
+    "question": "How can prompts reduce hallucination?",
+    "relevant_sources": [
+      "prompt_engineering.md"
+    ],
+    "claims": [
+      {
+        "text": "Labelling each retrieved passage with its source and page helps the model cite correctly.",
+        "hallucinated": false
+      },
+      {
+        "text": "Lowering the generation temperature reduces the tendency to embellish.",
+        "hallucinated": false
+      },
+      {
+        "text": "Raising the temperature makes the model stick more closely to the provided context.",
+        "hallucinated": true
+      }
+    ]
+  }
+]

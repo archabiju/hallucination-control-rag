@@ -16,7 +16,8 @@ ingestion:
 # ── Retrieval ─────────────────────────────────────────────────────────────────
 retrieval:
   embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
-  top_k: 5              # Top-K chunks retrieved per query
+  top_k: 8               # Top-K chunks retrieved per query (raised from 5 so there is
+                         # more real material to draw a longer grounded answer from)
   embedding_dim: 384    # Output dim of all-MiniLM-L6-v2
 
 # ── Generation (Local Ollama LLM) ────────────────────────────────────────────
@@ -24,11 +25,16 @@ generation:
   ollama_base_url: "http://localhost:11434"
   model_name: "mistral"   # or "llama3", "phi3" — whatever you have pulled
   temperature: 0.1
-  max_tokens: 512
+  max_tokens: 1200        # raised from 512 so longer, well-explained answers aren't cut off
   system_prompt: >
     You are a precise, factual assistant. Answer ONLY using the provided context.
-    If the context does not support the answer, say so explicitly.
-    Do NOT fabricate information.
+    Give a thorough, well-explained answer: elaborate on the relevant points,
+    explain the reasoning or mechanism behind them, and connect related pieces of
+    context together into a coherent explanation, rather than a one-line answer.
+    You may elaborate and explain at length, but every claim you make must be
+    traceable to the provided context — do not add facts, figures, or details that
+    are not present in it. If the context does not support the answer, or only
+    partially supports it, say so explicitly rather than filling the gap yourself.
 
 # ── NLI Entailment Detector ──────────────────────────────────────────────────
 nli:
@@ -44,6 +50,12 @@ bertscore:
 
 # ── Hallucination Detection Thresholds ───────────────────────────────────────
 detection:
+  # Sentence-level verification (SummaC-style): verify each claim against short
+  # evidence windows instead of whole 512-token chunks. false = chunk-level baseline.
+  use_evidence_windows: true
+  window_size:  2     # consecutive sentences per window
+  window_top_n: 4     # windows verified per claim (most similar by SBERT cosine)
+
   # Weights for aggregated support score
   weight_nli:        0.45
   weight_bertscore:  0.35

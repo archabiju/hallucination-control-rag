@@ -220,12 +220,154 @@ class Evaluator:
             correct = sum(1 for d in q_details if d["correct"])
             print(f"   → {correct}/{len(claims)} correct\n")
 
-        # ── Aggregate metrics ─────────────────────────────────────────────
+        return self._finalize_report(
+            all_y_true, all_y_pred, all_scores, per_question_results,
+            mode="full_pipeline" if pipeline is not None else "mock",
+        )
+
+    def evaluate_detection_layer(
+        self,
+        test_set: List[Dict[str, Any]],
+        pipeline,
+    ) -> Dict[str, Any]:
+        """
+        Evaluate ONLY the detection layer (real retrieval + real NLI +
+        real BERTScore + cosine aggregation) directly against each
+        ground-truth claim — this is the recommended, scientifically
+        honest way to reproduce the paper's F1 / AUROC numbers.
+
+        Why this instead of evaluate_with_pipeline(..., pipeline=pipeline):
+        that method generates a fresh LLM answer for each question and then
+        fuzzy-matches generated sentences back to the test set's claims by
+        word overlap. But this test set's "hallucinated" claims are
+        deliberately absurd statements (e.g. "FAISS requires a PostgreSQL
+        database") that a real LLM will simply never generate — so there is
+        often no generated sentence to match them to at all, and the match
+        falls back to a meaningless default score. That is not a fair test
+        of the detection layer. This method instead feeds every claim
+        straight into the exact same NLI + BERTScore + cosine pipeline your
+        live system uses to verify LLM output, scored against the real
+        chunks retrieved for that question. No text is generated, so this
+        also works even if Ollama is not running — it only needs the
+        embedding, NLI, and BERTScore models.
+
+        Args:
+            test_set: List of test items (question + claims with labels).
+            pipeline: A RAGHallucinationPipeline instance. Must have an
+                      index already built (call pipeline.index_documents()
+                      first).
+
+        Returns:
+            Full evaluation report dict (same shape as evaluate_with_pipeline).
+        """
+        from src.explainability.xai_layer import generate_xai_report
+
+        pipeline._load_models()
+        if not pipeline.faiss_store.is_loaded() and not pipeline.faiss_store.load():
+            raise RuntimeError(
+                "No FAISS index found. Call pipeline.index_documents() before "
+                "evaluate_detection_layer()."
+            )
+
+        all_y_true, all_y_pred, all_scores = [], [], []
+        per_question_results = []
+
+        print(f"\n{'='*60}")
+        print(f"  Detection-layer evaluation: {len(test_set)} questions, "
+              f"{sum(len(t['claims']) for t in test_set)} total claims")
+        print(f"  (real retrieval + real NLI + real BERTScore — no LLM generation)")
+        print(f"{'='*60}\n")
+
+        for q_idx, item in enumerate(test_set):
+            question = item["question"]
+            claims = item["claims"]
+            claim_texts = [c["text"] for c in claims]
+
+            print(f"[{q_idx+1}/{len(test_set)}] {question}")
+
+            query_vec = pipeline.embedder.embed_query(question)
+            retrieved = pipeline.faiss_store.search(query_vec, k=pipeline.top_k)
+
+            q_y_true, q_y_pred, q_scores, q_details = [], [], [], []
+
+            if not retrieved:
+                # No evidence retrieved at all → every claim must be judged
+                # HALLUCINATED, same as the live system's "insufficient
+                # evidence" path.
+                for claim in claims:
+                    gt_label = 1 if claim["hallucinated"] else 0
+                    q_y_true.append(gt_label)
+                    q_y_pred.append(1)
+                    q_scores.append(1.0)
+                    q_details.append({
+                        "claim": claim["text"], "gt": "HALLUCINATED" if gt_label else "SUPPORTED",
+                        "pred": "HALLUCINATED", "score": 0.0,
+                        "correct": gt_label == 1,
+                    })
+            else:
+                chunk_texts = [c["text"] for c in retrieved]
+                chunk_vecs = pipeline.embedder.embed(chunk_texts)
+
+                xai_report = generate_xai_report(
+                    query=question, chunks=retrieved, query_vector=query_vec,
+                    chunk_vectors=chunk_vecs, sentences=claim_texts,
+                    embedder=pipeline.embedder,
+                )
+                attributions = xai_report["attributions"]
+
+                nli_results = pipeline.nli_detector.score_sentences(claim_texts, retrieved, attributions)
+                bert_results = pipeline.bert_detector.score_sentences(claim_texts, retrieved)
+                verdicts = pipeline.hall_engine.analyze(claim_texts, nli_results, bert_results, attributions)
+
+                for claim, v in zip(claims, verdicts):
+                    gt_label = 1 if claim["hallucinated"] else 0
+                    pred_label = 1 if v.classification == "HALLUCINATED" else 0
+                    q_y_true.append(gt_label)
+                    q_y_pred.append(pred_label)
+                    q_scores.append(1.0 - v.support_score)
+                    q_details.append({
+                        "claim": claim["text"],
+                        "gt": "HALLUCINATED" if gt_label else "SUPPORTED",
+                        "pred": "HALLUCINATED" if pred_label else "SUPPORTED",
+                        "score": round(v.support_score, 4),
+                        "correct": gt_label == pred_label,
+                    })
+
+            all_y_true.extend(q_y_true)
+            all_y_pred.extend(q_y_pred)
+            all_scores.extend(q_scores)
+
+            q_metrics = precision_recall_f1(q_y_true, q_y_pred)
+            per_question_results.append({
+                "question": question,
+                "num_claims": len(claims),
+                "accuracy": q_metrics["accuracy"],
+                "details": q_details,
+            })
+
+            correct = sum(1 for d in q_details if d["correct"])
+            print(f"   → {correct}/{len(claims)} correct\n")
+
+        return self._finalize_report(
+            all_y_true, all_y_pred, all_scores, per_question_results,
+            mode="detection_layer",
+        )
+
+    def _finalize_report(
+        self,
+        all_y_true: list,
+        all_y_pred: list,
+        all_scores: list,
+        per_question_results: list,
+        mode: str,
+    ) -> Dict[str, Any]:
+        """Aggregate metrics, print summary, generate plots, save JSON report."""
         overall = precision_recall_f1(all_y_true, all_y_pred)
         auc_roc = auroc(all_y_true, all_scores)
         cm = compute_confusion_matrix(all_y_true, all_y_pred)
 
         report = {
+            "mode": mode,
             "overall_metrics": {
                 "precision":  overall["precision"],
                 "recall":     overall["recall"],
@@ -245,8 +387,11 @@ class Evaluator:
 
         # ── Print summary ─────────────────────────────────────────────────
         print("=" * 60)
-        print("  EVALUATION RESULTS")
+        print(f"  EVALUATION RESULTS  (mode={mode})")
         print("=" * 60)
+        if mode == "mock":
+            print("  WARNING: mock mode — these scores are HARDCODED (0.82 / 0.25),")
+            print("  not produced by any real model. Do not report these numbers.")
         print(f"  Total claims evaluated: {overall['support']}")
         print(f"  Precision:  {overall['precision']:.4f}")
         print(f"  Recall:     {overall['recall']:.4f}")
@@ -318,17 +463,56 @@ class Evaluator:
 # ─────────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Evaluate the TrustRAG hallucination-detection pipeline against a labeled test set."
+    )
+    parser.add_argument(
+        "test_set", nargs="?", default=None,
+        help="Path to a custom test set JSON file (see module docstring for format). "
+             "Omit to use the small built-in demo test set.",
+    )
+    parser.add_argument(
+        "--mode", choices=["detection", "full", "mock"], default="detection",
+        help=(
+            "detection (default): real retrieval + real NLI + real BERTScore + cosine, "
+            "scored directly against each ground-truth claim. No LLM/Ollama needed. "
+            "This is the recommended mode and the one whose numbers you should report. "
+            "full: real end-to-end generation via Ollama, then fuzzy-matches claims to "
+            "generated sentences — slower and noisier, requires Ollama running. "
+            "mock: hardcoded 0.82/0.25 scores, NO real model is run at all — for smoke-"
+            "testing the reporting/plotting code only. Never report these numbers."
+        ),
+    )
+    args = parser.parse_args()
+
     evaluator = Evaluator()
 
-    if len(sys.argv) > 1:
-        # Load custom test set
-        test_path = sys.argv[1]
-        with open(test_path, "r", encoding="utf-8") as f:
+    if args.test_set:
+        with open(args.test_set, "r", encoding="utf-8") as f:
             test_set = json.load(f)
-        print(f"Loaded test set from: {test_path}")
+        print(f"Loaded test set from: {args.test_set}")
     else:
         test_set = DEMO_TEST_SET
         print("Using built-in demo test set.")
 
-    # Run evaluation (without pipeline for demo)
-    report = evaluator.evaluate_with_pipeline(test_set, pipeline=None)
+    if args.mode == "mock":
+        print("\n" + "!" * 60)
+        print("  MOCK MODE — scores below are HARDCODED (0.82 / 0.25).")
+        print("  No real model is being run. This exists only to smoke-test")
+        print("  the reporting/plotting code. Do not cite these numbers.")
+        print("!" * 60 + "\n")
+        report = evaluator.evaluate_with_pipeline(test_set, pipeline=None)
+    else:
+        from src.pipeline import RAGHallucinationPipeline
+
+        pipeline = RAGHallucinationPipeline()
+        print("\n[INFO] Indexing corpus (reuses the existing index if one is already built)...")
+        stats = pipeline.index_documents()
+        print(f"[INFO] Index stats: {stats}\n")
+
+        if args.mode == "full":
+            report = evaluator.evaluate_with_pipeline(test_set, pipeline=pipeline)
+        else:
+            report = evaluator.evaluate_detection_layer(test_set, pipeline)

@@ -34,6 +34,7 @@ from src.generation.llm_generator import LLMGenerator
 from src.explainability.xai_layer import generate_xai_report
 from src.detection.nli_detector import NLIDetector
 from src.detection.bertscore_detector import BERTScoreDetector
+from src.detection.evidence_windows import EvidenceWindows
 from src.detection.hallucination_engine import HallucinationEngine
 from src.controller.decision_controller import DecisionController, ControlledResponse
 
@@ -121,6 +122,9 @@ class RAGHallucinationPipeline:
         self.nli_model   = nli.get("model", "cross-encoder/nli-deberta-v3-small")
         self.bs_lang     = bs.get("lang", "en")
         self.bs_model    = bs.get("model_type", "distilbert-base-uncased")
+        self.use_windows = det.get("use_evidence_windows", True)
+        self.win_size    = det.get("window_size", 2)
+        self.win_top_n   = det.get("window_top_n", 4)
         self.w_nli       = det.get("weight_nli", 0.45)
         self.w_bert      = det.get("weight_bertscore", 0.35)
         self.w_cos       = det.get("weight_cosine", 0.20)
@@ -310,10 +314,14 @@ class RAGHallucinationPipeline:
             print("[PIPELINE] Step 5: Running hallucination detection...")
             attributions = xai_report["attributions"]
 
+            evidence = (EvidenceWindows(retrieved, self.embedder, self.win_size)
+                        if self.use_windows else None)
             nli_results  = self.nli_detector.score_sentences(
-                sentences, retrieved, attributions
+                sentences, retrieved, attributions, evidence=evidence, top_n=self.win_top_n
             )
-            bert_results = self.bert_detector.score_sentences(sentences, retrieved)
+            bert_results = self.bert_detector.score_sentences(
+                sentences, retrieved, evidence=evidence, top_n=self.win_top_n
+            )
 
             verdicts = self.hall_engine.analyze(
                 sentences, nli_results, bert_results, attributions

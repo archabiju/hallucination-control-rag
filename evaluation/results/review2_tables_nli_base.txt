@@ -1,0 +1,28 @@
+## Overall (positive class = hallucinated)
+
+| P | R | F1 | AUC-ROC | Acc |
+|---|---|---|---|---|
+| 0.75 | 0.1538 | 0.2553 | 0.7189 | 0.6789 |
+
+## Ablation
+
+| Config | P | R | F1 @0.50 | AUC | best-F1 (thr) |
+|---|---|---|---|---|---|
+| NLI only | 0.75 | 0.1538 | 0.2553 | 0.6374 | 0.3137 (0.95) |
+| BERTScore only | 0.0 | 0.0 | 0.0 | 0.7969 | 0.675 (0.81) |
+| Cosine only | 0.3793 | 0.5641 | 0.4536 | 0.5733 | 0.5455 (0.66) |
+| NLI + BERTScore | 0.75 | 0.1538 | 0.2553 | 0.8103 | 0.6835 (0.91) |
+| TrustRAG (all three) | 0.75 | 0.1538 | 0.2553 | 0.7189 | 0.6327 (0.83) |
+
+## Evidence windows vs whole-chunk premises (all three signals)
+
+| Premise | P | R | F1 @0.50 | AUC | best-F1 (thr) |
+|---|---|---|---|---|---|
+| whole 512-token chunk | 0.9 | 0.2308 | 0.3673 | 0.6808 | 0.561 (0.78) |
+| 2-sentence windows (shipped) | 0.75 | 0.1538 | 0.2553 | 0.7189 | 0.6327 (0.83) |
+
+## Tri-state distribution (% of claims)
+
+| Claim type | Supported | Weak | Hallucinated |
+
+[exited with code 0]

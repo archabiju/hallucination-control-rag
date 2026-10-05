@@ -32,7 +32,7 @@ import pandas as pd
 # ─────────────────────────────────────────────────────────────────────────────
 
 st.set_page_config(
-    page_title="XAI-RAG Chat",
+    page_title="TrustRAG",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -222,7 +222,7 @@ def render_explainability_panel(result):
             st.plotly_chart(fig_radar, use_container_width=True)
 
     with chart_col2:
-        st.markdown("**📊 Per-Claim Support Scores**")
+        st.markdown("**📊 Per-Claim Trust Scores**")
         if result.verdicts:
             fig_bar = go.Figure()
             colors_map = {"SUPPORTED": "#22c55e", "WEAKLY_SUPPORTED": "#f59e0b", "HALLUCINATED": "#ef4444"}
@@ -244,7 +244,7 @@ def render_explainability_panel(result):
             fig_bar.update_layout(
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
-                xaxis=dict(title="Support Score", range=[0, 1.05], gridcolor="rgba(255,255,255,0.05)"),
+                xaxis=dict(title="Trust Score", range=[0, 1.05], gridcolor="rgba(255,255,255,0.05)"),
                 yaxis=dict(autorange="reversed"),
                 font=dict(color="#94a3b8"),
                 height=250,
@@ -346,8 +346,8 @@ with st.sidebar:
 
 st.markdown("""
 <div class="header-container">
-     <div class="main-title">🛡️ Explainability-Driven RAG</div>
-     <div class="sub-title">Explainability-Driven Hallucination Detection Framework for Offline RAG</div>
+     <div class="main-title">🛡️ TrustRAG</div>
+     <div class="sub-title">Trustworthy Offline RAG with Explainable Multi-Signal Hallucination Detection</div>
 </div>
 """, unsafe_allow_html=True)
 
