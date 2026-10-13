@@ -1,0 +1,2416 @@
+{
+  "run": 1,
+  "nli_device": "mps:0",
+  "warmup_pairs": 8,
+  "nli_model_loaded_once": true,
+  "configs": {
+    "FlatIP": {
+      "config": "FlatIP",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.005466866000000001,
+          "nli_ms": 1063.254709,
+          "end_to_end_ms": 1063.260175866,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005667116000000001,
+          "nli_ms": 607.361334,
+          "end_to_end_ms": 607.3670011160001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005466188,
+          "nli_ms": 585.680917,
+          "end_to_end_ms": 585.686383188,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005455344,
+          "nli_ms": 585.443125,
+          "end_to_end_ms": 585.448580344,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005463941999999999,
+          "nli_ms": 585.124459,
+          "end_to_end_ms": 585.129922942,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005478414,
+          "nli_ms": 592.139084,
+          "end_to_end_ms": 592.144562414,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0053416060000000005,
+          "nli_ms": 587.311667,
+          "end_to_end_ms": 587.3170086060001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.00539727,
+          "nli_ms": 378.115709,
+          "end_to_end_ms": 378.12110627,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.005391643999999999,
+          "nli_ms": 945.235375,
+          "end_to_end_ms": 945.240766644,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00524761,
+          "nli_ms": 569.891042,
+          "end_to_end_ms": 569.8962896099999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.005468611999999999,
+          "nli_ms": 351.61075,
+          "end_to_end_ms": 351.616218612,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005392016,
+          "nli_ms": 567.668083,
+          "end_to_end_ms": 567.673475016,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005425194,
+          "nli_ms": 580.1935,
+          "end_to_end_ms": 580.198925194,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005503028,
+          "nli_ms": 585.557167,
+          "end_to_end_ms": 585.5626700280001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005396499999999999,
+          "nli_ms": 592.372666,
+          "end_to_end_ms": 592.3780624999999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00531785,
+          "nli_ms": 744.251625,
+          "end_to_end_ms": 744.25694285,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005860936000000001,
+          "nli_ms": 676.277625,
+          "end_to_end_ms": 676.2834859359999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005428358,
+          "nli_ms": 635.067458,
+          "end_to_end_ms": 635.072886358,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005429716,
+          "nli_ms": 642.486041,
+          "end_to_end_ms": 642.491470716,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005237108000000001,
+          "nli_ms": 645.219666,
+          "end_to_end_ms": 645.2249031079999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.00511378,
+          "nli_ms": 396.577875,
+          "end_to_end_ms": 396.58298878,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005219858,
+          "nli_ms": 664.417041,
+          "end_to_end_ms": 664.4222608580001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005396434000000001,
+          "nli_ms": 686.094167,
+          "end_to_end_ms": 686.099563434,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.005395848000000001,
+          "nli_ms": 407.660916,
+          "end_to_end_ms": 407.66631184799996,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005353186,
+          "nli_ms": 682.445417,
+          "end_to_end_ms": 682.450770186,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0055011240000000005,
+          "nli_ms": 740.935959,
+          "end_to_end_ms": 740.9414601240001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005486874,
+          "nli_ms": 660.23825,
+          "end_to_end_ms": 660.243736874,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005498960000000001,
+          "nli_ms": 615.924333,
+          "end_to_end_ms": 615.92983196,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00562201,
+          "nli_ms": 656.184334,
+          "end_to_end_ms": 656.1899560100001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005512952000000001,
+          "nli_ms": 643.10075,
+          "end_to_end_ms": 643.106262952,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005295665999999999,
+          "nli_ms": 629.237667,
+          "end_to_end_ms": 629.242962666,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005280358,
+          "nli_ms": 672.074958,
+          "end_to_end_ms": 672.0802383580001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0054575399999999994,
+          "nli_ms": 625.974875,
+          "end_to_end_ms": 625.98033254,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005361907999999999,
+          "nli_ms": 576.821167,
+          "end_to_end_ms": 576.826528908,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005473434000000001,
+          "nli_ms": 575.416667,
+          "end_to_end_ms": 575.422140434,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00539687,
+          "nli_ms": 573.858041,
+          "end_to_end_ms": 573.86343787,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005449022,
+          "nli_ms": 578.916584,
+          "end_to_end_ms": 578.9220330219999,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 619.0903149768109,
+      "end_to_end_ms_p95": 784.4537076087992,
+      "nli_ms_mean": 619.0848919729729,
+      "nli_ms_p95": 784.4483749999991,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    },
+    "IVF-PQ (nbits=7)": {
+      "config": "IVF-PQ (nbits=7)",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.008647030000000002,
+          "nli_ms": 894.440166,
+          "end_to_end_ms": 894.44881303,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008516435999999999,
+          "nli_ms": 574.004833,
+          "end_to_end_ms": 574.013349436,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008449856,
+          "nli_ms": 596.523375,
+          "end_to_end_ms": 596.531824856,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008718502000000001,
+          "nli_ms": 598.225875,
+          "end_to_end_ms": 598.2345935019999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008083204,
+          "nli_ms": 596.812083,
+          "end_to_end_ms": 596.820166204,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008102674,
+          "nli_ms": 590.409375,
+          "end_to_end_ms": 590.417477674,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008145429999999999,
+          "nli_ms": 563.01175,
+          "end_to_end_ms": 563.01989543,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.00801927,
+          "nli_ms": 350.7895,
+          "end_to_end_ms": 350.79751926999995,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.008156834,
+          "nli_ms": 910.782209,
+          "end_to_end_ms": 910.790365834,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008131102,
+          "nli_ms": 566.324583,
+          "end_to_end_ms": 566.332714102,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008237624,
+          "nli_ms": 348.342834,
+          "end_to_end_ms": 348.351071624,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008293874,
+          "nli_ms": 558.206583,
+          "end_to_end_ms": 558.214876874,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008286767999999998,
+          "nli_ms": 556.564583,
+          "end_to_end_ms": 556.5728697679999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008326544,
+          "nli_ms": 557.323833,
+          "end_to_end_ms": 557.3321595440001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.009100995999999998,
+          "nli_ms": 558.747917,
+          "end_to_end_ms": 558.7570179960001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00826295,
+          "nli_ms": 559.389667,
+          "end_to_end_ms": 559.39792995,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008246502,
+          "nli_ms": 561.967542,
+          "end_to_end_ms": 561.975788502,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008242922,
+          "nli_ms": 556.173542,
+          "end_to_end_ms": 556.181784922,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008145268,
+          "nli_ms": 554.442167,
+          "end_to_end_ms": 554.4503122680001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00838352,
+          "nli_ms": 556.365625,
+          "end_to_end_ms": 556.3740085200001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008317606,
+          "nli_ms": 350.489791,
+          "end_to_end_ms": 350.498108606,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.007932104,
+          "nli_ms": 568.244167,
+          "end_to_end_ms": 568.252099104,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008395036,
+          "nli_ms": 563.712458,
+          "end_to_end_ms": 563.720853036,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008129436,
+          "nli_ms": 364.623083,
+          "end_to_end_ms": 364.631212436,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00822979,
+          "nli_ms": 570.36425,
+          "end_to_end_ms": 570.3724797899999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008151032,
+          "nli_ms": 595.094417,
+          "end_to_end_ms": 595.102568032,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008349587999999998,
+          "nli_ms": 565.593375,
+          "end_to_end_ms": 565.601724588,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008360938,
+          "nli_ms": 566.201083,
+          "end_to_end_ms": 566.209443938,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008322962,
+          "nli_ms": 574.229417,
+          "end_to_end_ms": 574.237739962,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008129464000000001,
+          "nli_ms": 574.308834,
+          "end_to_end_ms": 574.3169634640001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008081958,
+          "nli_ms": 564.507458,
+          "end_to_end_ms": 564.5155399580001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008133278,
+          "nli_ms": 571.1675,
+          "end_to_end_ms": 571.175633278,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008530004,
+          "nli_ms": 567.684834,
+          "end_to_end_ms": 567.693364004,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008881668,
+          "nli_ms": 566.200333,
+          "end_to_end_ms": 566.209214668,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.011987894,
+          "nli_ms": 570.630625,
+          "end_to_end_ms": 570.642612894,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.012635799999999999,
+          "nli_ms": 570.284042,
+          "end_to_end_ms": 570.2966778,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.012796545999999999,
+          "nli_ms": 562.568917,
+          "end_to_end_ms": 562.5817135460001,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 564.1911483354055,
+      "end_to_end_ms_p95": 657.4774374075987,
+      "nli_ms_mean": 564.1825034054054,
+      "nli_ms_p95": 657.4687331999987,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    },
+    "HNSW ef=16": {
+      "config": "HNSW ef=16",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.004259294,
+          "nli_ms": 937.669959,
+          "end_to_end_ms": 937.674218294,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00469801,
+          "nli_ms": 563.245959,
+          "end_to_end_ms": 563.2506570099999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00475252,
+          "nli_ms": 563.483083,
+          "end_to_end_ms": 563.48783552,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004541388,
+          "nli_ms": 562.017541,
+          "end_to_end_ms": 562.0220823880001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004596701999999999,
+          "nli_ms": 561.61375,
+          "end_to_end_ms": 561.6183467019999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004421258,
+          "nli_ms": 564.880708,
+          "end_to_end_ms": 564.885129258,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004334038000000001,
+          "nli_ms": 566.337042,
+          "end_to_end_ms": 566.341376038,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.004308538000000001,
+          "nli_ms": 351.834709,
+          "end_to_end_ms": 351.83901753799995,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.004861214,
+          "nli_ms": 914.211,
+          "end_to_end_ms": 914.215861214,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004398262000000001,
+          "nli_ms": 725.029417,
+          "end_to_end_ms": 725.033815262,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.0043722760000000005,
+          "nli_ms": 393.274958,
+          "end_to_end_ms": 393.27933027600005,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0044326059999999995,
+          "nli_ms": 574.414042,
+          "end_to_end_ms": 574.418474606,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004556788000000001,
+          "nli_ms": 581.986291,
+          "end_to_end_ms": 581.990847788,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004338338000000001,
+          "nli_ms": 581.227625,
+          "end_to_end_ms": 581.231963338,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004457568,
+          "nli_ms": 584.612875,
+          "end_to_end_ms": 584.617332568,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004728465999999999,
+          "nli_ms": 568.198,
+          "end_to_end_ms": 568.2027284659999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004389732,
+          "nli_ms": 572.201583,
+          "end_to_end_ms": 572.2059727320001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004241956,
+          "nli_ms": 566.623958,
+          "end_to_end_ms": 566.628199956,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004518686000000001,
+          "nli_ms": 573.379416,
+          "end_to_end_ms": 573.383934686,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005134840000000001,
+          "nli_ms": 574.779208,
+          "end_to_end_ms": 574.78434284,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.004102044000000001,
+          "nli_ms": 356.022959,
+          "end_to_end_ms": 356.027061044,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004360572,
+          "nli_ms": 573.084875,
+          "end_to_end_ms": 573.089235572,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004311652000000001,
+          "nli_ms": 567.72525,
+          "end_to_end_ms": 567.7295616519999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.004225180000000001,
+          "nli_ms": 354.483125,
+          "end_to_end_ms": 354.48735017999996,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004236972,
+          "nli_ms": 566.057625,
+          "end_to_end_ms": 566.061861972,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00496049,
+          "nli_ms": 563.488209,
+          "end_to_end_ms": 563.49316949,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004692864,
+          "nli_ms": 568.341041,
+          "end_to_end_ms": 568.3457338640001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005331936000000001,
+          "nli_ms": 566.531291,
+          "end_to_end_ms": 566.536622936,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004923692,
+          "nli_ms": 570.154791,
+          "end_to_end_ms": 570.1597146920001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004897874,
+          "nli_ms": 572.424833,
+          "end_to_end_ms": 572.429730874,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0044299859999999995,
+          "nli_ms": 571.929916,
+          "end_to_end_ms": 571.934345986,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00451337,
+          "nli_ms": 575.294625,
+          "end_to_end_ms": 575.29913837,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004359118,
+          "nli_ms": 574.27675,
+          "end_to_end_ms": 574.281109118,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004703534,
+          "nli_ms": 567.665209,
+          "end_to_end_ms": 567.669912534,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004241460000000001,
+          "nli_ms": 571.189584,
+          "end_to_end_ms": 571.19382546,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004553228,
+          "nli_ms": 573.984458,
+          "end_to_end_ms": 573.989011228,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.004227718000000001,
+          "nli_ms": 574.323375,
+          "end_to_end_ms": 574.3276027180001,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 571.5720663289188,
+      "end_to_end_ms_p95": 762.8702244523992,
+      "nli_ms_mean": 571.5675416216216,
+      "nli_ms_p95": 762.8657335999992,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    },
+    "HNSW ef=32": {
+      "config": "HNSW ef=32",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.006266596000000002,
+          "nli_ms": 940.041417,
+          "end_to_end_ms": 940.0476835960001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006082434000000001,
+          "nli_ms": 572.045208,
+          "end_to_end_ms": 572.051290434,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.007041774,
+          "nli_ms": 570.180709,
+          "end_to_end_ms": 570.1877507739999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006820190000000001,
+          "nli_ms": 568.544625,
+          "end_to_end_ms": 568.55144519,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006413298000000001,
+          "nli_ms": 566.434167,
+          "end_to_end_ms": 566.440580298,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006665562000000002,
+          "nli_ms": 574.881542,
+          "end_to_end_ms": 574.8882075619999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006633614000000001,
+          "nli_ms": 571.147875,
+          "end_to_end_ms": 571.154508614,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.006268132000000002,
+          "nli_ms": 353.676584,
+          "end_to_end_ms": 353.682852132,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.0070283920000000005,
+          "nli_ms": 941.048334,
+          "end_to_end_ms": 941.055362392,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006804684000000002,
+          "nli_ms": 581.514,
+          "end_to_end_ms": 581.520804684,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.006371342,
+          "nli_ms": 355.535292,
+          "end_to_end_ms": 355.54166334200005,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0056849199999999996,
+          "nli_ms": 571.750208,
+          "end_to_end_ms": 571.7558929200001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006007358000000001,
+          "nli_ms": 561.194791,
+          "end_to_end_ms": 561.200798358,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005597932,
+          "nli_ms": 567.222625,
+          "end_to_end_ms": 567.228222932,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005737582000000001,
+          "nli_ms": 573.134542,
+          "end_to_end_ms": 573.1402795820001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005991760000000001,
+          "nli_ms": 566.505375,
+          "end_to_end_ms": 566.51136676,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005581712,
+          "nli_ms": 569.704041,
+          "end_to_end_ms": 569.7096227119999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005870356000000001,
+          "nli_ms": 564.412584,
+          "end_to_end_ms": 564.418454356,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005949674,
+          "nli_ms": 567.236375,
+          "end_to_end_ms": 567.242324674,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0060613360000000005,
+          "nli_ms": 570.587583,
+          "end_to_end_ms": 570.593644336,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.005650758,
+          "nli_ms": 355.626084,
+          "end_to_end_ms": 355.631734758,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005535923999999999,
+          "nli_ms": 578.245542,
+          "end_to_end_ms": 578.251077924,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00557653,
+          "nli_ms": 568.619083,
+          "end_to_end_ms": 568.62465953,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.005531356,
+          "nli_ms": 353.839667,
+          "end_to_end_ms": 353.845198356,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006001788000000001,
+          "nli_ms": 571.260208,
+          "end_to_end_ms": 571.2662097880001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005894196000000001,
+          "nli_ms": 568.723292,
+          "end_to_end_ms": 568.729186196,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006078590000000001,
+          "nli_ms": 565.349959,
+          "end_to_end_ms": 565.35603759,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0062437180000000005,
+          "nli_ms": 569.249,
+          "end_to_end_ms": 569.255243718,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006331644000000001,
+          "nli_ms": 570.859375,
+          "end_to_end_ms": 570.865706644,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006087680000000001,
+          "nli_ms": 571.077292,
+          "end_to_end_ms": 571.08337968,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0056220540000000005,
+          "nli_ms": 568.042958,
+          "end_to_end_ms": 568.048580054,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.006088866000000001,
+          "nli_ms": 572.05325,
+          "end_to_end_ms": 572.0593388660001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005779942,
+          "nli_ms": 567.660167,
+          "end_to_end_ms": 567.665946942,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0059564480000000005,
+          "nli_ms": 568.705667,
+          "end_to_end_ms": 568.711623448,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.005984504,
+          "nli_ms": 572.7915,
+          "end_to_end_ms": 572.7974845040001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0055758100000000005,
+          "nli_ms": 574.259375,
+          "end_to_end_ms": 574.26495081,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.0056159520000000004,
+          "nli_ms": 567.610083,
+          "end_to_end_ms": 567.615698952,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 566.7836436056216,
+      "end_to_end_ms_p95": 653.2261804663985,
+      "nli_ms_mean": 566.777577810811,
+      "nli_ms_p95": 653.2194833999985,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    },
+    "HNSW ef=64": {
+      "config": "HNSW ef=64",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.0082643,
+          "nli_ms": 954.526083,
+          "end_to_end_ms": 954.5343472999999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008541438,
+          "nli_ms": 579.675542,
+          "end_to_end_ms": 579.6840834379999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008458354,
+          "nli_ms": 574.836083,
+          "end_to_end_ms": 574.8445413540001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008782700000000001,
+          "nli_ms": 571.864208,
+          "end_to_end_ms": 571.8729907,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008126472,
+          "nli_ms": 574.931625,
+          "end_to_end_ms": 574.939751472,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008272038,
+          "nli_ms": 573.267625,
+          "end_to_end_ms": 573.2758970379999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008810582,
+          "nli_ms": 579.694416,
+          "end_to_end_ms": 579.7032265820001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008028559999999999,
+          "nli_ms": 355.016791,
+          "end_to_end_ms": 355.02481956,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.008903842,
+          "nli_ms": 938.29,
+          "end_to_end_ms": 938.298903842,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008127483999999999,
+          "nli_ms": 573.502708,
+          "end_to_end_ms": 573.510835484,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008631970000000001,
+          "nli_ms": 350.800042,
+          "end_to_end_ms": 350.80867397000003,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00818416,
+          "nli_ms": 572.965458,
+          "end_to_end_ms": 572.97364216,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008777128,
+          "nli_ms": 571.4855,
+          "end_to_end_ms": 571.494277128,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00849248,
+          "nli_ms": 569.572875,
+          "end_to_end_ms": 569.5813674799999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008335931999999999,
+          "nli_ms": 577.204459,
+          "end_to_end_ms": 577.2127949320001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008340036000000002,
+          "nli_ms": 568.977875,
+          "end_to_end_ms": 568.9862150360001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00870435,
+          "nli_ms": 577.953584,
+          "end_to_end_ms": 577.96228835,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008404727999999998,
+          "nli_ms": 569.984375,
+          "end_to_end_ms": 569.992779728,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008425799999999999,
+          "nli_ms": 573.689125,
+          "end_to_end_ms": 573.6975508,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00808086,
+          "nli_ms": 582.552917,
+          "end_to_end_ms": 582.5609978599999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008555344,
+          "nli_ms": 355.588042,
+          "end_to_end_ms": 355.596597344,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008049839999999999,
+          "nli_ms": 573.981125,
+          "end_to_end_ms": 573.98917484,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008034274,
+          "nli_ms": 584.102792,
+          "end_to_end_ms": 584.110826274,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.008211596,
+          "nli_ms": 358.634833,
+          "end_to_end_ms": 358.64304459600004,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008923592,
+          "nli_ms": 585.4745,
+          "end_to_end_ms": 585.483423592,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008500472000000002,
+          "nli_ms": 586.206959,
+          "end_to_end_ms": 586.215459472,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008515784,
+          "nli_ms": 600.426042,
+          "end_to_end_ms": 600.434557784,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008571145999999998,
+          "nli_ms": 577.880125,
+          "end_to_end_ms": 577.888696146,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.009251946,
+          "nli_ms": 592.688167,
+          "end_to_end_ms": 592.697418946,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008830715999999999,
+          "nli_ms": 588.6965,
+          "end_to_end_ms": 588.705330716,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00870652,
+          "nli_ms": 586.612125,
+          "end_to_end_ms": 586.62083152,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008581768,
+          "nli_ms": 582.572541,
+          "end_to_end_ms": 582.581122768,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00843976,
+          "nli_ms": 585.552417,
+          "end_to_end_ms": 585.56085676,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008594675999999999,
+          "nli_ms": 623.872167,
+          "end_to_end_ms": 623.880761676,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.00825217,
+          "nli_ms": 582.397417,
+          "end_to_end_ms": 582.40566917,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008495942,
+          "nli_ms": 579.154417,
+          "end_to_end_ms": 579.1629129419999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.008204614,
+          "nli_ms": 577.89075,
+          "end_to_end_ms": 577.898954614,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 576.0225844155135,
+      "end_to_end_ms_p95": 686.7643901091986,
+      "nli_ms_mean": 576.0141137837837,
+      "nli_ms_p95": 686.7557335999986,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    },
+    "HNSW ef=128": {
+      "config": "HNSW ef=128",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.016464859999999998,
+          "nli_ms": 993.224333,
+          "end_to_end_ms": 993.24079786,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.018248998,
+          "nli_ms": 587.113291,
+          "end_to_end_ms": 587.131539998,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016474128,
+          "nli_ms": 587.72425,
+          "end_to_end_ms": 587.740724128,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016279130000000003,
+          "nli_ms": 586.085458,
+          "end_to_end_ms": 586.1017371300001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.015757058,
+          "nli_ms": 588.362166,
+          "end_to_end_ms": 588.377923058,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016371362,
+          "nli_ms": 594.19775,
+          "end_to_end_ms": 594.214121362,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016529322,
+          "nli_ms": 589.230916,
+          "end_to_end_ms": 589.247445322,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.015771854,
+          "nli_ms": 358.036667,
+          "end_to_end_ms": 358.052438854,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.01614537,
+          "nli_ms": 966.821167,
+          "end_to_end_ms": 966.83731237,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.01627707,
+          "nli_ms": 639.522208,
+          "end_to_end_ms": 639.53848507,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.015809236,
+          "nli_ms": 373.123292,
+          "end_to_end_ms": 373.139101236,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016281379999999998,
+          "nli_ms": 583.515542,
+          "end_to_end_ms": 583.53182338,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.017084598,
+          "nli_ms": 574.871333,
+          "end_to_end_ms": 574.888417598,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016197206000000002,
+          "nli_ms": 575.052708,
+          "end_to_end_ms": 575.0689052060001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016036578,
+          "nli_ms": 578.132333,
+          "end_to_end_ms": 578.148369578,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016509262,
+          "nli_ms": 584.131834,
+          "end_to_end_ms": 584.148343262,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016300846,
+          "nli_ms": 576.458083,
+          "end_to_end_ms": 576.474383846,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016248456,
+          "nli_ms": 579.508958,
+          "end_to_end_ms": 579.525206456,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016064202000000003,
+          "nli_ms": 571.8415,
+          "end_to_end_ms": 571.857564202,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016093435999999996,
+          "nli_ms": 578.769625,
+          "end_to_end_ms": 578.785718436,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.01596072,
+          "nli_ms": 355.316625,
+          "end_to_end_ms": 355.33258572,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016370102,
+          "nli_ms": 577.017833,
+          "end_to_end_ms": 577.034203102,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016375120000000003,
+          "nli_ms": 568.900458,
+          "end_to_end_ms": 568.91683312,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.015975614,
+          "nli_ms": 352.453959,
+          "end_to_end_ms": 352.469934614,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016379033999999997,
+          "nli_ms": 567.06825,
+          "end_to_end_ms": 567.084629034,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016991702000000004,
+          "nli_ms": 571.873417,
+          "end_to_end_ms": 571.8904087020001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.017070994,
+          "nli_ms": 567.982833,
+          "end_to_end_ms": 567.9999039940001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.01644052,
+          "nli_ms": 567.330875,
+          "end_to_end_ms": 567.3473155199999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016909509999999996,
+          "nli_ms": 573.395333,
+          "end_to_end_ms": 573.41224251,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.018434732,
+          "nli_ms": 573.3985,
+          "end_to_end_ms": 573.416934732,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.01633611,
+          "nli_ms": 565.307542,
+          "end_to_end_ms": 565.32387811,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016523102,
+          "nli_ms": 568.918042,
+          "end_to_end_ms": 568.934565102,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016628100000000003,
+          "nli_ms": 569.757708,
+          "end_to_end_ms": 569.7743361,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.016835825999999998,
+          "nli_ms": 570.79725,
+          "end_to_end_ms": 570.814085826,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.01554093,
+          "nli_ms": 572.527208,
+          "end_to_end_ms": 572.54274893,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.015321456,
+          "nli_ms": 572.083375,
+          "end_to_end_ms": 572.0986964560001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.015302810000000002,
+          "nli_ms": 569.845208,
+          "end_to_end_ms": 569.8605108099999,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 576.4947073171351,
+      "end_to_end_ms_p95": 704.9982505299986,
+      "nli_ms_mean": 576.4783197297296,
+      "nli_ms_p95": 704.9819997999986,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    },
+    "Hybrid FlatIP+BM25": {
+      "config": "Hybrid FlatIP+BM25",
+      "per_query": [
+        {
+          "query_index": 0,
+          "question": "What is Retrieval-Augmented Generation?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.06551619600000001,
+          "nli_ms": 943.374084,
+          "end_to_end_ms": 943.439600196,
+          "generation_ms": null
+        },
+        {
+          "query_index": 1,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.104729034,
+          "nli_ms": 571.202541,
+          "end_to_end_ms": 571.307270034,
+          "generation_ms": null
+        },
+        {
+          "query_index": 2,
+          "question": "Can RAG run offline?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.042389138,
+          "nli_ms": 585.361958,
+          "end_to_end_ms": 585.4043471379999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 3,
+          "question": "What does the typical RAG pipeline consist of?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.092761212,
+          "nli_ms": 579.96475,
+          "end_to_end_ms": 580.057511212,
+          "generation_ms": null
+        },
+        {
+          "query_index": 4,
+          "question": "What is a sentence embedding?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.08126943,
+          "nli_ms": 579.325958,
+          "end_to_end_ms": 579.40722743,
+          "generation_ms": null
+        },
+        {
+          "query_index": 5,
+          "question": "What is all-MiniLM-L6-v2?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.063341218,
+          "nli_ms": 581.210167,
+          "end_to_end_ms": 581.273508218,
+          "generation_ms": null
+        },
+        {
+          "query_index": 6,
+          "question": "Why are embeddings normalized before indexing?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.050851108000000006,
+          "nli_ms": 572.960667,
+          "end_to_end_ms": 573.0115181079999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 7,
+          "question": "How is semantic search better than keyword search?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.072866434,
+          "nli_ms": 354.8065,
+          "end_to_end_ms": 354.879366434,
+          "generation_ms": null
+        },
+        {
+          "query_index": 8,
+          "question": "What is FAISS?",
+          "n_pairs": 20,
+          "retrieval_ms": 0.0496102,
+          "nli_ms": 953.604041,
+          "end_to_end_ms": 953.6536512,
+          "generation_ms": null
+        },
+        {
+          "query_index": 9,
+          "question": "What index types does FAISS provide?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.035518023999999995,
+          "nli_ms": 594.991667,
+          "end_to_end_ms": 595.027185024,
+          "generation_ms": null
+        },
+        {
+          "query_index": 10,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.06571720200000002,
+          "nli_ms": 354.502042,
+          "end_to_end_ms": 354.567759202,
+          "generation_ms": null
+        },
+        {
+          "query_index": 11,
+          "question": "What is hallucination in large language models?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.11530005,
+          "nli_ms": 569.60425,
+          "end_to_end_ms": 569.71955005,
+          "generation_ms": null
+        },
+        {
+          "query_index": 12,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.126154936,
+          "nli_ms": 572.810542,
+          "end_to_end_ms": 572.9366969360001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 13,
+          "question": "What causes hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.031914666,
+          "nli_ms": 570.896917,
+          "end_to_end_ms": 570.9288316660001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 14,
+          "question": "How can hallucination be mitigated?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.06948025799999999,
+          "nli_ms": 570.395,
+          "end_to_end_ms": 570.464480258,
+          "generation_ms": null
+        },
+        {
+          "query_index": 15,
+          "question": "What is Natural Language Inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.064500058,
+          "nli_ms": 569.744958,
+          "end_to_end_ms": 569.809458058,
+          "generation_ms": null
+        },
+        {
+          "query_index": 16,
+          "question": "How is NLI used for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.10052825200000001,
+          "nli_ms": 578.601334,
+          "end_to_end_ms": 578.701862252,
+          "generation_ms": null
+        },
+        {
+          "query_index": 17,
+          "question": "What is a cross-encoder NLI model?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.08908045799999999,
+          "nli_ms": 576.938875,
+          "end_to_end_ms": 577.0279554580001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 18,
+          "question": "What is BERTScore?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.049369701999999994,
+          "nli_ms": 578.002209,
+          "end_to_end_ms": 578.051578702,
+          "generation_ms": null
+        },
+        {
+          "query_index": 19,
+          "question": "How is BERTScore F1 computed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.052633428,
+          "nli_ms": 574.783,
+          "end_to_end_ms": 574.835633428,
+          "generation_ms": null
+        },
+        {
+          "query_index": 20,
+          "question": "Does BERTScore need training data or internet access?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.062061538,
+          "nli_ms": 356.640792,
+          "end_to_end_ms": 356.702853538,
+          "generation_ms": null
+        },
+        {
+          "query_index": 21,
+          "question": "What is XAI in a retrieval system?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.127448462,
+          "nli_ms": 581.622,
+          "end_to_end_ms": 581.7494484619999,
+          "generation_ms": null
+        },
+        {
+          "query_index": 22,
+          "question": "What is word-level saliency?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.058253048,
+          "nli_ms": 582.556625,
+          "end_to_end_ms": 582.614878048,
+          "generation_ms": null
+        },
+        {
+          "query_index": 23,
+          "question": "What is provenance scoring?",
+          "n_pairs": 10,
+          "retrieval_ms": 0.051349872000000005,
+          "nli_ms": 359.860333,
+          "end_to_end_ms": 359.91168287200003,
+          "generation_ms": null
+        },
+        {
+          "query_index": 24,
+          "question": "What is the three-state decision scheme?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.09143105399999998,
+          "nli_ms": 589.656459,
+          "end_to_end_ms": 589.7478900540001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 25,
+          "question": "When is an entire response blocked?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.07870387599999999,
+          "nli_ms": 579.369667,
+          "end_to_end_ms": 579.448370876,
+          "generation_ms": null
+        },
+        {
+          "query_index": 26,
+          "question": "Are the decision thresholds fixed?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.06827849799999999,
+          "nli_ms": 587.019375,
+          "end_to_end_ms": 587.087653498,
+          "generation_ms": null
+        },
+        {
+          "query_index": 27,
+          "question": "What is chunking and why does it matter?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.107205216,
+          "nli_ms": 586.474292,
+          "end_to_end_ms": 586.581497216,
+          "generation_ms": null
+        },
+        {
+          "query_index": 28,
+          "question": "What is a common chunking configuration?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.083441116,
+          "nli_ms": 589.454834,
+          "end_to_end_ms": 589.538275116,
+          "generation_ms": null
+        },
+        {
+          "query_index": 29,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.05559025,
+          "nli_ms": 579.228625,
+          "end_to_end_ms": 579.28421525,
+          "generation_ms": null
+        },
+        {
+          "query_index": 30,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.10670331799999999,
+          "nli_ms": 580.785958,
+          "end_to_end_ms": 580.892661318,
+          "generation_ms": null
+        },
+        {
+          "query_index": 31,
+          "question": "What does AUROC measure?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.028537376000000003,
+          "nli_ms": 575.630167,
+          "end_to_end_ms": 575.6587043760001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 32,
+          "question": "Which error is more costly in hallucination detection?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.116963056,
+          "nli_ms": 577.048791,
+          "end_to_end_ms": 577.1657540560001,
+          "generation_ms": null
+        },
+        {
+          "query_index": 33,
+          "question": "What is Ollama?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.04857749799999999,
+          "nli_ms": 597.25175,
+          "end_to_end_ms": 597.300327498,
+          "generation_ms": null
+        },
+        {
+          "query_index": 34,
+          "question": "What are the trade-offs of local inference?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.10903233799999999,
+          "nli_ms": 601.301125,
+          "end_to_end_ms": 601.410157338,
+          "generation_ms": null
+        },
+        {
+          "query_index": 35,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.106641008,
+          "nli_ms": 582.157958,
+          "end_to_end_ms": 582.264599008,
+          "generation_ms": null
+        },
+        {
+          "query_index": 36,
+          "question": "How can prompts reduce hallucination?",
+          "n_pairs": 15,
+          "retrieval_ms": 0.051801772,
+          "nli_ms": 571.686458,
+          "end_to_end_ms": 571.738259772,
+          "generation_ms": null
+        }
+      ],
+      "end_to_end_ms_mean": 576.0433032243244,
+      "end_to_end_ms_p95": 669.8160459095985,
+      "nli_ms_mean": 575.9682883513514,
+      "nli_ms_p95": 669.7157167999985,
+      "generation_measured": false,
+      "composition": "per-query mean FAISS search latency from this run, plus NLI timed in a separate process"
+    }
+  }
+}

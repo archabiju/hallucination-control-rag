@@ -1,0 +1,90 @@
+Reusing cached query embeddings /Users/ab45979/Downloads/hallucination-control-rag-master/evaluation/results/trustrag_opt_variability_20261013/query_embeddings.npy
+Loading saved FlatIP index (read-only)
+Chunks 213  dim 384  queries 37  mean L2 norm 1.0000
+Attempting paper IVF-PQ: nlist=128, m=8, nbits=8
+Paper IVF-PQ failed: RuntimeError: Error in void faiss::Clustering::train_encoded(idx_t, const uint8_t *, const Index *, Index &, const float *) at /Users/runner/work/faiss/faiss/faiss/Clustering.cpp:72: Error: 'nx >= static_cast<idx_t>(k)' failed: Number of training points (213) should be at least as large as number of clusters (256)
+Measuring IVF-PQ with nbits=7 instead. nlist, m, and nprobe are unchanged.
+
+=== retrieval run 1/5 ===
+  run 1  FlatIP  warmup 1000 + 500 reps x 37 queries
+    mean 0.0054 ms  p95 0.0066 ms  agreement 1.0000  footprint 0.327 MB
+  run 1  IVF-PQ (nbits=7)  warmup 1000 + 500 reps x 37 queries
+    mean 0.0086 ms  p95 0.0120 ms  agreement 0.8919  footprint 0.398 MB
+  run 1  HNSW ef=16  warmup 1000 + 500 reps x 37 queries
+    mean 0.0045 ms  p95 0.0053 ms  agreement 0.9676  footprint 0.385 MB
+  run 1  HNSW ef=32  warmup 1000 + 500 reps x 37 queries
+    mean 0.0061 ms  p95 0.0077 ms  agreement 1.0000  footprint 0.385 MB
+  run 1  HNSW ef=64  warmup 1000 + 500 reps x 37 queries
+    mean 0.0085 ms  p95 0.0102 ms  agreement 1.0000  footprint 0.385 MB
+  run 1  HNSW ef=128  warmup 1000 + 500 reps x 37 queries
+    mean 0.0164 ms  p95 0.0199 ms  agreement 1.0000  footprint 0.385 MB
+  run 1  Hybrid FlatIP+BM25  warmup 1000 + 500 reps x 37 queries
+    mean 0.0750 ms  p95 0.1219 ms  agreement 0.5135  footprint 0.910 MB
+
+=== retrieval run 2/5 ===
+  run 2  FlatIP  warmup 1000 + 500 reps x 37 queries
+    mean 0.0054 ms  p95 0.0063 ms  agreement 1.0000  footprint 0.327 MB
+  run 2  IVF-PQ (nbits=7)  warmup 1000 + 500 reps x 37 queries
+    mean 0.0083 ms  p95 0.0100 ms  agreement 0.8919  footprint 0.398 MB
+  run 2  HNSW ef=16  warmup 1000 + 500 reps x 37 queries
+    mean 0.0050 ms  p95 0.0062 ms  agreement 0.9676  footprint 0.385 MB
+  run 2  HNSW ef=32  warmup 1000 + 500 reps x 37 queries
+    mean 0.0060 ms  p95 0.0072 ms  agreement 1.0000  footprint 0.385 MB
+  run 2  HNSW ef=64  warmup 1000 + 500 reps x 37 queries
+    mean 0.0088 ms  p95 0.0108 ms  agreement 1.0000  footprint 0.385 MB
+  run 2  HNSW ef=128  warmup 1000 + 500 reps x 37 queries
+    mean 0.0160 ms  p95 0.0198 ms  agreement 1.0000  footprint 0.385 MB
+  run 2  Hybrid FlatIP+BM25  warmup 1000 + 500 reps x 37 queries
+    mean 0.0770 ms  p95 0.1212 ms  agreement 0.5135  footprint 0.910 MB
+
+=== retrieval run 3/5 ===
+  run 3  FlatIP  warmup 1000 + 500 reps x 37 queries
+    mean 0.0054 ms  p95 0.0062 ms  agreement 1.0000  footprint 0.327 MB
+  run 3  IVF-PQ (nbits=7)  warmup 1000 + 500 reps x 37 queries
+    mean 0.0090 ms  p95 0.0123 ms  agreement 0.8919  footprint 0.398 MB
+  run 3  HNSW ef=16  warmup 1000 + 500 reps x 37 queries
+    mean 0.0046 ms  p95 0.0054 ms  agreement 0.9676  footprint 0.385 MB
+  run 3  HNSW ef=32  warmup 1000 + 500 reps x 37 queries
+    mean 0.0060 ms  p95 0.0072 ms  agreement 1.0000  footprint 0.385 MB
+  run 3  HNSW ef=64  warmup 1000 + 500 reps x 37 queries
+    mean 0.0085 ms  p95 0.0105 ms  agreement 1.0000  footprint 0.385 MB
+  run 3  HNSW ef=128  warmup 1000 + 500 reps x 37 queries
+    mean 0.0161 ms  p95 0.0198 ms  agreement 1.0000  footprint 0.385 MB
+  run 3  Hybrid FlatIP+BM25  warmup 1000 + 500 reps x 37 queries
+    mean 0.0777 ms  p95 0.1239 ms  agreement 0.5135  footprint 0.910 MB
+
+=== retrieval run 4/5 ===
+  run 4  FlatIP  warmup 1000 + 500 reps x 37 queries
+    mean 0.0054 ms  p95 0.0061 ms  agreement 1.0000  footprint 0.327 MB
+  run 4  IVF-PQ (nbits=7)  warmup 1000 + 500 reps x 37 queries
+    mean 0.0083 ms  p95 0.0094 ms  agreement 0.8919  footprint 0.398 MB
+  run 4  HNSW ef=16  warmup 1000 + 500 reps x 37 queries
+    mean 0.0049 ms  p95 0.0060 ms  agreement 0.9676  footprint 0.385 MB
+  run 4  HNSW ef=32  warmup 1000 + 500 reps x 37 queries
+    mean 0.0059 ms  p95 0.0070 ms  agreement 1.0000  footprint 0.385 MB
+  run 4  HNSW ef=64  warmup 1000 + 500 reps x 37 queries
+    mean 0.0084 ms  p95 0.0097 ms  agreement 1.0000  footprint 0.385 MB
+  run 4  HNSW ef=128  warmup 1000 + 500 reps x 37 queries
+    mean 0.0154 ms  p95 0.0185 ms  agreement 1.0000  footprint 0.385 MB
+  run 4  Hybrid FlatIP+BM25  warmup 1000 + 500 reps x 37 queries
+    mean 0.0765 ms  p95 0.1242 ms  agreement 0.5135  footprint 0.910 MB
+
+=== retrieval run 5/5 ===
+  run 5  FlatIP  warmup 1000 + 500 reps x 37 queries
+    mean 0.0054 ms  p95 0.0060 ms  agreement 1.0000  footprint 0.327 MB
+  run 5  IVF-PQ (nbits=7)  warmup 1000 + 500 reps x 37 queries
+    mean 0.0083 ms  p95 0.0092 ms  agreement 0.8919  footprint 0.398 MB
+  run 5  HNSW ef=16  warmup 1000 + 500 reps x 37 queries
+    mean 0.0046 ms  p95 0.0054 ms  agreement 0.9676  footprint 0.385 MB
+  run 5  HNSW ef=32  warmup 1000 + 500 reps x 37 queries
+    mean 0.0059 ms  p95 0.0067 ms  agreement 1.0000  footprint 0.385 MB
+  run 5  HNSW ef=64  warmup 1000 + 500 reps x 37 queries
+    mean 0.0084 ms  p95 0.0095 ms  agreement 1.0000  footprint 0.385 MB
+  run 5  HNSW ef=128  warmup 1000 + 500 reps x 37 queries
+    mean 0.0154 ms  p95 0.0181 ms  agreement 1.0000  footprint 0.385 MB
+  run 5  Hybrid FlatIP+BM25  warmup 1000 + 500 reps x 37 queries
+    mean 0.0760 ms  p95 0.1215 ms  agreement 0.5135  footprint 0.910 MB
+
+=== end-to-end (torch-only process) ===
+
+Wrote /Users/ab45979/Downloads/hallucination-control-rag-master/evaluation/results/trustrag_opt_variability_20261013/summary.md

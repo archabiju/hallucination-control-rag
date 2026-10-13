@@ -1,0 +1,6155 @@
+{
+  "run": 5,
+  "configs": [
+    {
+      "config": "FlatIP",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.005236954,
+          "latency_ms_p95": 0.005417,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.005610016,
+          "latency_ms_p95": 0.006754149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.005538948,
+          "latency_ms_p95": 0.007086049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.0053281299999999995,
+          "latency_ms_p95": 0.005504149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.005533832000000001,
+          "latency_ms_p95": 0.006377049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.005400446000000001,
+          "latency_ms_p95": 0.00575,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.005272092000000001,
+          "latency_ms_p95": 0.005544049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.005420780000000001,
+          "latency_ms_p95": 0.00642739999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.005566034,
+          "latency_ms_p95": 0.006708,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.00526318,
+          "latency_ms_p95": 0.005583,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.005532500000000001,
+          "latency_ms_p95": 0.006875,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.005423464,
+          "latency_ms_p95": 0.005625,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.00546367,
+          "latency_ms_p95": 0.006587199999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.005439001999999999,
+          "latency_ms_p95": 0.006875,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.005470081999999999,
+          "latency_ms_p95": 0.006916,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.005330453999999999,
+          "latency_ms_p95": 0.0055,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.0054153199999999995,
+          "latency_ms_p95": 0.006752099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.005268114,
+          "latency_ms_p95": 0.005586049999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.005310286,
+          "latency_ms_p95": 0.006294049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.005458843999999999,
+          "latency_ms_p95": 0.006708,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.005234676000000001,
+          "latency_ms_p95": 0.005841349999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.005311715999999999,
+          "latency_ms_p95": 0.0055,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.005511372,
+          "latency_ms_p95": 0.006708,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.0054003639999999995,
+          "latency_ms_p95": 0.005542,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.005468196,
+          "latency_ms_p95": 0.00558305,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.00554006,
+          "latency_ms_p95": 0.005791,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.0055977959999999995,
+          "latency_ms_p95": 0.006292,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.00526505,
+          "latency_ms_p95": 0.005625,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.005561064,
+          "latency_ms_p95": 0.006961049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.005475866,
+          "latency_ms_p95": 0.005667,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.005230106,
+          "latency_ms_p95": 0.005710099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.0054407679999999995,
+          "latency_ms_p95": 0.00675,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.005332038,
+          "latency_ms_p95": 0.005625,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.005411712000000001,
+          "latency_ms_p95": 0.005625,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.005507608000000001,
+          "latency_ms_p95": 0.007,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.00530153,
+          "latency_ms_p95": 0.005583,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.0053999040000000005,
+          "latency_ms_p95": 0.005625,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 0.0
+        }
+      ],
+      "latency_ms_mean": 0.005412756054054053,
+      "latency_ms_p95": 0.00604404999999997,
+      "agreement_at_5": 1.0,
+      "unstable_queries": 0,
+      "build_seconds": 6.637495243921876e-05,
+      "index_footprint_bytes": 327213,
+      "faiss_file_bytes": 327213,
+      "bm25_structure_bytes": 0,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69206016,
+        "rss_after_index_load_bytes": 69468160,
+        "rss_after_100_searches_bytes": 71778304,
+        "incremental_rss_after_load_bytes": 262144,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    },
+    {
+      "config": "IVF-PQ (nbits=7)",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            212,
+            205,
+            181,
+            197,
+            3
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.008385783999999999,
+          "latency_ms_p95": 0.010046149999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            184,
+            187,
+            210,
+            180,
+            133
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.008118676,
+          "latency_ms_p95": 0.009291,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            200,
+            212,
+            184,
+            193,
+            202
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.008261206000000002,
+          "latency_ms_p95": 0.008625,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.008324546000000002,
+          "latency_ms_p95": 0.0105,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            136,
+            0,
+            212,
+            165,
+            145
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.008326356,
+          "latency_ms_p95": 0.008963149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            131,
+            112,
+            191,
+            188
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.008146188,
+          "latency_ms_p95": 0.010335099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            198,
+            136,
+            212,
+            197,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.008117840000000001,
+          "latency_ms_p95": 0.008458,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            134,
+            208,
+            212,
+            0,
+            195
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.00844794,
+          "latency_ms_p95": 0.010172299999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            208,
+            58,
+            56,
+            61,
+            55
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.008307634,
+          "latency_ms_p95": 0.008667,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.008467434000000001,
+          "latency_ms_p95": 0.009592299999999993,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            200,
+            202,
+            193,
+            205
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.008077055999999999,
+          "latency_ms_p95": 0.00833305,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            168,
+            190,
+            161,
+            177
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.008470522,
+          "latency_ms_p95": 0.009966349999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            133,
+            157,
+            138,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.00797935,
+          "latency_ms_p95": 0.008417,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            168,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.008254664,
+          "latency_ms_p95": 0.009252049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.008276806000000001,
+          "latency_ms_p95": 0.009333,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            207,
+            178,
+            162,
+            145,
+            164
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.008312374,
+          "latency_ms_p95": 0.009381249999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.00846763,
+          "latency_ms_p95": 0.009429499999999988,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.008288464,
+          "latency_ms_p95": 0.010417,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            0,
+            136,
+            5,
+            192,
+            174
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.008330948,
+          "latency_ms_p95": 0.00895805,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            0,
+            133,
+            174,
+            5,
+            8
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.008308376000000001,
+          "latency_ms_p95": 0.010043099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            0,
+            174,
+            191,
+            5,
+            7
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.008164887999999999,
+          "latency_ms_p95": 0.009004199999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            206,
+            212,
+            134,
+            197,
+            10
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.008306388,
+          "latency_ms_p95": 0.010377099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            170,
+            171,
+            204,
+            0,
+            137
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.008147907999999999,
+          "latency_ms_p95": 0.008625,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            144,
+            206,
+            211,
+            159,
+            7
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.008471676,
+          "latency_ms_p95": 0.009841349999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            189,
+            186,
+            107,
+            196
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.00806227,
+          "latency_ms_p95": 0.008838099999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            211,
+            27,
+            154,
+            1,
+            135
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.00829543,
+          "latency_ms_p95": 0.008792,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            133,
+            186,
+            154,
+            189
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.008101098000000001,
+          "latency_ms_p95": 0.008669049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            209,
+            134,
+            73,
+            212,
+            206
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.008187634,
+          "latency_ms_p95": 0.008965199999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            200,
+            134,
+            201,
+            57
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.008294262,
+          "latency_ms_p95": 0.008666,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            209,
+            134,
+            201,
+            135,
+            208
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.008057200000000002,
+          "latency_ms_p95": 0.009169049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            133,
+            157,
+            187,
+            185,
+            168
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.008389323999999998,
+          "latency_ms_p95": 0.008708,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            133,
+            103,
+            140,
+            141,
+            99
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.008101256,
+          "latency_ms_p95": 0.009216349999999991,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.00827022,
+          "latency_ms_p95": 0.008544049999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            191,
+            40,
+            122,
+            107,
+            27
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.008476627999999998,
+          "latency_ms_p95": 0.009875,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            207,
+            164,
+            191,
+            210,
+            145
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.008056785999999998,
+          "latency_ms_p95": 0.008585099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            157,
+            210,
+            1,
+            138,
+            190
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.008437683999999999,
+          "latency_ms_p95": 0.009627099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            157,
+            210,
+            185,
+            138,
+            168
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.008006298,
+          "latency_ms_p95": 0.008417,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 0.0
+        }
+      ],
+      "latency_ms_mean": 0.008256668756756758,
+      "latency_ms_p95": 0.00925,
+      "agreement_at_5": 0.8918918918918917,
+      "unstable_queries": 0,
+      "build_seconds": 0.00898841704474762,
+      "index_footprint_bytes": 397615,
+      "faiss_file_bytes": 397615,
+      "bm25_structure_bytes": 0,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69140480,
+        "rss_after_index_load_bytes": 69599232,
+        "rss_after_100_searches_bytes": 72089600,
+        "incremental_rss_after_load_bytes": 458752,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    },
+    {
+      "config": "HNSW ef=16",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.004316798,
+          "latency_ms_p95": 0.00454105,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.004808848,
+          "latency_ms_p95": 0.005875,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.004776137999999999,
+          "latency_ms_p95": 0.004833049999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.0046012579999999996,
+          "latency_ms_p95": 0.005544049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.004857954,
+          "latency_ms_p95": 0.005877049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.004564088,
+          "latency_ms_p95": 0.004666,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.0041587180000000005,
+          "latency_ms_p95": 0.0044610499999999985,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.00429386,
+          "latency_ms_p95": 0.0050082999999999924,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            208,
+            58,
+            75,
+            63,
+            166
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.004985445999999999,
+          "latency_ms_p95": 0.005833,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            208,
+            150,
+            7,
+            174,
+            197
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.00445749,
+          "latency_ms_p95": 0.004669049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.00441951,
+          "latency_ms_p95": 0.0054610499999999985,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.00460775,
+          "latency_ms_p95": 0.005585099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.004597782000000001,
+          "latency_ms_p95": 0.005875,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.004303434000000001,
+          "latency_ms_p95": 0.004544049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.004484284000000001,
+          "latency_ms_p95": 0.005666,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.0047341,
+          "latency_ms_p95": 0.005792,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.004370944000000001,
+          "latency_ms_p95": 0.004625,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.004412608,
+          "latency_ms_p95": 0.004666,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.004713523999999999,
+          "latency_ms_p95": 0.004958,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.005088524,
+          "latency_ms_p95": 0.005460099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.004300176,
+          "latency_ms_p95": 0.004417,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.004564610000000001,
+          "latency_ms_p95": 0.004875,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.004742186000000001,
+          "latency_ms_p95": 0.005708,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            159,
+            144,
+            206,
+            211,
+            147
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.004119028,
+          "latency_ms_p95": 0.005209,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            211,
+            189,
+            186,
+            196,
+            1
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.004313948,
+          "latency_ms_p95": 0.004502049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            211,
+            1,
+            27,
+            154,
+            209
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.0051507079999999995,
+          "latency_ms_p95": 0.005504149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.004965704,
+          "latency_ms_p95": 0.005543099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.005339506,
+          "latency_ms_p95": 0.005458,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.0050759460000000005,
+          "latency_ms_p95": 0.005333,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.005109418,
+          "latency_ms_p95": 0.005458,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.004323022,
+          "latency_ms_p95": 0.004458,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.004452376000000001,
+          "latency_ms_p95": 0.005504149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.00455194,
+          "latency_ms_p95": 0.005460099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.0045980280000000005,
+          "latency_ms_p95": 0.004833049999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.0042994140000000005,
+          "latency_ms_p95": 0.00454105,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.00448602,
+          "latency_ms_p95": 0.004752049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.004496330000000001,
+          "latency_ms_p95": 0.005294049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 0.0
+        }
+      ],
+      "latency_ms_mean": 0.004606524810810811,
+      "latency_ms_p95": 0.005375,
+      "agreement_at_5": 0.9675675675675675,
+      "unstable_queries": 0,
+      "build_seconds": 0.0044492080342024565,
+      "index_footprint_bytes": 384990,
+      "faiss_file_bytes": 384990,
+      "bm25_structure_bytes": 0,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69206016,
+        "rss_after_index_load_bytes": 69599232,
+        "rss_after_100_searches_bytes": 72073216,
+        "incremental_rss_after_load_bytes": 393216,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    },
+    {
+      "config": "HNSW ef=32",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.005808548,
+          "latency_ms_p95": 0.006715199999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.005435036,
+          "latency_ms_p95": 0.00554105,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.006335522000000001,
+          "latency_ms_p95": 0.007961049999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.006123338000000001,
+          "latency_ms_p95": 0.006375,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.005846434,
+          "latency_ms_p95": 0.006294049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.006047838000000001,
+          "latency_ms_p95": 0.007668099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.005861872000000001,
+          "latency_ms_p95": 0.006083,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.005972366000000001,
+          "latency_ms_p95": 0.006919099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.006316282000000001,
+          "latency_ms_p95": 0.007752099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.006031002000000001,
+          "latency_ms_p95": 0.006333,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.006196840000000001,
+          "latency_ms_p95": 0.007625,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.0054611780000000006,
+          "latency_ms_p95": 0.005625,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.005741422,
+          "latency_ms_p95": 0.006133349999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.005728782000000001,
+          "latency_ms_p95": 0.006588149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.005651926000000001,
+          "latency_ms_p95": 0.007209,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.0055985060000000005,
+          "latency_ms_p95": 0.005875,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.005745274,
+          "latency_ms_p95": 0.006585099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.005855452000000001,
+          "latency_ms_p95": 0.006295199999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.005833108,
+          "latency_ms_p95": 0.006252049999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.0061868240000000005,
+          "latency_ms_p95": 0.0074704999999999884,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.005679604,
+          "latency_ms_p95": 0.006044049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.0055141,
+          "latency_ms_p95": 0.006546149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.005610790000000001,
+          "latency_ms_p95": 0.005961049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.005597558,
+          "latency_ms_p95": 0.005877049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.0062921140000000006,
+          "latency_ms_p95": 0.007583,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.0059170080000000005,
+          "latency_ms_p95": 0.006502049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.006115504000000002,
+          "latency_ms_p95": 0.006417,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.006594506000000002,
+          "latency_ms_p95": 0.008125,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.006450126000000001,
+          "latency_ms_p95": 0.0075,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.006256704000000001,
+          "latency_ms_p95": 0.006462199999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.005996070000000001,
+          "latency_ms_p95": 0.007375,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.006113786,
+          "latency_ms_p95": 0.006800299999999993,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.005772702000000001,
+          "latency_ms_p95": 0.006502099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.006160136000000002,
+          "latency_ms_p95": 0.0066752999999999925,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.005779618000000001,
+          "latency_ms_p95": 0.005833049999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.005693452000000001,
+          "latency_ms_p95": 0.006723549999999986,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.005710238,
+          "latency_ms_p95": 0.005961049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 0.0
+        }
+      ],
+      "latency_ms_mean": 0.005919772054054053,
+      "latency_ms_p95": 0.00675,
+      "agreement_at_5": 1.0,
+      "unstable_queries": 0,
+      "build_seconds": 0.0044492080342024565,
+      "index_footprint_bytes": 384990,
+      "faiss_file_bytes": 384990,
+      "bm25_structure_bytes": 0,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69091328,
+        "rss_after_index_load_bytes": 69468160,
+        "rss_after_100_searches_bytes": 71942144,
+        "incremental_rss_after_load_bytes": 376832,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    },
+    {
+      "config": "HNSW ef=64",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.008177028,
+          "latency_ms_p95": 0.009422249999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.008453991999999999,
+          "latency_ms_p95": 0.009925299999999993,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.008420734,
+          "latency_ms_p95": 0.008961049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.008636112000000001,
+          "latency_ms_p95": 0.009708,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.007981054000000001,
+          "latency_ms_p95": 0.008416,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.00839169,
+          "latency_ms_p95": 0.009596449999999989,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.008201100000000001,
+          "latency_ms_p95": 0.009674349999999991,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.008049210000000001,
+          "latency_ms_p95": 0.009337199999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.008730271999999999,
+          "latency_ms_p95": 0.009125,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.008529032,
+          "latency_ms_p95": 0.009377049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.008902166,
+          "latency_ms_p95": 0.010129149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.008128429999999999,
+          "latency_ms_p95": 0.009629149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.008477364,
+          "latency_ms_p95": 0.009004149999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.00860945,
+          "latency_ms_p95": 0.010460099999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.008135258000000001,
+          "latency_ms_p95": 0.008419049999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.008348887999999999,
+          "latency_ms_p95": 0.00970805,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.008235268000000002,
+          "latency_ms_p95": 0.008794049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.008459617999999999,
+          "latency_ms_p95": 0.010462149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.008218802,
+          "latency_ms_p95": 0.00883305,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.00828825,
+          "latency_ms_p95": 0.008921149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.008222976,
+          "latency_ms_p95": 0.008708,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.00828322,
+          "latency_ms_p95": 0.0105,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.007948397999999999,
+          "latency_ms_p95": 0.008675299999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.008227301999999999,
+          "latency_ms_p95": 0.010459,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.008256096,
+          "latency_ms_p95": 0.008708,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.008689609999999999,
+          "latency_ms_p95": 0.009962199999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.008441764000000001,
+          "latency_ms_p95": 0.009627049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.008727945999999999,
+          "latency_ms_p95": 0.010879149999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.008292134000000001,
+          "latency_ms_p95": 0.008960099999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.008454192000000001,
+          "latency_ms_p95": 0.008794049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.008490368,
+          "latency_ms_p95": 0.010337149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.008464734,
+          "latency_ms_p95": 0.009046149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.008479278000000002,
+          "latency_ms_p95": 0.010629149999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.008424261999999998,
+          "latency_ms_p95": 0.00930239999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.008431919999999997,
+          "latency_ms_p95": 0.009375,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.008579348,
+          "latency_ms_p95": 0.009137499999999988,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.008626946,
+          "latency_ms_p95": 0.009754149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 0.0
+        }
+      ],
+      "latency_ms_mean": 0.008389573297297297,
+      "latency_ms_p95": 0.0095,
+      "agreement_at_5": 1.0,
+      "unstable_queries": 0,
+      "build_seconds": 0.0044492080342024565,
+      "index_footprint_bytes": 384990,
+      "faiss_file_bytes": 384990,
+      "bm25_structure_bytes": 0,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69255168,
+        "rss_after_index_load_bytes": 69632000,
+        "rss_after_100_searches_bytes": 72056832,
+        "incremental_rss_after_load_bytes": 376832,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    },
+    {
+      "config": "HNSW ef=128",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.015691188000000002,
+          "latency_ms_p95": 0.01909554999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.015464120000000001,
+          "latency_ms_p95": 0.019002099999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.015463528,
+          "latency_ms_p95": 0.019417,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.015803846,
+          "latency_ms_p95": 0.018918149999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.015493600000000001,
+          "latency_ms_p95": 0.019046149999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.015238074,
+          "latency_ms_p95": 0.017179449999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.015241429999999999,
+          "latency_ms_p95": 0.017754149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.015164632,
+          "latency_ms_p95": 0.01780029999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.015297116,
+          "latency_ms_p95": 0.01841605,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.015317191999999999,
+          "latency_ms_p95": 0.017308649999999984,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.015156018,
+          "latency_ms_p95": 0.017508299999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.015178823999999999,
+          "latency_ms_p95": 0.018544049999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.015318034000000001,
+          "latency_ms_p95": 0.016417,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.015513616,
+          "latency_ms_p95": 0.01750415,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.015333362,
+          "latency_ms_p95": 0.018377049999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.015728414,
+          "latency_ms_p95": 0.018337149999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.015220126,
+          "latency_ms_p95": 0.017176449999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.01534844,
+          "latency_ms_p95": 0.01825829999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.015145698,
+          "latency_ms_p95": 0.016794049999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.01527303,
+          "latency_ms_p95": 0.017258349999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.015081934,
+          "latency_ms_p95": 0.01709549999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.015127346000000002,
+          "latency_ms_p95": 0.018087149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.015356693999999999,
+          "latency_ms_p95": 0.018792,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 0.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.015202642,
+          "latency_ms_p95": 0.017849649999999988,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.015430692000000001,
+          "latency_ms_p95": 0.0172521,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.015230122000000002,
+          "latency_ms_p95": 0.016752049999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.015555810000000002,
+          "latency_ms_p95": 0.019170199999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.015363134,
+          "latency_ms_p95": 0.01755239999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.015414966,
+          "latency_ms_p95": 0.018169099999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.015602713999999998,
+          "latency_ms_p95": 0.018090249999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.01545391,
+          "latency_ms_p95": 0.018087199999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.015227791999999999,
+          "latency_ms_p95": 0.018091349999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.01546846,
+          "latency_ms_p95": 0.018545199999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.015614854000000001,
+          "latency_ms_p95": 0.01881279999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.01500249,
+          "latency_ms_p95": 0.016180599999999986,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.015181252000000001,
+          "latency_ms_p95": 0.017133349999999995,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.015454184000000001,
+          "latency_ms_p95": 0.018087149999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 0.0
+        }
+      ],
+      "latency_ms_mean": 0.015355656324324323,
+      "latency_ms_p95": 0.018083,
+      "agreement_at_5": 1.0,
+      "unstable_queries": 0,
+      "build_seconds": 0.0044492080342024565,
+      "index_footprint_bytes": 384990,
+      "faiss_file_bytes": 384990,
+      "bm25_structure_bytes": 0,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69107712,
+        "rss_after_index_load_bytes": 69484544,
+        "rss_after_100_searches_bytes": 71909376,
+        "incremental_rss_after_load_bytes": 376832,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    },
+    {
+      "config": "Hybrid FlatIP+BM25",
+      "per_query": [
+        {
+          "query_index": 0,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            212,
+            205,
+            181,
+            179,
+            204
+          ],
+          "flatip_ids": [
+            212,
+            181,
+            205,
+            197,
+            1
+          ],
+          "latency_ms_mean": 0.066315868,
+          "latency_ms_p95": 0.07342949999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Retrieval-Augmented Generation?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 1,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            212,
+            133,
+            184,
+            210,
+            168
+          ],
+          "flatip_ids": [
+            184,
+            187,
+            210,
+            180,
+            161
+          ],
+          "latency_ms_mean": 0.10485686400000001,
+          "latency_ms_p95": 0.11367435,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is RAG not a guarantee against hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 2,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            212,
+            180,
+            179,
+            191,
+            135
+          ],
+          "flatip_ids": [
+            212,
+            200,
+            180,
+            184,
+            193
+          ],
+          "latency_ms_mean": 0.041311796,
+          "latency_ms_p95": 0.04556184999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Can RAG run offline?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 3,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            200,
+            212,
+            135,
+            195,
+            184
+          ],
+          "flatip_ids": [
+            200,
+            212,
+            75,
+            184,
+            195
+          ],
+          "latency_ms_mean": 0.096093296,
+          "latency_ms_p95": 0.10617325,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does the typical RAG pipeline consist of?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 4,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            136,
+            209,
+            0,
+            212,
+            5
+          ],
+          "flatip_ids": [
+            136,
+            0,
+            212,
+            165,
+            209
+          ],
+          "latency_ms_mean": 0.088361826,
+          "latency_ms_p95": 0.09805349999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a sentence embedding?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 5,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            136,
+            131,
+            132,
+            134,
+            112
+          ],
+          "flatip_ids": [
+            136,
+            131,
+            112,
+            188,
+            191
+          ],
+          "latency_ms_mean": 0.06712956,
+          "latency_ms_p95": 0.0732982,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is all-MiniLM-L6-v2?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 6,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            136,
+            208,
+            212,
+            134,
+            209
+          ],
+          "flatip_ids": [
+            136,
+            198,
+            212,
+            197,
+            209
+          ],
+          "latency_ms_mean": 0.052628198,
+          "latency_ms_p95": 0.058627099999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why are embeddings normalized before indexing?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 7,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            136,
+            5,
+            131,
+            208,
+            134
+          ],
+          "flatip_ids": [
+            134,
+            135,
+            0,
+            212,
+            208
+          ],
+          "latency_ms_mean": 0.0778724,
+          "latency_ms_p95": 0.08830449999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is semantic search better than keyword search?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 8,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            208,
+            134,
+            131,
+            132,
+            135
+          ],
+          "flatip_ids": [
+            208,
+            58,
+            55,
+            61,
+            75
+          ],
+          "latency_ms_mean": 0.05141878200000001,
+          "latency_ms_p95": 0.058167,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is FAISS?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 9,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            208,
+            134,
+            135,
+            212,
+            131
+          ],
+          "flatip_ids": [
+            208,
+            150,
+            7,
+            141,
+            174
+          ],
+          "latency_ms_mean": 0.035610232,
+          "latency_ms_p95": 0.040125,
+          "ids_stable_across_timed_loop": true,
+          "question": "What index types does FAISS provide?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 10,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            208,
+            212,
+            134,
+            135,
+            192
+          ],
+          "flatip_ids": [
+            208,
+            202,
+            200,
+            193,
+            205
+          ],
+          "latency_ms_mean": 0.066531854,
+          "latency_ms_p95": 0.0741681,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does a FAISS index update automatically when documents change?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 11,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            210,
+            177,
+            168,
+            190,
+            11
+          ],
+          "flatip_ids": [
+            210,
+            168,
+            190,
+            177,
+            161
+          ],
+          "latency_ms_mean": 0.11057034,
+          "latency_ms_p95": 0.12134134999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is hallucination in large language models?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 12,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            210,
+            175,
+            174,
+            133,
+            180
+          ],
+          "flatip_ids": [
+            210,
+            133,
+            138,
+            157,
+            185
+          ],
+          "latency_ms_mean": 0.125104372,
+          "latency_ms_p95": 0.13829105,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the difference between intrinsic and extrinsic hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 13,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            210,
+            133,
+            184,
+            19,
+            134
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            133,
+            168,
+            185
+          ],
+          "latency_ms_mean": 0.032125513999999994,
+          "latency_ms_p95": 0.037383299999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "What causes hallucination?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 14,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            157,
+            137,
+            133,
+            210,
+            144
+          ],
+          "flatip_ids": [
+            210,
+            157,
+            190,
+            133,
+            185
+          ],
+          "latency_ms_mean": 0.07010295999999999,
+          "latency_ms_p95": 0.07900829999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can hallucination be mitigated?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 15,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            207,
+            167,
+            178,
+            161,
+            204
+          ],
+          "flatip_ids": [
+            207,
+            204,
+            178,
+            145,
+            164
+          ],
+          "latency_ms_mean": 0.064657416,
+          "latency_ms_p95": 0.07004824999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Natural Language Inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 16,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            207,
+            168,
+            177,
+            171,
+            185
+          ],
+          "flatip_ids": [
+            168,
+            207,
+            190,
+            185,
+            171
+          ],
+          "latency_ms_mean": 0.104183732,
+          "latency_ms_p95": 0.12553299999999992,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is NLI used for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 17,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            207,
+            198,
+            134,
+            172,
+            136
+          ],
+          "flatip_ids": [
+            207,
+            136,
+            172,
+            198,
+            191
+          ],
+          "latency_ms_mean": 0.09305700200000001,
+          "latency_ms_p95": 0.11227084999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a cross-encoder NLI model?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 18,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            0,
+            135,
+            132,
+            134,
+            140
+          ],
+          "flatip_ids": [
+            0,
+            136,
+            5,
+            173,
+            192
+          ],
+          "latency_ms_mean": 0.052147306,
+          "latency_ms_p95": 0.060004799999999955,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is BERTScore?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 19,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            0,
+            133,
+            8,
+            135,
+            174
+          ],
+          "flatip_ids": [
+            0,
+            133,
+            175,
+            174,
+            5
+          ],
+          "latency_ms_mean": 0.053695138,
+          "latency_ms_p95": 0.06113539999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "How is BERTScore F1 computed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 20,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            0,
+            135,
+            212,
+            184,
+            7
+          ],
+          "flatip_ids": [
+            0,
+            174,
+            131,
+            5,
+            191
+          ],
+          "latency_ms_mean": 0.063442642,
+          "latency_ms_p95": 0.07291249999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "Does BERTScore need training data or internet access?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 21,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            206,
+            134,
+            179,
+            212,
+            199
+          ],
+          "flatip_ids": [
+            206,
+            212,
+            10,
+            134,
+            197
+          ],
+          "latency_ms_mean": 0.12801949999999998,
+          "latency_ms_p95": 0.1541899,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is XAI in a retrieval system?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 22,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            206,
+            0,
+            171,
+            140,
+            170
+          ],
+          "flatip_ids": [
+            171,
+            170,
+            0,
+            204,
+            137
+          ],
+          "latency_ms_mean": 0.057593042,
+          "latency_ms_p95": 0.06375625,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is word-level saliency?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 23,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            206,
+            134,
+            133,
+            197,
+            180
+          ],
+          "flatip_ids": [
+            159,
+            144,
+            206,
+            211,
+            7
+          ],
+          "latency_ms_mean": 0.050465038,
+          "latency_ms_p95": 0.05529315,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is provenance scoring?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 24,
+          "agreement_at_5": 0.2,
+          "retrieved_ids": [
+            211,
+            135,
+            207,
+            206,
+            133
+          ],
+          "flatip_ids": [
+            211,
+            189,
+            186,
+            196,
+            107
+          ],
+          "latency_ms_mean": 0.09146898199999999,
+          "latency_ms_p95": 0.1003372,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is the three-state decision scheme?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 25,
+          "agreement_at_5": 1.0,
+          "retrieved_ids": [
+            211,
+            27,
+            1,
+            186,
+            154
+          ],
+          "flatip_ids": [
+            211,
+            1,
+            27,
+            154,
+            186
+          ],
+          "latency_ms_mean": 0.078916108,
+          "latency_ms_p95": 0.08792319999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "When is an entire response blocked?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 26,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            211,
+            133,
+            206,
+            135,
+            209
+          ],
+          "flatip_ids": [
+            211,
+            133,
+            154,
+            189,
+            186
+          ],
+          "latency_ms_mean": 0.06917611400000001,
+          "latency_ms_p95": 0.07875625,
+          "ids_stable_across_timed_loop": true,
+          "question": "Are the decision thresholds fixed?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 27,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            209,
+            134,
+            135,
+            206,
+            133
+          ],
+          "flatip_ids": [
+            209,
+            73,
+            134,
+            29,
+            212
+          ],
+          "latency_ms_mean": 0.108111936,
+          "latency_ms_p95": 0.11571010000000001,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is chunking and why does it matter?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 28,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            209,
+            200,
+            134,
+            195,
+            201
+          ],
+          "flatip_ids": [
+            209,
+            200,
+            201,
+            134,
+            57
+          ],
+          "latency_ms_mean": 0.083812952,
+          "latency_ms_p95": 0.09059549999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is a common chunking configuration?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 29,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            209,
+            134,
+            201,
+            195,
+            5
+          ],
+          "flatip_ids": [
+            209,
+            201,
+            134,
+            202,
+            173
+          ],
+          "latency_ms_mean": 0.056185566,
+          "latency_ms_p95": 0.0635431,
+          "ids_stable_across_timed_loop": true,
+          "question": "What alternatives to fixed-size chunking exist?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 30,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            133,
+            176,
+            185,
+            177,
+            174
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            187,
+            185,
+            170
+          ],
+          "latency_ms_mean": 0.10720393800000001,
+          "latency_ms_p95": 0.11780349999999999,
+          "ids_stable_across_timed_loop": true,
+          "question": "What do precision and recall measure for hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 31,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            133,
+            135,
+            0,
+            103,
+            169
+          ],
+          "flatip_ids": [
+            133,
+            103,
+            140,
+            100,
+            152
+          ],
+          "latency_ms_mean": 0.028942692000000003,
+          "latency_ms_p95": 0.032333,
+          "ids_stable_across_timed_loop": true,
+          "question": "What does AUROC measure?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 32,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            133,
+            210,
+            168,
+            185,
+            184
+          ],
+          "flatip_ids": [
+            133,
+            157,
+            210,
+            168,
+            187
+          ],
+          "latency_ms_mean": 0.11756224,
+          "latency_ms_p95": 0.12880239999999998,
+          "ids_stable_across_timed_loop": true,
+          "question": "Which error is more costly in hallucination detection?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 33,
+          "agreement_at_5": 0.6,
+          "retrieved_ids": [
+            191,
+            134,
+            122,
+            212,
+            40
+          ],
+          "flatip_ids": [
+            191,
+            122,
+            40,
+            107,
+            27
+          ],
+          "latency_ms_mean": 0.048900698,
+          "latency_ms_p95": 0.0565452,
+          "ids_stable_across_timed_loop": true,
+          "question": "What is Ollama?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 34,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            191,
+            208,
+            207,
+            178,
+            134
+          ],
+          "flatip_ids": [
+            207,
+            164,
+            191,
+            210,
+            190
+          ],
+          "latency_ms_mean": 0.10918404200000001,
+          "latency_ms_p95": 0.12124969999999996,
+          "ids_stable_across_timed_loop": true,
+          "question": "What are the trade-offs of local inference?",
+          "gold_source_recall_at_5": 1.0
+        },
+        {
+          "query_index": 35,
+          "agreement_at_5": 0.8,
+          "retrieved_ids": [
+            1,
+            157,
+            210,
+            185,
+            183
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            1,
+            190,
+            183
+          ],
+          "latency_ms_mean": 0.106068478,
+          "latency_ms_p95": 0.11591044999999997,
+          "ids_stable_across_timed_loop": true,
+          "question": "Why is prompt engineering not enough to prevent hallucination?",
+          "gold_source_recall_at_5": 0.5
+        },
+        {
+          "query_index": 36,
+          "agreement_at_5": 0.4,
+          "retrieved_ids": [
+            210,
+            2,
+            185,
+            1,
+            170
+          ],
+          "flatip_ids": [
+            157,
+            210,
+            185,
+            138,
+            190
+          ],
+          "latency_ms_mean": 0.052200088,
+          "latency_ms_p95": 0.056631249999999994,
+          "ids_stable_across_timed_loop": true,
+          "question": "How can prompts reduce hallucination?",
+          "gold_source_recall_at_5": 1.0
+        }
+      ],
+      "latency_ms_mean": 0.07597374356756756,
+      "latency_ms_p95": 0.121458,
+      "agreement_at_5": 0.5135135135135135,
+      "unstable_queries": 0,
+      "build_seconds": 0.019643332925625145,
+      "index_footprint_bytes": 910304,
+      "faiss_file_bytes": 327213,
+      "bm25_structure_bytes": 583091,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69140480,
+        "rss_after_index_load_bytes": 69402624,
+        "rss_after_100_searches_bytes": 71712768,
+        "incremental_rss_after_load_bytes": 262144,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "memory_procedure": {
+        "index_footprint": "serialized FAISS file size; hybrid adds in-process BM25 posting-list bytes",
+        "runtime_memory": "RSS of a fresh Python process after faiss.read_index minus RSS after import, then again after 100 searches",
+        "threads": "OMP_NUM_THREADS=1 and faiss.omp_set_num_threads(1)"
+      }
+    }
+  ],
+  "bm25_build_seconds": 0.019576957973185927,
+  "hnsw_build_seconds": 0.0044492080342024565,
+  "ivf_build_seconds": 0.00898841704474762,
+  "flat_build_seconds": 6.637495243921876e-05
+}
