@@ -1,0 +1,51 @@
+{
+  "split": "train",
+  "responses": 800,
+  "claims": 5911,
+  "hallucinated_claims": 605,
+  "supported_claims": 5306,
+  "window_size": 2,
+  "top_n": 4,
+  "seconds": 415.3,
+  "metrics_at_support_threshold_0.5": {
+    "NLI entailment": {
+      "precision": 0.1408,
+      "recall": 0.8182,
+      "f1": 0.2402,
+      "accuracy": 0.4703,
+      "tp": 495,
+      "fp": 3021,
+      "fn": 110,
+      "tn": 2285,
+      "support": 5911,
+      "balanced_accuracy": 0.6244,
+      "auroc": 0.6695
+    },
+    "BERTScore": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.8976,
+      "tp": 0,
+      "fp": 0,
+      "fn": 605,
+      "tn": 5306,
+      "support": 5911,
+      "balanced_accuracy": 0.5,
+      "auroc": 0.6585
+    },
+    "Cosine": {
+      "precision": 0.1806,
+      "recall": 0.3901,
+      "f1": 0.2469,
+      "accuracy": 0.7564,
+      "tp": 236,
+      "fp": 1071,
+      "fn": 369,
+      "tn": 4235,
+      "support": 5911,
+      "balanced_accuracy": 0.5941,
+      "auroc": 0.6542
+    }
+  }
+}

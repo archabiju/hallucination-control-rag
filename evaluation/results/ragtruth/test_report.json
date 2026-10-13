@@ -1,0 +1,52 @@
+{
+  "split": "test",
+  "responses": 400,
+  "claims": 3031,
+  "hallucinated_claims": 232,
+  "supported_claims": 2799,
+  "window_size": 2,
+  "top_n": 4,
+  "nli_model": "cross-encoder/nli-deberta-v3-small",
+  "seconds": 235.0,
+  "metrics_at_support_threshold_0.5": {
+    "NLI entailment": {
+      "precision": 0.1056,
+      "recall": 0.7974,
+      "f1": 0.1865,
+      "accuracy": 0.4675,
+      "tp": 185,
+      "fp": 1567,
+      "fn": 47,
+      "tn": 1232,
+      "support": 3031,
+      "balanced_accuracy": 0.6188,
+      "auroc": 0.668
+    },
+    "BERTScore": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.9235,
+      "tp": 0,
+      "fp": 0,
+      "fn": 232,
+      "tn": 2799,
+      "support": 3031,
+      "balanced_accuracy": 0.5,
+      "auroc": 0.6834
+    },
+    "Cosine": {
+      "precision": 0.1729,
+      "recall": 0.4569,
+      "f1": 0.2509,
+      "accuracy": 0.7912,
+      "tp": 106,
+      "fp": 507,
+      "fn": 126,
+      "tn": 2292,
+      "support": 3031,
+      "balanced_accuracy": 0.6379,
+      "auroc": 0.7195
+    }
+  }
+}

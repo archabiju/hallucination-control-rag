@@ -8,6 +8,7 @@ Nothing here is simulated: each claim is scored by the same modules the live pip
 uses. Output: evaluation/results/review2_report.json, review2_tables.md, review2_*.png.
 No LLM / Ollama needed (the claims are given, not generated).
 """
+import argparse
 import sys, json, time
 from pathlib import Path
 import numpy as np
@@ -24,8 +25,28 @@ from evaluation.metrics import (precision_recall_f1, auroc, recall_at_k, mrr, nd
 OUT = ROOT / "evaluation" / "results"
 OUT.mkdir(parents=True, exist_ok=True)
 TEST = json.loads((ROOT / "evaluation" / "test_set.json").read_text())
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--output-prefix",
+    default="review2",
+    help="Result filename prefix; use a new prefix to preserve earlier runs.",
+)
+parser.add_argument("--top-k", type=int, help="Override retrieval top_k for an experiment.")
+parser.add_argument(
+    "--window-top-n",
+    type=int,
+    help="Override the number of evidence windows verified per claim.",
+)
+parser.add_argument("--nli-model", help="Override the configured NLI checkpoint.")
+ARGS = parser.parse_args()
 
 p = RAGHallucinationPipeline()
+if ARGS.top_k is not None:
+    p.top_k = ARGS.top_k
+if ARGS.window_top_n is not None:
+    p.win_top_n = ARGS.window_top_n
+if ARGS.nli_model is not None:
+    p.nli_model = ARGS.nli_model
 p.index_documents()
 p._load_models()
 if not p.faiss_store.is_loaded():
@@ -113,6 +134,8 @@ for item in TEST:
 report = {
     "meta": {"questions": len(TEST), "claims": len(rows), "hallucinated": int(y.sum()),
              "supported": int((1 - y).sum()), "corpus_chunks": p.faiss_store.num_chunks,
+             "nli_model": p.nli_model, "nli_label_mapping": p.nli_detector.label_to_idx,
+             "top_k": p.top_k, "window_size": p.win_size, "window_top_n": p.win_top_n,
              "weights_nli_bert_cos": w, "thresholds": [p.high_thr, p.medium_thr],
              "eval_seconds": round(elapsed, 1), "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")},
     "overall": overall,
@@ -124,10 +147,10 @@ report = {
     "mean_bertscore_f1_supported": round(float(S["bert"][y == 0].mean()), 4),
     "per_claim": rows,
 }
-(OUT / "review2_report.json").write_text(json.dumps(report, indent=2))
+(OUT / f"{ARGS.output_prefix}_report.json").write_text(json.dumps(report, indent=2))
 
-plot_roc_curve(y.tolist(), (1 - S["support"]).tolist(), str(OUT / "review2_roc.png"))
-plot_support_score_distribution(S["support"].tolist(), y.tolist(), str(OUT / "review2_score_dist.png"))
+plot_roc_curve(y.tolist(), (1 - S["support"]).tolist(), str(OUT / f"{ARGS.output_prefix}_roc.png"))
+plot_support_score_distribution(S["support"].tolist(), y.tolist(), str(OUT / f"{ARGS.output_prefix}_score_dist.png"))
 
 md = ["# Review 2 — measured results\n",
       f"{len(TEST)} questions / {len(rows)} labelled claims ({int(y.sum())} hallucinated) · "
@@ -146,5 +169,5 @@ for k, d in cls_dist.items():
     md.append(f"| {k} | {d['SUPPORTED']} | {d['WEAKLY_SUPPORTED']} | {d['HALLUCINATED']} |")
 r = report["retrieval"]
 md += ["\n## Retrieval (doc-level, k=5)\n", f"Recall@5 {r['recall@5']} · MRR {r['mrr']} · NDCG@5 {r['ndcg@5']} · Hit@5 {r['hit@5']}"]
-(OUT / "review2_tables.md").write_text("\n".join(md))
+(OUT / f"{ARGS.output_prefix}_tables.md").write_text("\n".join(md))
 print("\n".join(md))

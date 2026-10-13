@@ -174,7 +174,7 @@ python src/pipeline.py query
 
 ### Run evaluation
 ```bash
-python evaluation/evaluator.py
+python evaluation/run_review2_eval.py --output-prefix review3_corrected_nli
 ```
 
 ---
@@ -220,10 +220,30 @@ The evaluation module computes:
 
 Run evaluation:
 ```bash
-python evaluation/evaluator.py
+python evaluation/run_review2_eval.py --output-prefix review3_corrected_nli
 ```
 
 Results and plots are saved to `evaluation/results/`.
+
+The original Review 2 NLI run used an incorrect label order. The detector now
+reads `id2label` from the checkpoint (`contradiction=0`, `entailment=1`,
+`neutral=2`). On the existing 109 claims, corrected NLI-only AUROC is 0.935
+and the three-signal AUROC is 0.897. Fusion weights do not control a
+component's AUROC.
+
+For a larger independently annotated evaluation:
+
+```bash
+python evaluation/build_ragtruth_benchmark.py
+python evaluation/run_ragtruth_eval.py --split train
+python evaluation/run_ragtruth_eval.py --split test
+python evaluation/calibrate_ragtruth_fusion.py
+```
+
+This creates an 800-response calibration set and a disjoint held-out
+400-response test set from RAGTruth. Do not tune weights or thresholds on the
+test output. See `docs/12_ORGANIZATIONAL_CUSTOMIZATION.md` for adding
+organization documents and for the scope of customization claims.
 
 ---
 

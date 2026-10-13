@@ -40,6 +40,7 @@ class BERTScoreDetector:
         self.model_type = model_type
         self.device = device
         self._bert_score_available = False
+        self._scorer = None
 
         try:
             import bert_score
@@ -50,6 +51,21 @@ class BERTScoreDetector:
             print("[WARN] bert-score not installed. Using cosine fallback.")
             print("       Run: pip install bert-score")
             self._bert_score_available = False
+
+    def _get_scorer(self):
+        """Load BERTScore's transformer once and reuse it for every claim."""
+        if self._scorer is None:
+            import torch
+
+            device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
+            self._scorer = self._bert_score.BERTScorer(
+                lang=self.lang,
+                model_type=self.model_type,
+                device=device,
+                idf=False,
+                rescale_with_baseline=False,
+            )
+        return self._scorer
 
     def score_sentence(
         self,
@@ -91,9 +107,6 @@ class BERTScoreDetector:
     ) -> Dict[str, Any]:
         """Compute BERTScore using the bert_score library."""
         try:
-            import torch
-            device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
-
             best_f1 = 0.0
             best_p = 0.0
             best_r = 0.0
@@ -101,13 +114,9 @@ class BERTScoreDetector:
 
             # Batch inputs to prevent bert_score from reloading the model multiple times
             cands = [candidate] * len(references)
-            P, R, F1 = self._bert_score.score(
+            P, R, F1 = self._get_scorer().score(
                 cands=cands,
                 refs=references,
-                lang=self.lang,
-                model_type=self.model_type,
-                device=device,
-                verbose=False,
             )
 
             for idx in range(len(references)):

@@ -16,18 +16,27 @@ python evaluation/run_review2_eval.py    # writes evaluation/results/review2_rep
 ```
 Inputs: `evaluation/test_set.json` (37 questions, 109 hand-labelled claims; rebuild with `evaluation/build_test_set.py`).
 
-## Measured results (shipped config: DeBERTa-v3-small + 2-sentence evidence windows)
+## Corrected measured results (DeBERTa-v3-small + 2-sentence evidence windows)
+
+The original Review 2 run used the wrong checkpoint label order: it treated
+class 2 (neutral) as entailment. The checkpoint defines contradiction=0,
+entailment=1, neutral=2. After fixing the detector to read `id2label` from the
+checkpoint, the same 109 claims produce:
+
 | | P | R | F1@0.50 | AUC | best-F1 |
 |---|---|---|---|---|---|
-| NLI only | .64 | .23 | .34 | .57 | .44 |
+| NLI only | .80 | .85 | .83 | **.94** | .85 |
 | BERTScore only | 0 | 0 | 0 | **.80** | .68 |
 | Cosine only | .38 | .56 | .45 | .57 | .55 |
-| NLI + BERTScore | .58 | .18 | .27 | .74 | .65 |
-| **TrustRAG (all 3)** | .67 | .21 | .31 | .70 | .60 |
-| TrustRAG, whole-chunk premises | .48 | .31 | .38 | .61 | .54 |
+| NLI + BERTScore | .79 | .77 | .78 | .91 | .85 |
+| **TrustRAG (all 3)** | .79 | .79 | .79 | .90 | .84 |
+| TrustRAG, whole-chunk premises | .38 | .95 | .54 | .68 | .58 |
 
-Tri-state: supported claims → 87% Supported / 7% Weak / 6% Hallucinated; hallucinated claims → 69% / 10% / 21%.
-Retrieval (doc-level, k=5, with 2,000 MS MARCO distractors): Recall@5 .85, MRR .81, NDCG@5 .81.
+Tri-state: supported claims → 86% Supported / 3% Weak / 11% Hallucinated; hallucinated claims → 13% / 8% / 80%.
+Retrieval (doc-level, k=5): Recall@5 .85, MRR .81, NDCG@5 .81.
+
+The checked-in MS MARCO file currently contains 1,000 passages, not 2,000.
+The corrected raw output is `evaluation/results/review3_corrected_nli_report.json`.
 
 ## How this relates to the IEEE paper — be ready for this question
 The paper reports F1 0.898 / AUC 0.951 on 250 documents / 9,800 chunks / 400 queries, with Llama 3 8B.
@@ -41,9 +50,9 @@ Known differences between paper and code: chunk overlap 50 (paper: 64); S_COS us
 NLI/BERTScore verify against evidence windows (not in paper); generator default Mistral (paper: Llama 3 8B).
 
 ## Likely panel questions
-- *Why is recall low at 0.75/0.50?* Hallucinated claims in the benchmark are near-misses of true statements
-  (changed number, negation), so topical similarity stays high. Thresholds are untuned; AUC (0.70) shows the
-  score ranks them correctly more often than not. Calibration/adaptive weights = future work (also in the paper).
-- *Why does BERTScore alone beat the combination?* NLI-small is weak on these near-misses (AUC .57) and drags
-  the weighted sum down; NLI+BERTScore (.74) > full (.70). DeBERTa-v3-base lifts NLI to .64 at ~3x latency.
-- *What did evidence windows change?* AUC .61 -> .70; supported-claim pass rate 56% -> 87%.
+- *Why did NLI improve?* The detector now reads the model's semantic label mapping. The old run accidentally
+  used neutral probability as entailment. This was an implementation defect, not a weight-tuning improvement.
+- *Why is the combined AUC below NLI alone?* Weights do not determine component AUROCs. On these 109
+  claims NLI ranks the labels better than BERTScore and cosine, so adding weaker signals lowers AUC.
+- *Can we claim more than 90% precision?* No. Corrected NLI-only precision is .80 and combined precision is .79
+  on this small benchmark. The larger RAGTruth held-out evaluation must be completed before final claims.

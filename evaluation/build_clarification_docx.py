@@ -249,7 +249,7 @@ def build():
     add_p(doc, "Reviewer 3 asked whether the gain from NLI alone to the full verifier still holds for lower-agreement indexes such as IVF-PQ.", italic=True)
     add_p(
         doc,
-        "IVF-PQ is not implemented in src/, so that comparison is not in the repository. The one saved ablation is the FlatIP evidence-window run in evaluation/results/review2_report.json. At the 0.50 threshold, F1 is 0.340 for NLI only, 0.000 for BERTScore only, 0.454 for cosine only, 0.275 for NLI plus BERTScore, and 0.314 for all three signals. AUC-ROC is 0.571, 0.797, 0.573, 0.738, and 0.701. This does not reproduce the submitted 0.856, 0.878, and 0.898 figures. ieee_paper/README.txt also says not to cite evaluation/results/_old_mock_do_not_cite/evaluation_report.json, because those perfect scores are mock values.",
+        "IVF-PQ is not implemented in src/, so that comparison is not in the GitHub master branch. A subsequent final-review audit found that the old Review 2 run interpreted checkpoint class 2 (neutral) as entailment; the checkpoint actually defines contradiction=0, entailment=1, neutral=2. That saved Review 2 ablation is invalid. With the corrected mapping, the 109-claim run gives NLI-only F1 0.825 and AUROC 0.935; the fixed three-signal fusion gives F1 0.795 and AUROC 0.897. A larger NLI checkpoint with eight evidence windows gives F1 0.871 and AUROC 0.908 for the fusion, but this remains a development result on the same 109 claims. ieee_paper/README.txt also says not to cite evaluation/results/_old_mock_do_not_cite/evaluation_report.json, because those perfect scores are mock values.",
     )
 
     heading(doc, "2. What was measured")
@@ -429,7 +429,7 @@ def build():
     add_p(doc, "Camera-ready change. Remove the 0.856 / 0.878 / 0.898 ablation from the camera-ready. It was not reproduced, and it was not repeated on IVF-PQ or the other indexes.")
     add_p(
         doc,
-        "The saved detection run (evaluation/results/review2_report.json, 5 October 2026) scores the same 109 claims once, with the shipped evidence-window verifier, on the FlatIP pipeline. Positive class is the hallucinated claim. At the fixed 0.50 support threshold the F1 scores are: NLI only 0.340, BERTScore only 0.000, cosine only 0.454, NLI+BERTScore 0.275, and all three signals 0.314. AUC-ROC is 0.571, 0.797, 0.573, 0.738, and 0.701 respectively. That single run does not show a gain from 0.856 to 0.898 as signals are added, and it provides no estimate for IVF-PQ. Confirming the reviewer’s request requires a new labelled run of the three signal combinations on the chunks returned by each index.",
+        "The 5 October Review 2 result is invalid because neutral probability was read as entailment. The corrected run, evaluation/results/review3_corrected_nli_report.json, gives F1 0.825 and AUROC 0.935 for NLI alone, versus F1 0.795 and AUROC 0.897 for all three signals at the fixed 0.50 threshold. The corrected result establishes that NLI is the strongest signal on these 109 claims; it does not show that fusion improves on NLI. It still provides no detector ablation for IVF-PQ. Confirming the reviewer’s requested cross-index benefit requires the same signal combinations to be run on the chunks returned by each index.",
     )
 
     heading(doc, "6. Tables to use in the camera-ready")
@@ -493,16 +493,30 @@ def build():
         ("IVF-PQ at 7.1 ms, Recall@5 0.89, 57 MB, 6.7× compression", "8-bit IVF-PQ did not train. 7-bit IVF-PQ is 0.0085 ms, agreement 0.892, footprint 0.379 MB."),
         ("Hybrid Recall@5 0.96 at 8.2 ms and 421 MB", "Agreement with FlatIP is 0.514. Labelled-source Recall@5 is 0.986. Latency 0.076 ms. Footprint 0.868 MB."),
         ("End-to-end 9.81 s = 0.047 + 5.20 generation + 4.56 NLI", "Search + NLI is about 0.61 s. Generation was not measured."),
-        ("Detection F1 0.898, AUC 0.951, and the 0.856 to 0.898 ablation", "Not reproduced. The saved 109-claim run has full-model F1 0.314 and AUC 0.701."),
+        ("Detection F1 0.898, AUC 0.951, and the 0.856 to 0.898 ablation", "Not reproduced. Corrected three-signal F1/AUROC are 0.795/0.897 with NLI-small and 0.871/0.908 with NLI-base plus eight windows."),
         ("Hallucination rate reduced from 18.6% to 2.1% versus conventional RAG", "The conventional condition is undefined and was not run."),
         ("Hardware: Intel i7-11700, 16 GB, Ubuntu, FAISS 1.7.4, Python 3.9", "This run: Apple M5 Pro, 48 GB, macOS, FAISS 1.15.1, Python 3.14."),
     ]
     add_table(doc, ["Submitted statement", "What the available experiment shows"], rows)
 
-    heading(doc, "9. Short reply the authors can send with the revision")
+    heading(doc, "9. Final-review detector audit")
     add_p(
         doc,
-        "We thank the reviewers. The camera-ready cites the base system as our prior offline TrustRAG pipeline and states that this paper’s contribution is the controlled index comparison. Equation 7 is renamed Retrieval Agreement@K and is reported separately from labelled-source recall. Tables 2 and 3 are replaced by five-run measurements on the saved 213-chunk index and the saved 37 questions, with standard deviations and 95% confidence intervals. The 95th percentile is summarized across runs. Index footprint is the serialized file size; process memory is reported separately and is dominated by the runtime. The non-dominated set on agreement, latency, and footprint is FlatIP and HNSW with efSearch = 16. Hybrid retrieval is reported as a labelled-source recall gain, not as higher agreement with exact search. The conventional-RAG hallucination comparison and the 0.898 detection ablation are removed because they are not supported by the logged runs. We state explicitly that the queries were author-written, that no second annotator was used, and that the index hyperparameters were fixed in advance. We also state, in the abstract and the conclusion, that NLI dominates end-to-end time and that these small-collection orderings are not claimed to generalize to larger corpora or to GPU and multi-thread deployment.",
+        "The NLI label-order correction resolves the reviewer’s concern that NLI AUROC was below BERTScore despite NLI receiving the largest fusion weight. A weight cannot raise a component’s own AUROC; the old NLI curve was wrong because the detector used the neutral class as entailment. On the corrected 109-claim run, NLI-only AUROC is 0.935 versus BERTScore AUROC 0.797. With DeBERTa-v3-base and eight evidence windows, NLI-only AUROC is 0.948, fusion F1 is 0.871, and fusion accuracy is 0.899.",
+    )
+    add_p(
+        doc,
+        "The project now also includes an external RAGTruth benchmark: 800 calibration responses (5,911 claims) and a disjoint held-out set of 400 responses (3,031 claims), balanced across QA, summarization, and data-to-text. NLI-major calibration selects weights 0.60/0.40/0.00 and a support threshold of 0.32. On held-out RAGTruth, precision is 0.155, recall 0.599, F1 0.246, balanced accuracy 0.664, and AUROC 0.705. Therefore the current zero-shot system does not support a claim of more than 90% precision or general accuracy. Raw BERTScore accuracy of 0.924 is a majority-class artifact: it identifies none of the hallucinated sentences at threshold 0.5.",
+    )
+    add_p(
+        doc,
+        "The camera-ready should use the corrected local result as a clearly labelled development result and the RAGTruth result as the external generalization result. It should not claim superiority over cited papers unless all methods are compared on the same held-out split. The defensible novelty is the architecture—offline evidence attribution, multi-signal verification, and tri-state control—not an unsupported state-of-the-art score.",
+    )
+
+    heading(doc, "10. Short reply the authors can send with the revision")
+    add_p(
+        doc,
+        "We thank the reviewers. The camera-ready cites the base system as our prior offline TrustRAG pipeline and states that this paper’s contribution is the controlled index comparison. Equation 7 is renamed Retrieval Agreement@K and is reported separately from labelled-source recall. Tables 2 and 3 are replaced by five-run measurements on the saved 213-chunk index and the saved 37 questions, with standard deviations and 95% confidence intervals. The 95th percentile is summarized across runs. Index footprint is the serialized file size; process memory is reported separately and is dominated by the runtime. We corrected an NLI label-order defect: the corrected 109-claim NLI AUROC is 0.935, rather than the invalid 0.571 result. We additionally report an independently annotated 400-response RAGTruth test, on which the zero-shot detector does not achieve 90% precision. The non-dominated retrieval set is FlatIP and HNSW with efSearch = 16. Hybrid retrieval is reported as a labelled-source recall gain, not as higher agreement with exact search. The conventional-RAG hallucination comparison and submitted 0.898 ablation are removed because they are not supported by the logged runs. We state explicitly that the project queries were author-written, that no second annotator was used, and that the index hyperparameters were fixed in advance. We also state that NLI dominates end-to-end time and that the small-collection retrieval ordering is not claimed to generalize to larger corpora or GPU and multi-thread deployment.",
     )
 
     add_p(doc, "Logs", bold=True, space_before=8, space_after=4)
