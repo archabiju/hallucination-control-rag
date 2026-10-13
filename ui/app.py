@@ -14,6 +14,7 @@ Features:
 """
 
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -69,29 +70,40 @@ st.markdown("""
 
     /* Sentence color coding within chat */
     .sent-supported {
-        background-color: rgba(34,197,94,0.1);
+        background-color: rgba(34,197,94,0.12);
         border-bottom: 2px solid #22c55e;
-        padding: 2px 4px;
+        padding: 2px 6px;
         border-radius: 4px;
-        margin: 2px 0;
+        margin: 2px 2px;
         display: inline;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.7 !important;
+        color: #f1f5f9 !important;
     }
     .sent-weak {
-        background-color: rgba(245,158,11,0.1);
+        background-color: rgba(245,158,11,0.12);
         border-bottom: 2px solid #f59e0b;
-        padding: 2px 4px;
+        padding: 2px 6px;
         border-radius: 4px;
-        margin: 2px 0;
+        margin: 2px 2px;
         display: inline;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.7 !important;
+        color: #f1f5f9 !important;
     }
     .sent-hallucinated {
-        background-color: rgba(239,68,68,0.1);
+        background-color: rgba(239,68,68,0.12);
         border-bottom: 2px solid #ef4444;
-        padding: 2px 4px;
+        padding: 2px 6px;
         border-radius: 4px;
-        margin: 2px 0;
+        margin: 2px 2px;
         display: inline;
-        color: #fca5a5;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.7 !important;
+        color: #fca5a5 !important;
         text-decoration: line-through;
     }
 
@@ -108,6 +120,19 @@ st.markdown("""
     .badge-warn { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.5); }
     .badge-block { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.5); }
     
+    /* Enforce normal readable text size across all chat messages and alerts */
+    .stChatMessage, .stChatMessage p, .stChatMessage div {
+        font-size: 1rem !important;
+        line-height: 1.7 !important;
+    }
+    .stChatMessage h1, .stChatMessage h2, .stChatMessage h3,
+    .stAlert h1, .stAlert h2, .stAlert h3 {
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+        line-height: 1.5 !important;
+        display: inline !important;
+    }
+
     /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -116,8 +141,15 @@ st.markdown("""
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Session state init
+# Session state init & Pre-warmed Pipeline Cache
 # ─────────────────────────────────────────────────────────────────────────────
+
+@st.cache_resource(show_spinner="Pre-warming models in memory for <30s responses...")
+def get_pipeline():
+    from src.pipeline import RAGHallucinationPipeline
+    pipe = RAGHallucinationPipeline()
+    pipe._load_models()
+    return pipe
 
 if "pipeline" not in st.session_state:
     st.session_state.pipeline = None
@@ -135,7 +167,7 @@ if "messages" not in st.session_state:
 # Helper to render XAI charts inside the chat
 # ─────────────────────────────────────────────────────────────────────────────
 
-def render_explainability_panel(result):
+def render_explainability_panel(result, key_prefix=""):
     """Renders the detailed charts and tables for a given pipeline result."""
     
     # 1. Top Metrics
@@ -179,6 +211,7 @@ def render_explainability_panel(result):
             file_name=f"audit_report_{int(time.time())}.json",
             mime="application/json",
             use_container_width=True,
+            key=f"dl_audit_{key_prefix}_{abs(hash(result.query)) % 1000000}",
         )
     with col_lbl:
         st.markdown("**📊 Per-Claim Detection Log**")
@@ -308,14 +341,27 @@ with st.sidebar:
     
     corpus_dir = st.text_input("Corpus Directory", value="data/corpus")
     
+    selected_model = st.selectbox(
+        "Local LLM Model",
+        ["tinyllama (⚡ Fast CPU Demo - 1.1B)", "mistral (🖥️ High-Accuracy - 7B)"],
+        index=0,
+        help="TinyLlama-1.1B provides instant <5s CPU live responses. Mistral-7B is our high-capacity offline model."
+    )
+    model_name_choice = "tinyllama" if "tinyllama" in selected_model else "mistral"
+
+    top_k_val = st.slider(
+        "Context Chunks (Top-K)",
+        min_value=1,
+        max_value=6,
+        value=3,
+        help="Fewer chunks (e.g. 2-3) speeds up prompt processing significantly on CPU."
+    )
+
     if st.button("🔨 Build Document Index", use_container_width=True, type="primary"):
-        with st.spinner("Loading models & indexing documents..."):
+        with st.spinner("Indexing documents..."):
             try:
-                from src.pipeline import RAGHallucinationPipeline
-                if st.session_state.pipeline is None:
-                    st.session_state.pipeline = RAGHallucinationPipeline()
-                
-                stats = st.session_state.pipeline.index_documents(corpus_dir=corpus_dir, force_reindex=True)
+                pipe = get_pipeline()
+                stats = pipe.index_documents(corpus_dir=corpus_dir, force_reindex=True)
                 st.session_state.index_stats = stats
                 st.session_state.models_loaded = True
                 st.success(f"✅ Indexed {stats.get('num_chunks', '?')} chunks!")
@@ -352,7 +398,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Render Chat History
-for msg in st.session_state.messages:
+for msg_idx, msg in enumerate(st.session_state.messages):
     with st.chat_message(msg["role"]):
         if msg["role"] == "assistant" and msg.get("result") is not None:
             # It's an AI response with pipeline data
@@ -372,8 +418,8 @@ for msg in st.session_state.messages:
                 st.error(resp.warning_message or "Answer blocked due to high hallucination risk.")
                 st.markdown("**🛡️ Safe Egress: Retrieved Evidence & Source Provenance**")
                 if resp.retrieved_chunks:
-                    for i, chunk in enumerate(resp.retrieved_chunks):
-                        st.info(f"**Evidence {i+1}** — {chunk.get('source_file')}, p.{chunk.get('page_num')} (similarity: {chunk.get('similarity_score', 0.0):.3f})\n\n{chunk.get('text', '')}")
+                        clean_chunk = re.sub(r'^[#*>\-\s]+', '', chunk.get('text', '')).strip()
+                        st.info(f"**Evidence {i+1}** — {chunk.get('source_file')}, p.{chunk.get('page_num')} (similarity: {chunk.get('similarity_score', 0.0):.3f})\n\n{clean_chunk}")
                 else:
                     st.write("No retrieved chunks available.")
             else:
@@ -383,21 +429,26 @@ for msg in st.session_state.messages:
                 # Build HTML for sentences
                 html_out = ""
                 for v in res.verdicts:
+                    # Strip any leading markdown header hashes (#), stars, or bullets that enlarge text
+                    clean_text = re.sub(r'^[#*>\-\s]+', '', v.sentence).strip()
                     if v.classification == "SUPPORTED":
-                        html_out += f'<div class="sent-supported">{v.sentence} [{v.source_file}, p.{v.source_page}]</div> '
+                        html_out += f'<span class="sent-supported">{clean_text} [{v.source_file}, p.{v.source_page}]</span> '
                     elif v.classification == "WEAKLY_SUPPORTED":
-                        html_out += f'<div class="sent-weak">⚠ {v.sentence}</div> '
+                        html_out += f'<span class="sent-weak">⚠ {clean_text}</span> '
                     else:
-                        html_out += f'<div class="sent-hallucinated">{v.sentence}</div> '
+                        html_out += f'<span class="sent-hallucinated">{clean_text}</span> '
                 
-                st.markdown(html_out, unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size: 1rem; line-height: 1.8; color: #f1f5f9; margin-bottom: 8px;">{html_out}</div>', unsafe_allow_html=True)
                 
                 if resp.cited_sources:
                     st.caption(f"**Sources:** {', '.join(resp.cited_sources)}")
 
             # 3. Render XAI Expander
             with st.expander("🔬 View Explainability & Detection Logs"):
-                render_explainability_panel(res)
+                try:
+                    render_explainability_panel(res, key_prefix=str(msg_idx))
+                except Exception as ex:
+                    st.warning(f"Could not render detection logs: {ex}")
                 
         else:
             # Standard text message (user or initial greeting)
@@ -413,16 +464,14 @@ if prompt := st.chat_input("Ask a question about the documents..."):
 
     # Process AI response
     with st.chat_message("assistant"):
-        with st.spinner("Loading models and checking for hallucinations... (takes ~25s)"):
-            if st.session_state.pipeline is None:
-                from src.pipeline import RAGHallucinationPipeline
-                st.session_state.pipeline = RAGHallucinationPipeline()
-                st.session_state.pipeline._load_models()
-                st.session_state.models_loaded = True
-
-            pipe = st.session_state.pipeline
+        with st.spinner(f"Generating answer with {model_name_choice} & verifying claims (<30s)..."):
+            pipe = get_pipeline()
+            st.session_state.pipeline = pipe
+            st.session_state.models_loaded = True
             
-            # Update thresholds dynamically
+            # Update models, top_k and thresholds dynamically
+            pipe.generator.model_name = model_name_choice
+            pipe.top_k = top_k_val
             pipe.hall_engine.w_nli = w_nli
             pipe.hall_engine.w_bert = w_bert
             pipe.hall_engine.w_cos = w_cos
@@ -433,7 +482,7 @@ if prompt := st.chat_input("Ask a question about the documents..."):
 
             # Run query
             start = time.time()
-            result = pipe.query(prompt)
+            result = pipe.query(prompt, top_k=top_k_val)
             elapsed = time.time() - start
 
             if result.error:

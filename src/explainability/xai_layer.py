@@ -247,34 +247,39 @@ def compute_word_saliency(
         baseline_sim = float(np.dot(full_vec, chunk_vec))    # cosine (L2-normed)
 
         source_words_lower = set(source_chunk.lower().split())
-        result = []
+        # Prepare all reduced sentences for batch embedding
+        reduced_list = []
+        reduced_indices = []
+        result = [None] * len(words)
 
         for i, word in enumerate(words):
-            # Build sentence with word w_k removed
             reduced = " ".join(words[:i] + words[i + 1:])
-            if not reduced.strip():
-                # Single-word sentence: saliency = baseline
-                result.append({
-                    "word": word,
-                    "saliency": round(baseline_sim, 4),
-                    "in_source": word.lower().strip(".,!?;:\"'()") in source_words_lower,
-                })
-                continue
-
-            reduced_vec = embedder.embed([reduced])[0]
-            reduced_sim = float(np.dot(reduced_vec, chunk_vec))
-
-            # σ(w_k) = sim(full) − sim(reduced)   [Eq. 4]
-            saliency = baseline_sim - reduced_sim
-
             clean = word.lower().strip(".,!?;:\"'()")
             in_source = clean in source_words_lower and len(clean) > 2
 
-            result.append({
-                "word": word,
-                "saliency": round(saliency, 4),
-                "in_source": in_source,
-            })
+            if not reduced.strip():
+                # Single-word sentence: saliency = baseline
+                result[i] = {
+                    "word": word,
+                    "saliency": round(baseline_sim, 4),
+                    "in_source": word.lower().strip(".,!?;:\"'()") in source_words_lower,
+                }
+            else:
+                reduced_list.append(reduced)
+                reduced_indices.append((i, word, in_source))
+
+        if reduced_list:
+            # Batch-embed all reduced sentences in ONE single forward pass
+            reduced_vecs = embedder.embed(reduced_list)
+            reduced_sims = reduced_vecs @ chunk_vec
+
+            for (orig_idx, word, in_source), r_sim in zip(reduced_indices, reduced_sims):
+                saliency = baseline_sim - float(r_sim)
+                result[orig_idx] = {
+                    "word": word,
+                    "saliency": round(saliency, 4),
+                    "in_source": in_source,
+                }
 
         return result
 

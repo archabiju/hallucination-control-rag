@@ -118,13 +118,13 @@ class RAGHallucinationPipeline:
         self.llm_url     = gen.get("ollama_base_url", "http://localhost:11434")
         self.llm_model   = gen.get("model_name", "mistral")
         self.llm_temp    = gen.get("temperature", 0.1)
-        self.llm_tokens  = gen.get("max_tokens", 512)
+        self.llm_tokens  = gen.get("max_tokens", 280)
         self.nli_model   = nli.get("model", "cross-encoder/nli-deberta-v3-small")
         self.bs_lang     = bs.get("lang", "en")
         self.bs_model    = bs.get("model_type", "distilbert-base-uncased")
         self.use_windows = det.get("use_evidence_windows", True)
         self.win_size    = det.get("window_size", 2)
-        self.win_top_n   = det.get("window_top_n", 4)
+        self.win_top_n   = det.get("window_top_n", 2)
         self.w_nli       = det.get("weight_nli", 0.45)
         self.w_bert      = det.get("weight_bertscore", 0.35)
         self.w_cos       = det.get("weight_cosine", 0.20)
@@ -275,6 +275,35 @@ class RAGHallucinationPipeline:
                 print(f"  • [{r['rank']}] {r['source_file']} p.{r['page_num']} "
                       f"(sim={r['similarity_score']:.3f})")
 
+            max_sim = max((r.get("similarity_score", 0.0) for r in retrieved), default=0.0)
+            print(f"[PIPELINE] Max retrieval similarity: {max_sim:.3f}")
+
+            # If the best chunk has very low similarity, no relevant document exists in the corpus
+            if max_sim < 0.28:
+                print(f"[PIPELINE] No relevant documents found (max similarity {max_sim:.3f} < 0.28). Blocking ungrounded query.")
+                no_doc_msg = "I do not have any relevant documents related to that question in my knowledge base."
+                result.raw_answer = no_doc_msg
+                result.sentences = [no_doc_msg]
+                result.response = ControlledResponse(
+                    state="BLOCKED",
+                    final_text=no_doc_msg,
+                    overall_score=0.0,
+                    cited_sources=[],
+                    num_suppressed=0,
+                    hallucination_ratio=1.0,
+                    warning_message=no_doc_msg,
+                    provenance_score=0.0,
+                    verdicts=[],
+                    retrieved_chunks=retrieved,
+                )
+                result.summary = {
+                    "overall_support_score": 0.0,
+                    "num_hallucinated": 1,
+                    "total_sentences": 1,
+                    "hallucination_ratio": 1.0,
+                }
+                return result
+
             # ── Step 2: Generate ──────────────────────────────────────────
             print("[PIPELINE] Step 2: Generating answer via local LLM...")
             gen_result   = self.generator.generate(user_query, retrieved)
@@ -282,10 +311,52 @@ class RAGHallucinationPipeline:
             result.raw_answer = raw_answer
             print(f"[PIPELINE] Raw answer: {raw_answer[:120]}...")
 
+            # ── Check Knowledge Gap / Out-of-Domain Detection ─────────────
+            no_doc_indicators = [
+                "i do not have any relevant documents",
+                "the provided documents do not contain",
+                "the passage does not provide",
+                "does not contain sufficient evidence",
+                "does not contain specific information",
+                "is not specified in the given material",
+                "is not mentioned in the given material",
+                "not enough information in the provided context",
+            ]
+            raw_lower = raw_answer.lower()
+            if any(ind in raw_lower for ind in no_doc_indicators):
+                print("[PIPELINE] Knowledge gap identified: Context lacks document evidence for this query.")
+                clean_msg = "I do not have any relevant documents related to that question in my knowledge base."
+                result.raw_answer = clean_msg
+                result.sentences = [clean_msg]
+                result.response = ControlledResponse(
+                    state="BLOCKED",
+                    final_text=clean_msg,
+                    overall_score=0.0,
+                    cited_sources=[],
+                    num_suppressed=0,
+                    hallucination_ratio=0.0,
+                    warning_message=clean_msg,
+                    provenance_score=0.0,
+                    verdicts=[],
+                    retrieved_chunks=retrieved,
+                )
+                result.summary = {
+                    "overall_support_score": 0.0,
+                    "num_hallucinated": 0,
+                    "total_sentences": 1,
+                    "hallucination_ratio": 0.0,
+                }
+                return result
+
             # ── Step 3: Sentence splitting ────────────────────────────────
             print("[PIPELINE] Step 3: Splitting answer into claims...")
             sentences = get_sentences(raw_answer)
             sentences = [s for s in sentences if len(s.split()) >= 3]  # Filter fragments
+
+            # If the last sentence is an incomplete cut-off fragment without terminal punctuation, drop it
+            if len(sentences) > 1 and not any(sentences[-1].rstrip().endswith(p) for p in ('.', '!', '?')):
+                sentences = sentences[:-1]
+
             result.sentences = sentences
             print(f"[PIPELINE] {len(sentences)} claims to verify.")
 

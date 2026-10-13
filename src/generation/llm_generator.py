@@ -23,14 +23,15 @@ from typing import Optional
 # Prompt builder
 # ─────────────────────────────────────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are a precise, factual assistant that ONLY answers based on the provided context.
+SYSTEM_PROMPT = """You are a strictly grounded, factual assistant. You ONLY answer questions using the provided context.
 
 Rules:
-1. Answer ONLY using information from the context below.
-2. If the context does not contain enough information, say: "The provided documents do not contain sufficient evidence to answer this question."
-3. Do NOT fabricate information, statistics, or references not present in the context.
-4. Be concise and factual.
-5. Write complete sentences."""
+1. If the provided context does NOT contain the specific information needed to answer the question, respond ONLY with:
+   "I do not have any relevant documents related to that question in my knowledge base."
+2. Do NOT mention, summarize, or describe unrelated topics from the context if they do not directly answer the user's question.
+3. Do NOT guess, speculate, or fabricate information.
+4. When the context DOES answer the question, be concise, direct, and factual in 2 to 3 complete sentences.
+5. Finish every sentence completely."""
 
 
 def build_prompt(query: str, context_chunks: list) -> str:
@@ -94,7 +95,7 @@ class LLMGenerator:
     def _check_connection(self) -> None:
         """Check if Ollama server is running."""
         try:
-            resp = requests.get(f"{self.base_url}/api/tags", timeout=3)
+            resp = requests.get(f"{self.base_url}/api/tags", timeout=15)
             if resp.status_code == 200:
                 models = [m.get("name", "") for m in resp.json().get("models", [])]
                 print(f"[INFO] Ollama running. Available models: {models}")
@@ -135,6 +136,7 @@ class LLMGenerator:
             return self._fallback_response(query, context_chunks, prompt)
 
         try:
+            ctx_size = 512 if "mistral" in self.model_name.lower() else 1024
             payload = {
                 "model": self.model_name,
                 "prompt": prompt,
@@ -142,6 +144,7 @@ class LLMGenerator:
                 "options": {
                     "temperature": self.temperature,
                     "num_predict": self.max_tokens,
+                    "num_ctx": ctx_size,
                     "stop": ["=== QUESTION ===", "=== CONTEXT ==="],
                 },
             }
@@ -149,7 +152,7 @@ class LLMGenerator:
             resp = requests.post(
                 f"{self.base_url}/api/generate",
                 json=payload,
-                timeout=120,
+                timeout=300,
             )
             resp.raise_for_status()
             data = resp.json()
@@ -201,7 +204,7 @@ class LLMGenerator:
 
 
 if __name__ == "__main__":
-    gen = LLMGenerator(model_name="mistral")
+    gen = LLMGenerator(model_name="tinyllama")
     fake_chunks = [
         {
             "text": "RAG combines retrieval with generation to produce grounded answers.",

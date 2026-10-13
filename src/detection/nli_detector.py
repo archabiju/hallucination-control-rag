@@ -103,6 +103,44 @@ class NLIDetector:
             print(f"[WARN] NLI scoring failed: {e}. Using heuristic.")
             return self._heuristic_score(premise, hypothesis)
 
+    def score_pairs(
+        self,
+        pairs: List[Tuple[str, str]],
+        batch_size: int = 16,
+    ) -> List[Dict[str, Any]]:
+        """
+        Score multiple (premise, hypothesis) pairs in a fast batch.
+        """
+        if not pairs:
+            return []
+        if self.model is None:
+            return [self._heuristic_score(p, h) for p, h in pairs]
+
+        try:
+            logits = self.model.predict(
+                pairs,
+                batch_size=batch_size,
+                apply_softmax=True,
+                show_progress_bar=False,
+            )
+            results = []
+            for item in logits:
+                contradict_prob = float(item[CONTRADICTION_IDX])
+                neutral_prob    = float(item[NEUTRAL_IDX])
+                entail_prob     = float(item[ENTAILMENT_IDX])
+                label_idx = int(np.argmax(item))
+                results.append({
+                    "entail_prob":       round(entail_prob, 4),
+                    "neutral_prob":      round(neutral_prob, 4),
+                    "contradict_prob":   round(contradict_prob, 4),
+                    "label":             NLI_LABELS[label_idx],
+                    "nli_support_score": round(entail_prob, 4),
+                })
+            return results
+        except Exception as e:
+            print(f"[WARN] Batch NLI scoring failed: {e}. Using heuristic.")
+            return [self._heuristic_score(p, h) for p, h in pairs]
+
     def score_sentences(
         self,
         sentences: List[str],
@@ -112,66 +150,59 @@ class NLIDetector:
         top_n: int = 4,
     ) -> List[Dict[str, Any]]:
         """
-        Score multiple sentences against their best-matching chunks.
+        Score multiple sentences against their best-matching chunks using fast batching.
 
         If `evidence` (an EvidenceWindows) is given, each sentence is instead verified
         against its `top_n` most similar short evidence windows and the window with the
         highest entailment probability is used (sentence-level NLI, SummaC-style).
-
-        For each sentence, we score it against the chunk it was attributed
-        to (from the XAI layer), or against ALL retrieved chunks and take
-        the max entailment score.
-
-        Args:
-            sentences: List of generated sentences.
-            chunks: List of retrieved chunk dicts.
-            attributions: Optional attribution output from xai_layer. If
-                          provided, uses each sentence's best-attributed chunk.
-
-        Returns:
-            List of NLI result dicts, one per sentence, with added "sentence" field.
         """
-        results = []
+        all_pairs = []
+        pair_to_sent = []
+        valid_indices = set()
 
         for i, sentence in enumerate(sentences):
             if not sentence.strip():
                 continue
 
+            valid_indices.add(i)
+
             if evidence is not None and evidence.windows:
-                best = None
-                for premise in evidence.top(sentence, top_n):
-                    r = self.score_pair(premise, sentence)
-                    if best is None or r["entail_prob"] > best["entail_prob"]:
-                        best = r
-                best["sentence"] = sentence
-                best["sentence_idx"] = i
-                results.append(best)
-                continue
-
-            # Determine which chunk to use as premise
-            if attributions and i < len(attributions):
-                premise = attributions[i]["best_chunk_text"]
+                premises = evidence.top(sentence, top_n)
+            elif attributions and i < len(attributions):
+                premises = [attributions[i]["best_chunk_text"]]
             elif chunks:
-                # Fallback: use the top retrieved chunk for all sentences
-                premise = chunks[0]["text"]
+                premises = [chunks[0]["text"]]
             else:
-                results.append({
-                    "sentence": sentence,
-                    "sentence_idx": i,
-                    "entail_prob": 0.0,
-                    "neutral_prob": 1.0,
-                    "contradict_prob": 0.0,
-                    "label": "NEUTRAL",
-                    "nli_support_score": 0.0,
-                })
-                continue
+                premises = []
 
-            nli_result = self.score_pair(premise, sentence)
-            nli_result["sentence"] = sentence
-            nli_result["sentence_idx"] = i
-            results.append(nli_result)
+            for p in premises:
+                all_pairs.append((p, sentence))
+                pair_to_sent.append((i, sentence))
 
-        return results
+        if not all_pairs:
+            # Fallback for empty pairs
+            return [{
+                "sentence": sentence,
+                "sentence_idx": i,
+                "entail_prob": 0.0,
+                "neutral_prob": 1.0,
+                "contradict_prob": 0.0,
+                "label": "NEUTRAL",
+                "nli_support_score": 0.0,
+            } for i, sentence in enumerate(sentences) if sentence.strip()]
+
+        scored_pairs = self.score_pairs(all_pairs)
+
+        # Aggregate: pick best entailment per sentence
+        best_per_sentence = {}
+        for (i, sentence), res in zip(pair_to_sent, scored_pairs):
+            if i not in best_per_sentence or res["entail_prob"] > best_per_sentence[i]["entail_prob"]:
+                res_copy = dict(res)
+                res_copy["sentence"] = sentence
+                res_copy["sentence_idx"] = i
+                best_per_sentence[i] = res_copy
+
+        return [best_per_sentence[i] for i in sorted(best_per_sentence.keys())]
 
     def _heuristic_score(
         self,

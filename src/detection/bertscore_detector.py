@@ -40,15 +40,23 @@ class BERTScoreDetector:
         self.model_type = model_type
         self.device = device
         self._bert_score_available = False
+        self.scorer = None
 
         try:
             import bert_score
+            import torch
+            device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
             self._bert_score = bert_score
+            self.scorer = bert_score.BERTScorer(
+                model_type=self.model_type,
+                lang=self.lang,
+                device=device,
+                rescale_with_baseline=False,
+            )
             self._bert_score_available = True
-            print(f"[INFO] BERTScore ready (model: {model_type})")
-        except ImportError:
-            print("[WARN] bert-score not installed. Using cosine fallback.")
-            print("       Run: pip install bert-score")
+            print(f"[INFO] BERTScore ready (cached model: {model_type})")
+        except Exception as e:
+            print(f"[WARN] bert-score init failed: {e}. Using cosine fallback.")
             self._bert_score_available = False
 
     def score_sentence(
@@ -91,9 +99,6 @@ class BERTScoreDetector:
     ) -> Dict[str, Any]:
         """Compute BERTScore using the bert_score library."""
         try:
-            import torch
-            device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
-
             best_f1 = 0.0
             best_p = 0.0
             best_r = 0.0
@@ -101,14 +106,19 @@ class BERTScoreDetector:
 
             # Batch inputs to prevent bert_score from reloading the model multiple times
             cands = [candidate] * len(references)
-            P, R, F1 = self._bert_score.score(
-                cands=cands,
-                refs=references,
-                lang=self.lang,
-                model_type=self.model_type,
-                device=device,
-                verbose=False,
-            )
+            if self.scorer is not None:
+                P, R, F1 = self.scorer.score(cands, references, verbose=False)
+            else:
+                import torch
+                device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
+                P, R, F1 = self._bert_score.score(
+                    cands=cands,
+                    refs=references,
+                    lang=self.lang,
+                    model_type=self.model_type,
+                    device=device,
+                    verbose=False,
+                )
 
             for idx in range(len(references)):
                 f1_val = float(F1[idx])
@@ -181,28 +191,86 @@ class BERTScoreDetector:
         top_n: int = 4,
     ) -> List[Dict[str, Any]]:
         """
-        Score all generated sentences against the retrieved chunks (or, when
-        `evidence` is given, against each sentence's top_n evidence windows).
+        Score all generated sentences against retrieved chunks or evidence windows.
+        Batches the BERTScore computation across all sentences for fast CPU execution.
 
         Args:
             sentences: List of generated sentences.
             chunks: List of retrieved chunk dicts (with "text" key).
+            evidence: EvidenceWindows instance (optional).
+            top_n: Number of top windows to score against.
 
         Returns:
             List of BERTScore result dicts, one per sentence.
         """
         references = [c["text"] for c in chunks]
-        results = []
+
+        all_cands = []
+        all_refs = []
+        pair_to_sent = []
 
         for i, sentence in enumerate(sentences):
             if not sentence.strip():
                 continue
             refs = evidence.top(sentence, top_n) if (evidence is not None and evidence.windows) else references
-            result = self.score_sentence(sentence, refs)
-            result["sentence"] = sentence
-            result["sentence_idx"] = i
-            results.append(result)
+            if not refs:
+                continue
+            for r_idx, r in enumerate(refs):
+                all_cands.append(sentence)
+                all_refs.append(r)
+                pair_to_sent.append((i, sentence, r_idx))
 
+        if not all_cands:
+            return []
+
+        if self._bert_score_available:
+            try:
+                if self.scorer is not None:
+                    P, R, F1 = self.scorer.score(all_cands, all_refs, verbose=False, batch_size=16)
+                else:
+                    import torch
+                    device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
+                    P, R, F1 = self._bert_score.score(
+                        cands=all_cands,
+                        refs=all_refs,
+                        lang=self.lang,
+                        model_type=self.model_type,
+                        device=device,
+                        verbose=False,
+                        batch_size=16,
+                    )
+
+                best_per_sentence = {}
+                for idx, (sent_idx, sentence, ref_idx) in enumerate(pair_to_sent):
+                    f1_val = float(F1[idx])
+                    p_val = float(P[idx])
+                    r_val = float(R[idx])
+
+                    if sent_idx not in best_per_sentence or f1_val > best_per_sentence[sent_idx]["bertscore_f1"]:
+                        best_per_sentence[sent_idx] = {
+                            "sentence": sentence,
+                            "sentence_idx": sent_idx,
+                            "bertscore_f1": round(f1_val, 4),
+                            "bertscore_precision": round(p_val, 4),
+                            "bertscore_recall": round(r_val, 4),
+                            "best_reference_idx": ref_idx,
+                        }
+
+                return [best_per_sentence[k] for k in sorted(best_per_sentence.keys())]
+
+            except Exception as e:
+                print(f"[WARN] Batched BERTScore failed: {e}. Falling back to sequential.")
+
+        # Fallback if batched failed or not available
+        results = []
+        for i, sentence in enumerate(sentences):
+            if not sentence.strip():
+                continue
+            refs = evidence.top(sentence, top_n) if (evidence is not None and evidence.windows) else references
+            res = self.score_sentence(sentence, refs)
+            res["sentence"] = sentence
+            res["sentence_idx"] = i
+            results.append(res)
         return results
 
 

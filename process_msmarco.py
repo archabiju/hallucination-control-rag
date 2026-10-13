@@ -20,10 +20,10 @@ PROCESSED_DIR = DATA_DIR / "msmarco_processed"
 
 def extract_queries_if_needed():
     """Extract queries.dev.tsv from queries.tar.gz if not present."""
-    if not os.path.exists("queries.dev.tsv") and os.path.exists("queries.tar.gz"):
-        print("[INFO] Extracting queries.dev.tsv from queries.tar.gz...")
-        with tarfile.open("queries.tar.gz", "r:gz") as tar:
-            tar.extract("queries.dev.tsv", path=".")
+    if not os.path.exists("dataset_raw/queries.dev.tsv") and os.path.exists("dataset_raw/queries.tar.gz"):
+        print("[INFO] Extracting queries.dev.tsv from dataset_raw/queries.tar.gz...")
+        with tarfile.open("dataset_raw/queries.tar.gz", "r:gz") as tar:
+            tar.extract("queries.dev.tsv", path="dataset_raw")
         print("[INFO] Extracted queries.dev.tsv")
 
 
@@ -38,11 +38,11 @@ def process_ms_marco(num_passages=1000):
 
     extract_queries_if_needed()
 
-    collection_path = "collection.tsv"
-    if not os.path.exists(collection_path) and os.path.exists("collection.tar.gz"):
-        print("[INFO] Extracting collection.tsv from collection.tar.gz...")
-        with tarfile.open("collection.tar.gz", "r:gz") as tar:
-            tar.extract("collection.tsv", path=".")
+    collection_path = "dataset_raw/collection.tsv"
+    if not os.path.exists(collection_path) and os.path.exists("dataset_raw/collection.tar.gz"):
+        print("[INFO] Extracting collection.tsv from dataset_raw/collection.tar.gz...")
+        with tarfile.open("dataset_raw/collection.tar.gz", "r:gz") as tar:
+            tar.extract("collection.tsv", path="dataset_raw")
         print("[INFO] Extracted collection.tsv")
 
     if not os.path.exists(collection_path):

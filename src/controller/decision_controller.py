@@ -116,35 +116,22 @@ class DecisionController:
         # ── STATE 3: Block ────────────────────────────────────────────────
         should_block = (
             overall_score < self.medium_thr or
-            hallucination_ratio > self.max_block
+            hallucination_ratio > self.max_block or
+            provenance_score < 0.25
         )
 
         if not verdicts or not raw_answer.strip():
             return self._blocked(
                 overall_score,
                 hallucination_ratio,
-                "No relevant documents found for this query.",
+                "I do not have any relevant documents related to that question in my knowledge base.",
                 [],
                 retrieved_chunks,
                 provenance_score,
             )
 
         if should_block:
-            # Build fail-safe response with retrieved evidence & provenance
-            evidence_parts = []
-            for i, chunk in enumerate(retrieved_chunks):
-                source = chunk.get("source_file", "unknown")
-                page = chunk.get("page_num", "?")
-                text = chunk.get("text", "").strip()
-                evidence_parts.append(f"[Evidence {i+1}] Source: {source}, Page: {page}\n\"{text}\"")
-
-            evidence_text = "\n\n".join(evidence_parts)
-            blocked_reason = (
-                "I cannot find reliable evidence in the provided documents to "
-                "answer this question confidently. The response has been blocked due to high hallucination risk. "
-                "Here is the raw retrieved source evidence instead:\n\n"
-                f"{evidence_text}"
-            )
+            blocked_reason = "I do not have any relevant documents related to that question in my knowledge base."
             return self._blocked(
                 overall_score,
                 hallucination_ratio,
