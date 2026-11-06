@@ -9,7 +9,7 @@ paths:
 
 # ── Ingestion / Chunking ──────────────────────────────────────────────────────
 ingestion:
-  chunk_size:    512     # Tokens per chunk
+  chunk_size:    1024    # Tokens per chunk
   chunk_overlap:  50     # Overlapping tokens between adjacent chunks
   supported_extensions: [".pdf", ".docx", ".txt", ".md"]
 
