@@ -77,7 +77,11 @@ User Query
 ## 📁 Project Structure
 
 ```
-MAIN PROJECT/
+hallucination-control-rag/
+├── run_demo.sh                   # One-command demo + metric regeneration
+├── demo/
+│   └── demo_run.py               # Sample queries and tri-state demonstration
+├── docs/                         # Module-by-module documentation and demo guide
 ├── src/
 │   ├── ingestion/
 │   │   ├── document_loader.py    # PDF/DOCX/TXT loading
@@ -116,13 +120,41 @@ MAIN PROJECT/
 
 ### Prerequisites
 
-- Python 3.9+
+- Python 3.10+ (developed and tested on Python 3.14.6, macOS, Apple M-series)
+- ~3 GB free disk space (PyTorch and model weights)
+- Internet access **once**, to download the Hugging Face models on first run; fully offline afterwards
 - (Optional) Ollama for local LLM generation
+
+### Quick start (one command)
+
+```bash
+git clone https://github.com/archabiju/hallucination-control-rag.git
+cd hallucination-control-rag
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+./run_demo.sh        # records versions, indexes the corpus, runs sample queries, regenerates metrics
+```
+
+On **Windows** (PowerShell or CMD):
+
+```bat
+git clone https://github.com/archabiju/hallucination-control-rag.git
+cd hallucination-control-rag
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+run_demo.bat
+```
+
+Use Python 3.10 to 3.12 on Windows for the most reliable PyTorch and FAISS wheels.
+
+See [`docs/DEMO.md`](docs/DEMO.md) for what the demo prints and how to record the demo video.
 
 ### Step 1: Install Dependencies
 
 ```bash
-cd "MAIN PROJECT"
+cd hallucination-control-rag
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
