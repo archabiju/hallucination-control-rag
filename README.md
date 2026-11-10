@@ -77,7 +77,11 @@ User Query
 ## 📁 Project Structure
 
 ```
-MAIN PROJECT/
+hallucination-control-rag/
+├── run_demo.sh                   # One-command demo + metric regeneration
+├── demo/
+│   └── demo_run.py               # Sample queries and tri-state demonstration
+├── docs/                         # Module-by-module documentation and demo guide
 ├── src/
 │   ├── ingestion/
 │   │   ├── document_loader.py    # PDF/DOCX/TXT loading
@@ -116,13 +120,41 @@ MAIN PROJECT/
 
 ### Prerequisites
 
-- Python 3.9+
+- Python 3.10+ (developed and tested on Python 3.14.6, macOS, Apple M-series)
+- ~3 GB free disk space (PyTorch and model weights)
+- Internet access **once**, to download the Hugging Face models on first run; fully offline afterwards
 - (Optional) Ollama for local LLM generation
+
+### Quick start (one command)
+
+```bash
+git clone https://github.com/archabiju/hallucination-control-rag.git
+cd hallucination-control-rag
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+./run_demo.sh        # records versions, indexes the corpus, runs sample queries, regenerates metrics
+```
+
+On **Windows** (PowerShell or CMD):
+
+```bat
+git clone https://github.com/archabiju/hallucination-control-rag.git
+cd hallucination-control-rag
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+run_demo.bat
+```
+
+Use Python 3.10 to 3.12 on Windows for the most reliable PyTorch and FAISS wheels.
+
+See [`docs/DEMO.md`](docs/DEMO.md) for what the demo prints and how to record the demo video.
 
 ### Step 1: Install Dependencies
 
 ```bash
-cd "MAIN PROJECT"
+cd hallucination-control-rag
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -174,7 +206,7 @@ python src/pipeline.py query
 
 ### Run evaluation
 ```bash
-python evaluation/evaluator.py
+python evaluation/run_review2_eval.py --output-prefix review3_corrected_nli
 ```
 
 ---
@@ -220,10 +252,30 @@ The evaluation module computes:
 
 Run evaluation:
 ```bash
-python evaluation/evaluator.py
+python evaluation/run_review2_eval.py --output-prefix review3_corrected_nli
 ```
 
 Results and plots are saved to `evaluation/results/`.
+
+The original Review 2 NLI run used an incorrect label order. The detector now
+reads `id2label` from the checkpoint (`contradiction=0`, `entailment=1`,
+`neutral=2`). On the existing 109 claims, corrected NLI-only AUROC is 0.935
+and the three-signal AUROC is 0.897. Fusion weights do not control a
+component's AUROC.
+
+For a larger independently annotated evaluation:
+
+```bash
+python evaluation/build_ragtruth_benchmark.py
+python evaluation/run_ragtruth_eval.py --split train
+python evaluation/run_ragtruth_eval.py --split test
+python evaluation/calibrate_ragtruth_fusion.py
+```
+
+This creates an 800-response calibration set and a disjoint held-out
+400-response test set from RAGTruth. Do not tune weights or thresholds on the
+test output. See `docs/12_ORGANIZATIONAL_CUSTOMIZATION.md` for adding
+organization documents and for the scope of customization claims.
 
 ---
 

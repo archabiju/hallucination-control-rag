@@ -1,0 +1,905 @@
+{
+  "meta": {
+    "timestamp_start": "2026-10-13 19:18:07",
+    "n_runs": 5,
+    "n_queries": 37,
+    "n_chunks": 213,
+    "dimension": 384,
+    "k": 5,
+    "warmup_searches_per_config_per_run": 1000,
+    "timed_repetitions_per_query": 500,
+    "queries_reused_across_runs": true,
+    "query_file": "evaluation/test_set.json",
+    "query_file_sha256": "d43f9f0ef9eb3458ff781703a17c6f036be5d412e47315c4b614cb2f020cd33d",
+    "saved_index_sha256": "23d41a2685f77325bcd9e2eb7bc6489043bd7836c7b52e325874c36a50907b62",
+    "saved_index_modified": false,
+    "mean_vector_l2_norm": 1.0,
+    "faiss_version": "1.15.1",
+    "numpy_version": "2.5.3",
+    "machine": {
+      "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+      "python": "3.14.6",
+      "machine": "arm64",
+      "cpu": "Apple M5 Pro",
+      "mem_bytes": "51539607552",
+      "ncpu": "18"
+    },
+    "threads": 1,
+    "ivf_paper_nbits": 8,
+    "ivf_measured_nbits": 7,
+    "ivf_paper_error": "RuntimeError: Error in void faiss::Clustering::train_encoded(idx_t, const uint8_t *, const Index *, Index &, const float *) at /Users/runner/work/faiss/faiss/faiss/Clustering.cpp:72: Error: 'nx >= static_cast<idx_t>(k)' failed: Number of training points (213) should be at least as large as number of clusters (256)",
+    "hybrid": "in-process Okapi BM25 inverted index, alpha=0.7, k1=1.5, b=0.75. Elasticsearch was not used.",
+    "generation_measured": false,
+    "deviations": "The draft describes 9,800 chunks and 400 queries. This repository's saved index has 213 chunks and evaluation/test_set.json has 37 questions. Those 37 questions were reused for every run. IVF-PQ with 8 bits did not train (RuntimeError: Error in void faiss::Clustering::train_encoded(idx_t, const uint8_t *, const Index *, Index &, const float *) at /Users/runner/work/faiss/faiss/faiss/Clustering.cpp:72: Error: 'nx >= static_cast<idx_t>(k)' failed: Number of training points (213) should be at least as large as number of clusters (256)). Measured IVF-PQ uses 7 bits; nlist=128, m=8, nprobe=16. Hybrid BM25 is an in-process inverted index because Elasticsearch is not part of this environment. Latency was timed with perf_counter_ns around each search, which is what makes a 95th percentile defined; the draft's timeit loop would have collapsed those repetitions into one average. End-to-end excludes generation. FAISS and PyTorch were not loaded in the same process: doing so aborts with OMP Error #15 because each ships its own OpenMP runtime. Query embedding and NLI ran in torch-only processes; index search ran in a FAISS-only process. End-to-end latency is the sum of those two measurements.",
+    "timestamp_end": "2026-10-13 19:31:57"
+  },
+  "retrieval": [
+    {
+      "config": "FlatIP",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.005423003837837837,
+          0.005383310756756756,
+          0.005424873351351351,
+          0.005406276702702701,
+          0.005412756054054053
+        ],
+        "mean": 0.005410044140540539,
+        "std": 1.6763659494624786e-05,
+        "ci95_low": 0.005389229308067917,
+        "ci95_high": 0.005430858973013162,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.006583,
+          0.006292,
+          0.006166,
+          0.006083,
+          0.00604404999999997
+        ],
+        "mean": 0.0062336099999999945,
+        "std": 0.00021718093954121046,
+        "ci95_low": 0.0059639442462756055,
+        "ci95_high": 0.0065032757537243835,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513
+        ],
+        "mean": 0.8513513513513512,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8513513513513511,
+        "ci95_high": 0.8513513513513513,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 327213,
+      "index_footprint_mb": 0.3120546340942383,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69058560,
+        "rss_after_index_load_bytes": 69320704,
+        "rss_after_100_searches_bytes": 71614464,
+        "incremental_rss_after_load_bytes": 262144,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 7.159198867157102e-05
+    },
+    {
+      "config": "IVF-PQ (nbits=7)",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.008644929999999999,
+          0.008296116378378378,
+          0.008984619675675676,
+          0.008326296270270268,
+          0.008256668756756758
+        ],
+        "mean": 0.008501726216216216,
+        "std": 0.00031096529013128685,
+        "ci95_low": 0.008115611810769209,
+        "ci95_high": 0.008887840621663224,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.011959,
+          0.010042,
+          0.01225,
+          0.00937704999999997,
+          0.00925
+        ],
+        "mean": 0.010575609999999996,
+        "std": 0.0014314221374213888,
+        "ci95_low": 0.008798264665731977,
+        "ci95_high": 0.012352955334268015,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8918918918918917,
+          0.8918918918918917,
+          0.8918918918918917,
+          0.8918918918918917,
+          0.8918918918918917
+        ],
+        "mean": 0.8918918918918916,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8918918918918914,
+        "ci95_high": 0.8918918918918917,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513
+        ],
+        "mean": 0.8513513513513512,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8513513513513511,
+        "ci95_high": 0.8513513513513513,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 397615,
+      "index_footprint_mb": 0.3791952133178711,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69074944,
+        "rss_after_index_load_bytes": 69533696,
+        "rss_after_100_searches_bytes": 72122368,
+        "incremental_rss_after_load_bytes": 458752,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 0.008976241818163543
+    },
+    {
+      "config": "HNSW ef=16",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.004524707297297297,
+          0.0049864283783783775,
+          0.004615823243243243,
+          0.004877907675675675,
+          0.004606524810810811
+        ],
+        "mean": 0.004722278281081081,
+        "std": 0.00019859608314239802,
+        "ci95_low": 0.004475688674458884,
+        "ci95_high": 0.004968867887703278,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.005333,
+          0.006208,
+          0.005417,
+          0.005958,
+          0.005375
+        ],
+        "mean": 0.0056581999999999995,
+        "std": 0.000398840444288189,
+        "ci95_low": 0.0051629741792997615,
+        "ci95_high": 0.0061534258207002375,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.9675675675675675,
+          0.9675675675675675,
+          0.9675675675675675,
+          0.9675675675675675,
+          0.9675675675675675
+        ],
+        "mean": 0.9675675675675673,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.9675675675675672,
+        "ci95_high": 0.9675675675675675,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513
+        ],
+        "mean": 0.8513513513513512,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8513513513513511,
+        "ci95_high": 0.8513513513513513,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 384990,
+      "index_footprint_mb": 0.3671550750732422,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69009408,
+        "rss_after_index_load_bytes": 69419008,
+        "rss_after_100_searches_bytes": 71958528,
+        "incremental_rss_after_load_bytes": 409600,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 0.00443185840267688
+    },
+    {
+      "config": "HNSW ef=32",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.00606579481081081,
+          0.005990626972972972,
+          0.005991530702702702,
+          0.005927374972972972,
+          0.005919772054054053
+        ],
+        "mean": 0.005979019902702701,
+        "std": 5.9157914116269214e-05,
+        "ci95_low": 0.0059055656505357,
+        "ci95_high": 0.0060524741548697025,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.007666,
+          0.007208,
+          0.007166,
+          0.006958,
+          0.00675
+        ],
+        "mean": 0.007149600000000001,
+        "std": 0.0003415915689826083,
+        "ci95_low": 0.006725458046704358,
+        "ci95_high": 0.007573741953295643,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513
+        ],
+        "mean": 0.8513513513513512,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8513513513513511,
+        "ci95_high": 0.8513513513513513,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 384990,
+      "index_footprint_mb": 0.3671550750732422,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69435392,
+        "rss_after_index_load_bytes": 69812224,
+        "rss_after_100_searches_bytes": 72253440,
+        "incremental_rss_after_load_bytes": 376832,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 0.00443185840267688
+    },
+    {
+      "config": "HNSW ef=64",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.00847063172972973,
+          0.00877157,
+          0.008491099945945947,
+          0.008382886594594595,
+          0.008389573297297297
+        ],
+        "mean": 0.008501152313513513,
+        "std": 0.00015858352564508953,
+        "ci95_low": 0.008304244859011782,
+        "ci95_high": 0.008698059768015244,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.010166,
+          0.010833,
+          0.010458,
+          0.009708,
+          0.0095
+        ],
+        "mean": 0.010133,
+        "std": 0.0005426849915005946,
+        "ci95_low": 0.009459167583688196,
+        "ci95_high": 0.010806832416311803,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513
+        ],
+        "mean": 0.8513513513513512,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8513513513513511,
+        "ci95_high": 0.8513513513513513,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 384990,
+      "index_footprint_mb": 0.3671550750732422,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69124096,
+        "rss_after_index_load_bytes": 69517312,
+        "rss_after_100_searches_bytes": 71942144,
+        "incremental_rss_after_load_bytes": 393216,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 0.00443185840267688
+    },
+    {
+      "config": "HNSW ef=128",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.016387587405405406,
+          0.015951887945945945,
+          0.01609334708108108,
+          0.015429319999999998,
+          0.015355656324324323
+        ],
+        "mean": 0.015843559751351353,
+        "std": 0.00044151419057532565,
+        "ci95_low": 0.015295347476217896,
+        "ci95_high": 0.01639177202648481,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.019916,
+          0.019834,
+          0.01975,
+          0.0185,
+          0.018083
+        ],
+        "mean": 0.0192166,
+        "std": 0.0008592763234257077,
+        "ci95_low": 0.018149667524693405,
+        "ci95_high": 0.020283532475306596,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513,
+          0.8513513513513513
+        ],
+        "mean": 0.8513513513513512,
+        "std": 1.2412670766236366e-16,
+        "ci95_low": 0.8513513513513511,
+        "ci95_high": 0.8513513513513513,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 384990,
+      "index_footprint_mb": 0.3671550750732422,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69173248,
+        "rss_after_index_load_bytes": 69550080,
+        "rss_after_100_searches_bytes": 72024064,
+        "incremental_rss_after_load_bytes": 376832,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 0.00443185840267688
+    },
+    {
+      "config": "Hybrid FlatIP+BM25",
+      "latency_ms": {
+        "n_runs": 5,
+        "values": [
+          0.07501487297297298,
+          0.07697925372972973,
+          0.07767869843243244,
+          0.07651204248648649,
+          0.07597374356756756
+        ],
+        "mean": 0.07643172223783785,
+        "std": 0.0010097521983898595,
+        "ci95_low": 0.07517794928599006,
+        "ci95_high": 0.07768549518968565,
+        "t_critical_95": 2.7764451051977934
+      },
+      "p95_ms": {
+        "n_runs": 5,
+        "values": [
+          0.121875,
+          0.121208,
+          0.123875,
+          0.12421104999999998,
+          0.121458
+        ],
+        "mean": 0.12252540999999999,
+        "std": 0.0014107393240779757,
+        "ci95_low": 0.12077374577044206,
+        "ci95_high": 0.12427707422955792,
+        "t_critical_95": 2.7764451051977934
+      },
+      "agreement_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.5135135135135135,
+          0.5135135135135135,
+          0.5135135135135135,
+          0.5135135135135135,
+          0.5135135135135135
+        ],
+        "mean": 0.5135135135135135,
+        "std": 0.0,
+        "ci95_low": 0.5135135135135135,
+        "ci95_high": 0.5135135135135135,
+        "t_critical_95": 2.7764451051977934
+      },
+      "gold_source_recall_at_5": {
+        "n_runs": 5,
+        "values": [
+          0.9864864864864865,
+          0.9864864864864865,
+          0.9864864864864865,
+          0.9864864864864865,
+          0.9864864864864865
+        ],
+        "mean": 0.9864864864864865,
+        "std": 0.0,
+        "ci95_low": 0.9864864864864865,
+        "ci95_high": 0.9864864864864865,
+        "t_critical_95": 2.7764451051977934
+      },
+      "index_footprint_bytes": 910304,
+      "index_footprint_mb": 0.868133544921875,
+      "runtime_memory": {
+        "rss_after_import_bytes": 69287936,
+        "rss_after_index_load_bytes": 69550080,
+        "rss_after_100_searches_bytes": 71876608,
+        "incremental_rss_after_load_bytes": 262144,
+        "ntotal": 213,
+        "d": 384,
+        "probe": "fresh Python process, faiss.read_index, then 100 searches; RSS via ps"
+      },
+      "build_seconds_mean": 0.023252241977024822
+    }
+  ],
+  "end_to_end": [
+    {
+      "config": "FlatIP",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          619.0903149768109,
+          568.5380578783243,
+          622.499788549027,
+          603.7073003577838,
+          613.2297832965945
+        ],
+        "mean": 605.4130490117082,
+        "std": 21.810548805190326,
+        "ci95_low": 578.3316757792372,
+        "ci95_high": 632.4944222441791,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          784.4537076087992,
+          659.3719734895984,
+          747.1249357519989,
+          703.7546408367986,
+          732.0295202627988
+        ],
+        "mean": 725.3469555899989,
+        "std": 46.98795469134618,
+        "ci95_low": 667.0037039005247,
+        "ci95_high": 783.690207279473,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          619.0848919729729,
+          568.5326745675676,
+          622.4943636756757,
+          603.7018940810809,
+          613.2243705405405
+        ],
+        "mean": 605.4076389675674,
+        "std": 21.810532252947727,
+        "ci95_low": 578.3262862874202,
+        "ci95_high": 632.4889916477147,
+        "t_critical_95": 2.7764451051977934
+      }
+    },
+    {
+      "config": "IVF-PQ (nbits=7)",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          564.1911483354055,
+          566.4194649812432,
+          674.758397916973,
+          633.3187237827567,
+          610.9462509930811
+        ],
+        "mean": 609.9267972018919,
+        "std": 46.733273747601594,
+        "ci95_low": 551.8997736712939,
+        "ci95_high": 667.9538207324898,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          657.4774374075987,
+          648.6630138083987,
+          808.7862879311983,
+          779.6048968131989,
+          711.7827730371987
+        ],
+        "mean": 721.2628817995187,
+        "std": 71.57746423892023,
+        "ci95_low": 632.3877213713341,
+        "ci95_high": 810.1380422277033,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          564.1825034054054,
+          566.4111688648649,
+          674.7494132972973,
+          633.3103974864864,
+          610.9379943243243
+        ],
+        "mean": 609.9182954756757,
+        "std": 46.733116744047834,
+        "ci95_low": 551.891466890738,
+        "ci95_high": 667.9451240606134,
+        "t_critical_95": 2.7764451051977934
+      }
+    },
+    {
+      "config": "HNSW ef=16",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          571.5720663289188,
+          567.7596767527027,
+          672.620050471892,
+          623.1797405022703,
+          613.7691042815676
+        ],
+        "mean": 609.7801276674703,
+        "std": 42.92403668967695,
+        "ci95_low": 556.482896652321,
+        "ci95_high": 663.0773586826197,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          762.8702244523992,
+          647.2323624067988,
+          776.9423314267983,
+          735.3842865167985,
+          733.3797335899986
+        ],
+        "mean": 731.1617876785587,
+        "std": 50.41869781013306,
+        "ci95_low": 668.5587057714015,
+        "ci95_high": 793.7648695857158,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          571.5675416216216,
+          567.7546903243241,
+          672.6154346486487,
+          623.1748625945947,
+          613.7644977567568
+        ],
+        "mean": 609.7754053891891,
+        "std": 42.9240868769791,
+        "ci95_low": 556.4781120582735,
+        "ci95_high": 663.0726987201048,
+        "t_critical_95": 2.7764451051977934
+      }
+    },
+    {
+      "config": "HNSW ef=32",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          566.7836436056216,
+          609.780035654,
+          672.4708349901621,
+          607.8135265641622,
+          607.3152215288109
+        ],
+        "mean": 612.8326524685514,
+        "std": 37.88857403682057,
+        "ci95_low": 565.7877741437534,
+        "ci95_high": 659.8775307933494,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          653.2261804663985,
+          766.3143339091991,
+          765.3233655071983,
+          693.2962064383985,
+          694.8182245363985
+        ],
+        "mean": 714.5956621715186,
+        "std": 49.64662131181729,
+        "ci95_low": 652.9512398561793,
+        "ci95_high": 776.2400844868579,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          566.777577810811,
+          609.774045027027,
+          672.4648434594595,
+          607.8075991891892,
+          607.3093017567568
+        ],
+        "mean": 612.8266734486486,
+        "std": 37.888591846326435,
+        "ci95_low": 565.7817730104284,
+        "ci95_high": 659.8715738868689,
+        "t_critical_95": 2.7764451051977934
+      }
+    },
+    {
+      "config": "HNSW ef=64",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          576.0225844155135,
+          594.8076543808108,
+          680.957733208054,
+          606.0945134811893,
+          640.042861465189
+        ],
+        "mean": 619.5850693901514,
+        "std": 41.469056569731144,
+        "ci95_low": 568.0944348080409,
+        "ci95_high": 671.0757039722619,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          686.7643901091986,
+          744.6139760835988,
+          811.3516908595984,
+          698.1657991667985,
+          737.8174854119986
+        ],
+        "mean": 735.7426683262386,
+        "std": 49.01689017228328,
+        "ci95_low": 674.8801604954065,
+        "ci95_high": 796.6051761570707,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          576.0141137837837,
+          594.7988828108107,
+          680.9492421081083,
+          606.0861305945947,
+          640.0344718918919
+        ],
+        "mean": 619.5765682378378,
+        "std": 41.469096809834234,
+        "ci95_low": 568.0858836910401,
+        "ci95_high": 671.0672527846356,
+        "t_critical_95": 2.7764451051977934
+      }
+    },
+    {
+      "config": "HNSW ef=128",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          576.4947073171351,
+          620.2498921852432,
+          682.6149807524865,
+          612.4330757254054,
+          625.2801124941622
+        ],
+        "mean": 623.4145536948864,
+        "std": 38.21076680208207,
+        "ci95_low": 575.9696202129816,
+        "ci95_high": 670.8594871767913,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          704.9982505299986,
+          766.135273727999,
+          778.7290296979984,
+          721.0723443975985,
+          721.7785362999986
+        ],
+        "mean": 738.5426869307187,
+        "std": 31.96784251091524,
+        "ci95_low": 698.8493677846674,
+        "ci95_high": 778.23600607677,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          576.4783197297296,
+          620.2339402972972,
+          682.5988874054054,
+          612.4176464054053,
+          625.2647568378378
+        ],
+        "mean": 623.3987101351352,
+        "std": 38.21081549668446,
+        "ci95_low": 575.9537161908955,
+        "ci95_high": 670.8437040793748,
+        "t_critical_95": 2.7764451051977934
+      }
+    },
+    {
+      "config": "Hybrid FlatIP+BM25",
+      "end_to_end_ms": {
+        "n_runs": 5,
+        "values": [
+          576.0433032243244,
+          625.9575761185946,
+          674.5427496714054,
+          627.5530943397837,
+          643.5098464732972
+        ],
+        "mean": 629.521313965481,
+        "std": 35.70392297602775,
+        "ci95_low": 585.1890382115072,
+        "ci95_high": 673.8535897194548,
+        "t_critical_95": 2.7764451051977934
+      },
+      "end_to_end_p95_ms": {
+        "n_runs": 5,
+        "values": [
+          669.8160459095985,
+          773.2289341091988,
+          858.6183935247986,
+          747.4008908615988,
+          749.9983761591984
+        ],
+        "mean": 759.8125281128787,
+        "std": 67.62457415106054,
+        "ci95_low": 675.845528995646,
+        "ci95_high": 843.7795272301114,
+        "t_critical_95": 2.7764451051977934
+      },
+      "nli_ms": {
+        "n_runs": 5,
+        "values": [
+          575.9682883513514,
+          625.8805968648649,
+          674.4650709729731,
+          627.4765822972975,
+          643.4338727297296
+        ],
+        "mean": 629.4448822432433,
+        "std": 35.70305896315314,
+        "ci95_low": 585.1136793029499,
+        "ci95_high": 673.7760851835368,
+        "t_critical_95": 2.7764451051977934
+      }
+    }
+  ],
+  "generation": {
+    "measured": false,
+    "reason": "Ollama is not running on this machine, so generation latency was not measured and was not copied from the draft."
+  }
+}

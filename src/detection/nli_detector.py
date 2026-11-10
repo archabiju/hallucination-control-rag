@@ -20,12 +20,14 @@ import numpy as np
 from typing import List, Dict, Any, Tuple, Optional
 
 
-# Label mapping for cross-encoder/nli-deberta-v3-small
-# Index 0=CONTRADICTION, 1=NEUTRAL, 2=ENTAILMENT
-NLI_LABELS = ["CONTRADICTION", "NEUTRAL", "ENTAILMENT"]
-ENTAILMENT_IDX = 2
-NEUTRAL_IDX = 1
-CONTRADICTION_IDX = 0
+# The model currently publishes this order:
+#   0=contradiction, 1=entailment, 2=neutral
+# Do not hard-code it at scoring time: other NLI checkpoints use other orders.
+DEFAULT_LABEL_TO_IDX = {
+    "CONTRADICTION": 0,
+    "ENTAILMENT": 1,
+    "NEUTRAL": 2,
+}
 
 
 class NLIDetector:
@@ -47,9 +49,16 @@ class NLIDetector:
         print(f"[INFO] Loading NLI model: {model_name}")
         try:
             from sentence_transformers import CrossEncoder
-            self.model = CrossEncoder(model_name, num_labels=3)
+            self.model = CrossEncoder(model_name)
             self.model_name = model_name
+            self.label_to_idx = self._resolve_label_mapping(
+                self.model.model.config.id2label
+            )
+            self.labels_by_idx = {
+                idx: label for label, idx in self.label_to_idx.items()
+            }
             print("[INFO] NLI model loaded successfully.")
+            print(f"[INFO] NLI label mapping: {self.label_to_idx}")
         except ImportError:
             raise ImportError(
                 "sentence-transformers not installed. Run: pip install sentence-transformers"
@@ -59,6 +68,30 @@ class NLIDetector:
             print("[WARN] Falling back to heuristic NLI scoring.")
             self.model = None
             self.model_name = "heuristic-fallback"
+            self.label_to_idx = dict(DEFAULT_LABEL_TO_IDX)
+            self.labels_by_idx = {
+                idx: label for label, idx in self.label_to_idx.items()
+            }
+
+    @staticmethod
+    def _resolve_label_mapping(id2label) -> Dict[str, int]:
+        """Read semantic class indexes from the checkpoint configuration."""
+        normalized = {
+            str(label).strip().upper(): int(idx)
+            for idx, label in dict(id2label or {}).items()
+        }
+        required = set(DEFAULT_LABEL_TO_IDX)
+        if required.issubset(normalized):
+            return {label: normalized[label] for label in required}
+
+        # The selected checkpoint's documented order. This fallback is explicit
+        # so a generic LABEL_0/LABEL_1/LABEL_2 config cannot silently recreate
+        # the old entailment/neutral swap.
+        print(
+            "[WARN] NLI checkpoint has no semantic id2label mapping; "
+            f"using the documented default {DEFAULT_LABEL_TO_IDX}."
+        )
+        return dict(DEFAULT_LABEL_TO_IDX)
 
     def score_pair(
         self,
@@ -79,18 +112,18 @@ class NLIDetector:
             return self._heuristic_score(premise, hypothesis)
 
         try:
-            # CrossEncoder returns raw logits for [CONTRADICTION, NEUTRAL, ENTAILMENT]
+            # CrossEncoder output order comes from the checkpoint configuration.
             logits = self.model.predict(
                 [(premise, hypothesis)],
                 apply_softmax=True,
             )[0]  # shape: (3,)
 
-            contradict_prob = float(logits[CONTRADICTION_IDX])
-            neutral_prob    = float(logits[NEUTRAL_IDX])
-            entail_prob     = float(logits[ENTAILMENT_IDX])
+            contradict_prob = float(logits[self.label_to_idx["CONTRADICTION"]])
+            neutral_prob    = float(logits[self.label_to_idx["NEUTRAL"]])
+            entail_prob     = float(logits[self.label_to_idx["ENTAILMENT"]])
 
             label_idx = int(np.argmax(logits))
-            label = NLI_LABELS[label_idx]
+            label = self.labels_by_idx[label_idx]
 
             return {
                 "entail_prob":      round(entail_prob, 4),

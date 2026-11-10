@@ -1,0 +1,60 @@
+{
+  "selection_data": "evaluation/results/ragtruth/train_per_claim.jsonl",
+  "held_out_test_data": "evaluation/results/ragtruth/test_per_claim.jsonl",
+  "constraint": "w_nli >= w_bertscore >= w_cosine >= 0; weights sum to 1",
+  "weights": {
+    "nli": 0.6,
+    "bertscore": 0.4,
+    "cosine": 0.0
+  },
+  "support_threshold": 0.32000000000000006,
+  "train_metrics": {
+    "precision": 0.1809473124002129,
+    "recall": 0.5619834710743802,
+    "f1": 0.27375201288244766,
+    "accuracy": 0.6948062933513788,
+    "balanced_accuracy": 0.6359672349717924,
+    "auroc": 0.6910458454953536
+  },
+  "held_out_test_metrics": {
+    "precision": 0.1546162402669633,
+    "recall": 0.5991379310344828,
+    "f1": 0.2458001768346596,
+    "accuracy": 0.7185747278126031,
+    "balanced_accuracy": 0.6638061930985204,
+    "auroc": 0.7049361841051607
+  },
+  "held_out_response_bootstrap": {
+    "precision": {
+      "mean": 0.15444643827454302,
+      "ci95_low": 0.12828930754917597,
+      "ci95_high": 0.1830558843499963
+    },
+    "recall": {
+      "mean": 0.5995084415624999,
+      "ci95_low": 0.5272708254089007,
+      "ci95_high": 0.6696470687331536
+    },
+    "f1": {
+      "mean": 0.2453425635285358,
+      "ci95_low": 0.2079595510682176,
+      "ci95_high": 0.2836818992422629
+    },
+    "accuracy": {
+      "mean": 0.7187792001883831,
+      "ci95_low": 0.693470437330841,
+      "ci95_high": 0.742843816086489
+    },
+    "balanced_accuracy": {
+      "mean": 0.6640695940567464,
+      "ci95_low": 0.6275922327258063,
+      "ci95_high": 0.6990319483973095
+    },
+    "auroc": {
+      "mean": 0.7047159703886925,
+      "ci95_low": 0.6668923362954603,
+      "ci95_high": 0.7413104992476631
+    }
+  },
+  "warning": "Do not change weights or threshold after reading held-out test results. Raw accuracy is secondary because supported sentences are the majority class."
+}

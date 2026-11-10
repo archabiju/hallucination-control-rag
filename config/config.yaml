@@ -35,8 +35,9 @@ generation:
 # ── NLI Entailment Detector ──────────────────────────────────────────────────
 nli:
   model: "cross-encoder/nli-deberta-v3-small"
-  # Labels: ENTAILMENT=2, NEUTRAL=1, CONTRADICTION=0
-  entailment_label_idx: 2
+  # The detector reads id2label from the checkpoint. For this model:
+  # CONTRADICTION=0, ENTAILMENT=1, NEUTRAL=2.
+  entailment_label_idx: 1
   contradiction_label_idx: 0
 
 # ── BERTScore ────────────────────────────────────────────────────────────────

@@ -1,0 +1,36 @@
+{
+  "dataset": "RAGTruth",
+  "source_repository": "https://github.com/ParticleMedia/RAGTruth",
+  "license": "Apache-2.0 (see source repository)",
+  "conversion": "A sentence is hallucinated when its character range overlaps at least one RAGTruth hallucination annotation. No labels are generated.",
+  "train_is_for_calibration_only": true,
+  "test_is_held_out": true,
+  "counts": {
+    "train": {
+      "responses": 800,
+      "claims": 5911,
+      "hallucinated_claims": 605,
+      "supported_claims": 5306,
+      "task_types": {
+        "Data2txt": 267,
+        "QA": 267,
+        "Summary": 266
+      }
+    },
+    "test": {
+      "responses": 400,
+      "claims": 3031,
+      "hallucinated_claims": 232,
+      "supported_claims": 2799,
+      "task_types": {
+        "Data2txt": 134,
+        "QA": 133,
+        "Summary": 133
+      }
+    }
+  },
+  "raw_sha256": {
+    "source_info.jsonl": "0dffc26ea9f3c1c3d7c7e8336b56ef1646e3cec876edffcca3c9c624d12d578b",
+    "response.jsonl": "e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073"
+  }
+}

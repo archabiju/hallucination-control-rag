@@ -11,6 +11,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.pyo
+.matplotlib-cache/
+
+# Re-downloadable upstream benchmark source files
+evaluation/benchmarks/ragtruth/raw/
+
+# Console logs are reproducible; structured JSON/JSONL results are retained.
+evaluation/results/**/*.log
+evaluation/results/ragtruth/*_first_*
 
 # Byte-compiled / optimized
 *.egg-info/
